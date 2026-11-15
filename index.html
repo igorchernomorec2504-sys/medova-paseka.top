@@ -40,7 +40,6 @@
             padding-top: 15px;
         }
 
-        /* Плаваюча кнопка Меню (зліва на куточку контейнера) */
         .floating-menu-btn {
             position: fixed;
             top: 15px;
@@ -72,7 +71,6 @@
             box-shadow: 0 6px 20px rgba(217, 119, 6, 0.3);
         }
 
-        /* Плаваюча кнопка Кошик (справа на куточку контейнера) */
         .floating-cart-btn {
             position: fixed;
             top: 15px;
@@ -208,7 +206,6 @@
             padding: 0 20px;
         }
 
-        /* Стильные кнопки фильтрации категорий */
         .category-filters {
             display: flex;
             justify-content: center;
@@ -243,7 +240,6 @@
             box-shadow: 0 4px 12px rgba(146, 64, 14, 0.2);
         }
 
-        /* Аккуратные плашки преимуществ внизу с плавной анимацией появления */
         .benefits-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -304,7 +300,6 @@
             line-height: 1.35;
         }
 
-        /* Статус "Нет в наличии" / "Немає в наявності" */
         .out-of-stock-label {
             display: inline-block;
             color: var(--accent-red);
@@ -1163,10 +1158,8 @@
 </head>
 <body>
 
-    <!-- Плаваюча кнопка Меню (зліва на куточку) -->
     <a href="menu.html" class="floating-menu-btn">📋 <span id="nav-menu-text">Меню</span></a>
 
-    <!-- Плаваюча кнопка Кошик (справа на куточку) -->
     <button class="floating-cart-btn" onclick="openCartModal()">
         🛒 <span id="cart-text-btn">Кошик</span> <span class="cart-badge" id="cartCount">0</span>
     </button>
@@ -1197,7 +1190,6 @@
 
     <div class="container">
 
-        <!-- Кнопки фильтрации товаров -->
         <div class="category-filters">
             <button class="filter-btn active" onclick="filterProducts('all')">Усі товари</button>
             <button class="filter-btn" onclick="filterProducts('honey')">Мед</button>
@@ -1208,7 +1200,6 @@
 
         <div class="products-grid" id="productsGrid">
 
-            <!-- Мед Травневий (Нет в наличии) -->
             <div class="product-card" data-category="honey" data-name="мед травневий">
                 <span class="badge-highlight" id="badge-may">ВЕСНЯНИЙ СМАК</span>
                 <div>
@@ -1223,7 +1214,6 @@
                 </div>
             </div>
 
-            <!-- Мед Соняшниковий -->
             <div class="product-card" data-category="honey" data-name="мед соняшниковий">
                 <span class="badge-highlight" id="badge-sun">ХІТ ПРОДАЖ</span>
                 <div>
@@ -1237,7 +1227,6 @@
                 </div>
             </div>
 
-            <!-- Свічки з вощини -->
             <div class="product-card" data-category="candles" data-name="свічка з вощини">
                 <span class="badge-highlight" id="badge-candle">РУЧНА РОБОТА</span>
                 <div>
@@ -1251,7 +1240,6 @@
                 </div>
             </div>
 
-            <!-- Прополіс -->
             <div class="product-card" data-category="propolis other" data-name="прополіс">
                 <span class="badge-highlight" id="badge-prop">МІЦНИЙ ІМУНІТЕТ</span>
                 <div>
@@ -1265,7 +1253,6 @@
                 </div>
             </div>
 
-            <!-- Бджолиний Пилок (Нет в наличии) -->
             <div class="product-card" data-category="pollen other" data-name="бджолиний пилок">
                 <span class="badge-highlight" id="badge-pollen">ЗАРЯД ЕНЕРГІЇ</span>
                 <div>
@@ -1294,7 +1281,6 @@
                 </div>
             </div>
 
-            <!-- Стільниковий мед -->
             <div class="product-card" data-category="honey other" data-name="стільниковий мед">
                 <span class="badge-highlight" id="badge-comb">100% ЕКО</span>
                 <div>
@@ -1313,7 +1299,6 @@
                 </div>
             </div>
 
-            <!-- Подарунковий набір 1 (Набір «Медовий затишок») -->
             <div class="product-card" data-category="gifts" data-name="подарунковий набір медовий затишок свічки" id="candlesSection">
                 <span class="badge-highlight">🔥 АКЦІЯ</span>
                 <div>
@@ -1333,7 +1318,6 @@
                 </div>
             </div>
 
-            <!-- Подарунковий набір 2 (Патріотичний набір) -->
             <div class="product-card" data-category="gifts" data-name="патріотичний набір свічки">
                 <span class="badge-highlight" id="badge-gift2">ХІТ / АКЦІЯ</span>
                 <div>
@@ -1353,7 +1337,6 @@
                 </div>
             </div>
 
-            <!-- Подарунковий набір 3 (Набір з натуральної вощини) -->
             <div class="product-card" data-category="gifts" data-name="набір з натуральної вощини свічки">
                 <span class="badge-highlight">-15%</span>
                 <div>
@@ -1375,13 +1358,11 @@
 
         </div>
 
-        <!-- Рекламный банер Акции с ID promoSection -->
         <div class="promo-banner-card" id="promoSection">
             <h3>✨ Акція: Безкоштовна доставка!</h3>
             <p>Оформлюйте замовлення на суму від 1000 грн — і доставка за наш рахунок! Свіжий збір меду та крафтові свічки з натуральної вощини.</p>
         </div>
 
-        <!-- Блок консультации бджоляра с ID consultationSection -->
         <section class="consultation-section" id="consultationSection">
             <h2>💬 Бажаєте проконсультуватися чи підібрати мед?</h2>
             <p>Залиште свої дані, і ми зв'яжемося з вами найближчим часом, щоб відповісти на всі запитання!</p>
@@ -1404,7 +1385,6 @@
             </form>
         </section>
 
-        <!-- Блок доставки и оплаты с ID deliverySection -->
         <section class="delivery-section" id="deliverySection">
             <h2>🚚 Доставка та оплата</h2>
             <p>Ми дбаємо про те, щоб ваше замовлення прибуло швидко та в ідеальному стані. Оберіть зручний для себе спосіб доставки та оплати:</p>
@@ -1469,7 +1449,6 @@
             <p>«Бджолиний хліб» та пилок — це потужний природний концентрати амінокислот, мікроелементів і вітамінів групи B. Вони чудово відновлюють сили після фізичних і розумових навантажень, підвищують тонус і заряджають енергією на весь день.</p>
         </section>
 
-        <!-- Перенесені в самий низ плашки преимуществ с анимацией скролла -->
         <section class="benefits-section">
             <div class="benefit-card">
                 <div class="benefit-icon">✨</div>
@@ -1502,7 +1481,6 @@
             <p id="about-text-2">Усі роботи робимо самі, з турботою про якість для вашої родини! При великих замовленнях можлива індивідуальна домовленість.</p>
         </section>
 
-        <!-- Блок контактов с ID contactsSection -->
         <section class="contacts-section" id="contactsSection">
             <p style="margin-bottom: 14px;"><strong id="contacts-heading">Швидкий зв'язок з нами:</strong></p>
             <a href="https://t.me/+380968980543" class="btn-social" style="background: #0088cc;" target="_blank">📱 Telegram</a>
@@ -1523,7 +1501,6 @@
 
     </div>
 
-    <!-- Модальне вікно Кошика -->
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header-row">
@@ -1549,7 +1526,6 @@
                 <button type="button" class="btn-continue-shopping" style="width: 100%;" onclick="closeCartModal()">Додати товар</button>
             </div>
 
-            <!-- Форма замовлення -->
             <form id="orderForm" style="display: none;" onsubmit="sendOrderToTelegram(event)">
                 <div class="form-group">
                     <label id="label-name">ПІБ (Прізвище та Ім'я):</label>
@@ -1615,7 +1591,6 @@
             initScrollAnimation();
         };
 
-        // Функция фильтрации товаров по категориям
         function filterProducts(category) {
             const cards = document.querySelectorAll('.product-card');
             const buttons = document.querySelectorAll('.filter-btn');
@@ -1633,7 +1608,6 @@
             });
         }
 
-        // Анимация плавного всплытия плашек внизу при прокрутке
         function initScrollAnimation() {
             const cards = document.querySelectorAll('.benefit-card');
             const observer = new IntersectionObserver((entries) => {
@@ -1648,7 +1622,6 @@
             cards.forEach(card => observer.observe(card));
         }
 
-        // Циклический таймер ровно на 23 часа 59 минут 3 секунды (автоматически перезапускается)
         function startPromoTimers() {
             const cycleDuration = (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (3 * 1000);
 
@@ -2164,13 +2137,11 @@
             document.getElementById('comb-title').innerText = t.combTitle;
             document.getElementById('comb-desc').innerText = t.combDesc;
 
-            // Обновление текстов "Нет в наличии" / "Немає в наявності"
             const stockMay = document.getElementById('stock-may');
             const stockPollen = document.getElementById('stock-pollen');
             if(stockMay) stockMay.innerText = stockMay.getAttribute(`data-${lang}`);
             if(stockPollen) stockPollen.innerText = stockPollen.getAttribute(`data-${lang}`);
 
-            // Обновление перенесенных нижних плашек преимуществ
             document.getElementById('ben-1-title').innerText = t.ben1Title;
             document.getElementById('ben-1-desc').innerText = t.ben1Desc;
             document.getElementById('ben-2-title').innerText = t.ben2Title;
