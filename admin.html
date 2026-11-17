@@ -168,8 +168,8 @@
     </div>
 
     <script>
-        const SUPABASE_URL = "https://wamchptycjrvrspfksaz.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_lG-14NlLDyfmdeJTZ-a3Lg_oxyFvv3F";
+        const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
+        const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
 
         let db = JSON.parse(localStorage.getItem('medova_staff_db')) || {
             employees: [
@@ -295,7 +295,7 @@
             }
         }
 
-        // ЗМІНА СТАТУСУ ЗАМОВЛЕННЯ НА "COMPLETED" (ВИКОНАНО)
+        // ЗМІНА СТАТУСУ ЗАМОВЛЕННЯ НА "completed" (ВИКОНАНО)
         async function markOrderCompleted(orderId) {
             try {
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${orderId}`, {
