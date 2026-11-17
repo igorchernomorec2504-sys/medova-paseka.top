@@ -44,39 +44,97 @@
             padding-top: 15px;
         }
 
-        /* Плаваюча кнопка Меню (зліва на куточку контейнера) */
-        .floating-menu-btn {
-            position: fixed;
+        /* Верхняя шапка сайта с меню и кнопкой Вход/Регистрация */
+        .top-navbar {
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            position: sticky;
             top: 15px;
-            left: max(16px, calc((100vw - 1000px) / 2 + 16px));
             z-index: 1000;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .floating-menu-btn {
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
             color: var(--dark-amber);
             border: 1px solid var(--border-color);
             padding: 8px 16px;
-            border-radius: 30px;
+            border-radius: 20px;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             text-decoration: none;
-            white-space: nowrap;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease;
         }
 
         .floating-menu-btn:hover {
             background: var(--primary-amber);
             color: white;
             border-color: var(--primary-amber);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.3);
         }
 
-        /* Плаваюча кнопка Кошик (справа на куточку контейнера) */
+        .brand-logo-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-logo-img-small {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-title-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--dark-amber);
+        }
+
+        /* Кнопка Вход / Регистрация в шапке */
+        .auth-header-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .auth-header-btn:hover {
+            border-color: var(--primary-amber);
+            color: var(--dark-amber);
+            background: #fffbeb;
+        }
+
+        /* Плаваюча кнопка Кошик (справа на куточку) */
         .floating-cart-btn {
             position: fixed;
             top: 15px;
@@ -206,31 +264,6 @@
             box-shadow: 0 6px 18px rgba(217, 119, 6, 0.25);
         }
 
-        /* Стиль для кнопки входа через Google */
-        .google-login-btn {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px 20px;
-            border-radius: 24px;
-            font-weight: 600;
-            font-size: 0.88rem;
-            text-decoration: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .google-login-btn:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-        }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -272,7 +305,7 @@
             box-shadow: 0 4px 12px rgba(146, 64, 14, 0.2);
         }
 
-        /* Аккуратные плашки преимуществ внизу с плавной анимацией появления */
+        /* Преимущества внизу */
         .benefits-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -333,7 +366,6 @@
             line-height: 1.35;
         }
 
-        /* Статус "Нет в наличии" / "Немає в наявності" */
         .out-of-stock-label {
             display: inline-block;
             color: var(--accent-red);
@@ -389,11 +421,12 @@
             z-index: 2;
         }
 
+        /* ВСЕ ФОТО ТОВАРОВ ЗАФИКСИРОВАНЫ ПО ВЫСОТЕ НА 300px (ШИРИНА АДАПТИВНАЯ) */
         .product-icon-img {
             display: block;
             width: 100%;
             max-width: 100%;
-            height: 210px;
+            height: 300px !important;
             object-fit: cover;
             margin: 0 auto 16px;
             border-radius: 18px;
@@ -403,10 +436,6 @@
 
         .product-card:hover .product-icon-img {
             transform: scale(1.03);
-        }
-
-        .tall-product-img {
-            height: 280px !important;
         }
 
         .product-card h3 {
@@ -558,27 +587,7 @@
             outline: none;
         }
 
-        .btn-add-cart {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-            border: none;
-            padding: 13px 18px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 0.92rem;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.25);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .btn-add-cart:hover {
-            opacity: 0.95;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.35);
-        }
-
-        .card-link-btn {
+        .btn-add-cart, .card-link-btn {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
             border: none;
@@ -594,7 +603,8 @@
             box-shadow: 0 4px 15px rgba(217, 119, 6, 0.25);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .card-link-btn:hover {
+
+        .btn-add-cart:hover, .card-link-btn:hover {
             opacity: 0.95;
             transform: translateY(-2px);
             color: white;
@@ -953,7 +963,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(41, 27, 17, 0.65);
             backdrop-filter: blur(8px);
-            z-index: 200;
+            z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -1192,8 +1202,23 @@
 </head>
 <body>
 
-    <!-- Плаваюча кнопка Меню (зліва на куточку) -->
-    <a href="menu.html" class="floating-menu-btn">📋 <span id="nav-menu-text">Меню</span></a>
+    <!-- Верхня шапка сайту (Navbar): меню зліва, бренд по центру/зліва, вхід і кошик справа -->
+    <div class="top-navbar">
+        <div class="nav-left">
+            <a href="menu.html" class="floating-menu-btn">📋 <span id="nav-menu-text">Меню</span></a>
+            <a href="index.html" class="brand-logo-link">
+                <img src="11431.png" alt="Логотип" class="brand-logo-img-small">
+                <span class="brand-title-text">Медова Пасіка</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <!-- Кнопка Вхід / Реєстрація у верхній шапці -->
+            <button id="google-login-btn" class="auth-header-btn">
+                <span>👤</span>
+                <span>Вхід / Реєстрація</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Плаваюча кнопка Кошик (справа на куточку) -->
     <button class="floating-cart-btn" onclick="openCartModal()">
@@ -1218,16 +1243,6 @@
             <p id="header-subtitle">Натуральний мед, воскові свічки та продукти бджільництва</p>
         </div>
     </header>
-
-    <div class="site-nav-bar">
-        <a href="#about-section" class="site-nav-link">🍯 Про пасеку</a>
-        <a href="#productsGrid" class="site-nav-link">📦 Товары</a>
-        <!-- Кнопка входа через Google, интегрированная в навигацию -->
-        <button id="google-login-btn" class="google-login-btn">
-            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.19-1.84H9v3.48h4.84c-.21 1.13-.84 2.08-1.79 2.72v2.26h2.92c1.71-1.57 2.67-3.88 2.67-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33C2.45 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.75c-.18-.54-.28-1.12-.28-1.75s.1-1.21.28-1.75V4.92H.96C.35 6.13 0 7.5 0 9s.35 2.87.96 4.08l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.48 0 2.45 2.02.96 4.92l3.01 2.33c.71-2.13 2.69-3.67 5.03-3.67z"/></svg>
-            <span>Увійти через Google</span>
-        </button>
-    </div>
 
     <div class="container">
 
@@ -1347,11 +1362,11 @@
                 </div>
             </div>
 
-            <!-- Подарунковий набір 1 (Набір «Медовий затишок») -->
+            <!-- Подарунковий набір 1 -->
             <div class="product-card" data-category="gifts" data-name="подарунковий набір медовий затишок свічки" id="candlesSection">
                 <span class="badge-highlight">🔥 АКЦІЯ</span>
                 <div>
-                    <img src="svechi-podarok.jpg" alt="Набір Медовий затишок" class="product-icon-img tall-product-img" onerror="this.src='https://static.tildacdn.ink/tila6338-3239-4734-a665-366531623332/10636.jpg'">
+                    <img src="svechi-podarok.jpg" alt="Набір Медовий затишок" class="product-icon-img" onerror="this.src='https://static.tildacdn.ink/tila6338-3239-4734-a665-366531623332/10636.jpg'">
                     <h3>Набір «Медовий затишок»</h3>
                     <p>Чудовий комплект свічок ручної роботи. Розміри свічей: 20×3 см.</p>
                     <div class="timer-box" id="promoTimer1">⏳ До кінця акції: завантаження...</div>
@@ -1367,11 +1382,11 @@
                 </div>
             </div>
 
-            <!-- Подарунковий набір 2 (Патріотичний набір) -->
+            <!-- Подарунковий набір 2 -->
             <div class="product-card" data-category="gifts" data-name="патріотичний набір свічки">
                 <span class="badge-highlight" id="badge-gift2">ХІТ / АКЦІЯ</span>
                 <div>
-                    <img src="nabor3.jpg" alt="Патріотичний набір" class="product-icon-img tall-product-img" onerror="this.src='https://static.tildacdn.ink/tila6338-3239-4734-a665-366531623332/10636.jpg'">
+                    <img src="nabor3.jpg" alt="Патріотичний набір" class="product-icon-img" onerror="this.src='https://static.tildacdn.ink/tila6338-3239-4734-a665-366531623332/10636.jpg'">
                     <h3 id="gift2-title">Патріотичний набір свічок</h3>
                     <p id="gift2-desc">Синьо-жовті свічки з вощини. Розміри свічей: 20×3 см.</p>
                     <div class="timer-box" id="promoTimer">⏳ До кінця акції: завантаження...</div>
@@ -1387,11 +1402,11 @@
                 </div>
             </div>
 
-            <!-- Подарунковий набір 3 (Набір з натуральної вощини) -->
+            <!-- Подарунковий набір 3 -->
             <div class="product-card" data-category="gifts" data-name="набір з натуральної вощини свічки">
                 <span class="badge-highlight">-15%</span>
                 <div>
-                    <img src="svecha3.jpg" alt="Набір з натуральної вощини" class="product-icon-img tall-product-img" onerror="this.src='https://static.tildacdn.ink/tila6338-3239-4734-a665-366531623332/10636.jpg'">
+                    <img src="svecha3.jpg" alt="Набір з натуральної вощини" class="product-icon-img" onerror="this.src='https://static.tildacdn.ink/tila6338-3239-4734-a665-366531623332/10636.jpg'">
                     <h3 id="gift3-title">Набір з натуральної вощини</h3>
                     <p id="gift3-desc">З медовим запахом та ніжним природним ароматом.</p>
                     <div class="timer-box" id="promoTimer3">⏳ До кінця акції: завантаження...</div>
@@ -1409,13 +1424,13 @@
 
         </div>
 
-        <!-- Рекламный банер Акции с ID promoSection -->
+        <!-- Рекламный банер Акции -->
         <div class="promo-banner-card" id="promoSection">
             <h3>✨ Акція: Безкоштовна доставка!</h3>
             <p>Оформлюйте замовлення на суму від 1000 грн — і доставка за наш рахунок! Свіжий збір меду та крафтові свічки з натуральної вощини.</p>
         </div>
 
-        <!-- Блок консультации бджоляра с ID consultationSection -->
+        <!-- Блок консультации бджоляра -->
         <section class="consultation-section" id="consultationSection">
             <h2>💬 Бажаєте проконсультуватися чи підібрати мед?</h2>
             <p>Залиште свої дані, і ми зв'яжемося з вами найближчим часом, щоб відповісти на всі запитання!</p>
@@ -1438,7 +1453,7 @@
             </form>
         </section>
 
-        <!-- Блок доставки и оплаты с ID deliverySection -->
+        <!-- Блок доставки и оплаты -->
         <section class="delivery-section" id="deliverySection">
             <h2>🚚 Доставка та оплата</h2>
             <p>Ми дбаємо про те, щоб ваше замовлення прибуло швидко та в ідеальному стані. Оберіть зручний для себе спосіб доставки та оплати:</p>
@@ -1503,7 +1518,7 @@
             <p>«Бджолиний хліб» та пилок — це потужний природний концентрати амінокислот, мікроелементів і вітамінів групи B. Вони чудово відновлюють сили після фізичних і розумових навантажень, підвищують тонус і заряджають енергією на весь день.</p>
         </section>
 
-        <!-- Перенесені в самий низ плашки преимуществ с анимацией скролла -->
+        <!-- Плашки преимуществ с анимацией скролла -->
         <section class="benefits-section">
             <div class="benefit-card">
                 <div class="benefit-icon">✨</div>
@@ -1536,7 +1551,7 @@
             <p id="about-text-2">Усі роботи робимо самі, з турботою про якість для вашої родини! При великих замовленнях можлива індивідуальна домовленість.</p>
         </section>
 
-        <!-- Блок контактов с ID contactsSection -->
+        <!-- Блок контактов -->
         <section class="contacts-section" id="contactsSection">
             <p style="margin-bottom: 14px;"><strong id="contacts-heading">Швидкий зв'язок з нами:</strong></p>
             <a href="https://t.me/+380968980543" class="btn-social" style="background: #0088cc;" target="_blank">📱 Telegram</a>
@@ -1626,7 +1641,7 @@
         const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
         const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
 
-        // Инициализация Supabase клиента
+        // Инициализация Supabase (ровно один раз, без дублирования слова const)
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let cart = [];
@@ -1640,11 +1655,7 @@
         window.onload = function() {
             const savedCart = localStorage.getItem('medova_cart');
             if (savedCart) {
-                try {
-                    cart = JSON.parse(savedCart);
-                } catch (e) {
-                    cart = [];
-                }
+                try { cart = JSON.parse(savedCart); } catch (e) { cart = []; }
             }
             updateCartUI();
             renderReviews();
@@ -1694,7 +1705,6 @@
             });
         }
 
-        // Анимация плавного всплытия плашек внизу при прокрутке
         function initScrollAnimation() {
             const cards = document.querySelectorAll('.benefit-card');
             const observer = new IntersectionObserver((entries) => {
@@ -1709,7 +1719,6 @@
             cards.forEach(card => observer.observe(card));
         }
 
-        // Циклический таймер ровно на 23 часа 59 минут 3 секунды (автоматически перезапускается)
         function startPromoTimers() {
             const cycleDuration = (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (3 * 1000);
 
