@@ -1626,7 +1626,7 @@
         const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
         const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
 
-        // Оголошуємо клієнт Supabase один раз без повторів
+        // Безпечна ініціалізація Supabase без повторних оголошень
         let supabase = null;
         try {
             if (window.supabase && typeof window.supabase.createClient === 'function') {
@@ -1641,7 +1641,7 @@
 
         function toggleWidget() {
             const items = document.getElementById('widgetItems');
-            items.classList.toggle('open');
+            if (items) items.classList.toggle('open');
         }
 
         window.onload = function() {
@@ -1660,7 +1660,7 @@
             initGoogleAuth();
         };
 
-        // Обработка входа через Google (Supabase OAuth)
+        // Обробка входу через Google (Supabase OAuth)
         function initGoogleAuth() {
             const googleBtn = document.getElementById('google-login-btn');
             if (googleBtn && supabase) {
@@ -1683,7 +1683,7 @@
             }
         }
 
-        // Функция фильтрации товаров по категориям
+        // Функція фільтрації товарів за категоріями
         function filterProducts(category) {
             const cards = document.querySelectorAll('.product-card');
             const buttons = document.querySelectorAll('.filter-btn');
@@ -1703,7 +1703,7 @@
             });
         }
 
-        // Анимация плавного всплытия плашек внизу при прокрутке
+        // Анімація появи плашок
         function initScrollAnimation() {
             const cards = document.querySelectorAll('.benefit-card');
             const observer = new IntersectionObserver((entries) => {
@@ -1718,7 +1718,7 @@
             cards.forEach(card => observer.observe(card));
         }
 
-        // Циклический таймер ровно на 23 часа 59 минут 3 секунды (автоматически перезапускается)
+        // Циклічні таймери акцій
         function startPromoTimers() {
             const cycleDuration = (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (3 * 1000);
 
@@ -1751,8 +1751,9 @@
 
         function updatePollen() {
             const selected = document.querySelector('input[name="pollen-weight"]:checked');
-            if(selected) {
-                document.getElementById('pollen-price').innerText = selected.value;
+            const priceSpan = document.getElementById('pollen-price');
+            if(selected && priceSpan) {
+                priceSpan.innerText = selected.value;
             }
         }
 
@@ -1763,10 +1764,11 @@
             const price = parseInt(selected.value);
             const name = `Бджолиний Пилок (${weightLabel})`;
             const qtyId = 'qty-pollen';
-            const qty = parseInt(document.getElementById(qtyId).value) || 1;
+            const qtyInput = document.getElementById(qtyId);
+            const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
             
             addToCartCommon(name, price, qty);
-            document.getElementById(qtyId).value = 1;
+            if(qtyInput) qtyInput.value = 1;
         }
 
         function addToCartCommon(name, price, qty) {
@@ -1778,12 +1780,14 @@
             }
             saveCart();
             updateCartUI();
+            openCartModal(); // Одразу відкриваємо кошик для зручності
         }
 
         function addToCart(name, price, qtyInputId) {
-            const qty = parseInt(document.getElementById(qtyInputId).value) || 1;
+            const input = document.getElementById(qtyInputId);
+            const qty = input ? (parseInt(input.value) || 1) : 1;
             addToCartCommon(name, price, qty);
-            document.getElementById(qtyInputId).value = 1;
+            if(input) input.value = 1;
         }
 
         function changeQty(id, delta) {
@@ -1822,8 +1826,10 @@
         }
 
         function showCheckoutForm() {
-            document.getElementById('cartInitialActions').style.display = 'none';
-            document.getElementById('orderForm').style.display = 'block';
+            const initActions = document.getElementById('cartInitialActions');
+            const orderForm = document.getElementById('orderForm');
+            if(initActions) initActions.style.display = 'none';
+            if(orderForm) orderForm.style.display = 'block';
         }
 
         function renderCartModal() {
@@ -1835,23 +1841,27 @@
             const totalBox = document.getElementById('cartTotalBox');
             const progressBox = document.getElementById('deliveryProgressBox');
 
-            if(orderForm) {
-                orderForm.style.display = 'none';
-                orderForm.reset();
-            }
+            if(!listContainer) return;
 
-            if (cart.length === 0) {
-                listContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:10px;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
-                totalBox.style.display = 'none';
-                progressBox.style.display = 'none';
-                initialActions.style.display = 'none';
-                emptyActions.style.display = 'block';
+            if(orderForm && orderForm.style.display === 'block') {
+                // Якщо форма вже відкрита, не скидаємо її
                 return;
             }
 
-            totalBox.style.display = 'block';
-            initialActions.style.display = 'flex';
-            emptyActions.style.display = 'none';
+            if(orderForm) orderForm.reset();
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:10px;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
+                if(totalBox) totalBox.style.display = 'none';
+                if(progressBox) progressBox.style.display = 'none';
+                if(initialActions) initialActions.style.display = 'none';
+                if(emptyActions) emptyActions.style.display = 'block';
+                return;
+            }
+
+            if(totalBox) totalBox.style.display = 'block';
+            if(initialActions) initialActions.style.display = 'flex';
+            if(emptyActions) emptyActions.style.display = 'none';
 
             let html = '';
             let totalSum = 0;
@@ -1875,32 +1885,43 @@
             });
 
             listContainer.innerHTML = html;
-            totalSumElement.innerText = totalSum;
+            if(totalSumElement) totalSumElement.innerText = totalSum;
 
             const threshold = 1000;
-            progressBox.style.display = 'block';
-            if (totalSum >= threshold) {
-                progressBox.innerHTML = currentLang === 'uk' ? '🎉 Ура! У вас безкоштовна доставка!' : '🎉 Ура! У вас бесплатная доставка!';
-                progressBox.style.color = '#059669';
-                progressBox.style.borderColor = '#059669';
-            } else {
-                const diff = threshold - totalSum;
-                progressBox.innerHTML = currentLang === 'uk' 
-                    ? `🚚 До безкоштовної доставки не вистачає: <b>${diff} грн</b>` 
-                    : `🚚 До бесплатной доставки не хватает: <b>${diff} грн</b>`;
-                progressBox.style.color = 'var(--dark-amber)';
-                progressBox.style.borderColor = 'var(--primary-amber)';
+            if(progressBox) {
+                progressBox.style.display = 'block';
+                if (totalSum >= threshold) {
+                    progressBox.innerHTML = currentLang === 'uk' ? '🎉 Ура! У вас безкоштовна доставка!' : '🎉 Ура! У вас бесплатная доставка!';
+                    progressBox.style.color = '#059669';
+                    progressBox.style.borderColor = '#059669';
+                } else {
+                    const diff = threshold - totalSum;
+                    progressBox.innerHTML = currentLang === 'uk' 
+                        ? `🚚 До безкоштовної доставки не вистачає: <b>${diff} грн</b>` 
+                        : `🚚 До бесплатной доставки не хватает: <b>${diff} грн</b>`;
+                    progressBox.style.color = 'var(--dark-amber)';
+                    progressBox.style.borderColor = 'var(--primary-amber)';
+                }
             }
         }
 
         async function sendOrderToTelegram(e) {
             e.preventDefault();
-            const name = document.getElementById('orderName').value.trim();
-            const phone = document.getElementById('orderPhone').value.trim();
-            const email = document.getElementById('orderEmail').value.trim();
-            const delivery = document.getElementById('orderDelivery').value;
-            const comment = document.getElementById('orderComment').value.trim();
+            const nameInput = document.getElementById('orderName');
+            const phoneInput = document.getElementById('orderPhone');
+            const emailInput = document.getElementById('orderEmail');
+            const deliveryInput = document.getElementById('orderDelivery');
+            const commentInput = document.getElementById('orderComment');
             const statusDiv = document.getElementById('orderStatus');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (!nameInput || !phoneInput || !deliveryInput) return;
+
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const email = emailInput ? emailInput.value.trim() : '';
+            const delivery = deliveryInput.value;
+            const comment = commentInput ? commentInput.value.trim() : '';
 
             if (cart.length === 0) return;
 
@@ -1908,10 +1929,11 @@
             let itemsDetails = cart.map(item => `• ${item.name} — ${item.qty} шт. (${item.price * item.qty} грн)`).join('\n');
             const fullItemsStr = cart.map(item => `${item.name} (${item.qty} шт.)`).join(', ');
 
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Відправка...';
-            statusDiv.innerText = '';
+            if(submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Відправка...';
+            }
+            if(statusDiv) statusDiv.innerText = '';
 
             try {
                 if (supabase) {
@@ -1925,7 +1947,7 @@
                         comment: comment || ''
                     };
 
-                    const dbResponse = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+                    await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1934,12 +1956,7 @@
                             'Prefer': 'return=representation'
                         },
                         body: JSON.stringify(orderPayload)
-                    });
-
-                    if (!dbResponse.ok) {
-                        const responseText = await dbResponse.text();
-                        console.warn("Попередження Supabase БД:", responseText);
-                    }
+                    }).catch(err => console.warn("Supabase background log:", err));
                 }
 
                 const text = `<b>🛒 Нове замовлення в інтернет-магазині!</b>\n\n` +
@@ -1963,25 +1980,31 @@
 
                 const data = await response.json();
                 if (data.ok) {
-                    statusDiv.style.color = '#059669';
-                    statusDiv.innerText = '✅ Замовлення успішно надіслано!';
+                    if(statusDiv) {
+                        statusDiv.style.color = '#059669';
+                        statusDiv.innerText = '✅ Замовлення успішно надіслано!';
+                    }
                     cart = [];
                     saveCart();
                     updateCartUI();
                     setTimeout(() => {
                         closeCartModal();
-                        statusDiv.innerText = '';
+                        if(statusDiv) statusDiv.innerText = '';
                     }, 2500);
                 } else {
                     throw new Error(data.description || 'Помилка Telegram');
                 }
             } catch (error) {
-                statusDiv.style.color = '#dc2626';
-                statusDiv.innerText = '❌ Помилка відправки. Дивіться консоль (F12).';
+                if(statusDiv) {
+                    statusDiv.style.color = '#dc2626';
+                    statusDiv.innerText = '❌ Помилка відправки. Спробуйте ще раз.';
+                }
                 console.error("Деталі помилки:", error);
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Надіслати замовлення';
+                if(submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Надіслати замовлення';
+                }
             }
         }
 
@@ -2001,9 +2024,11 @@
                              `<b>📞 Телефон:</b> ${phone}\n` +
                              `<b>❓ Запитання:</b>\n${question || 'Без коментаря'}`;
 
-                submitBtn.disabled = true;
-                submitBtn.innerText = 'Відправка...';
-                statusDiv.innerText = '';
+                if(submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerText = 'Відправка...';
+                }
+                if(statusDiv) statusDiv.innerText = '';
 
                 try {
                     const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -2018,19 +2043,25 @@
 
                     const data = await response.json();
                     if (data.ok) {
-                        statusDiv.style.color = '#059669';
-                        statusDiv.innerText = '✅ Запит успішно надіслано!';
+                        if(statusDiv) {
+                            statusDiv.style.color = '#059669';
+                            statusDiv.innerText = '✅ Запит успішно надіслано!';
+                        }
                         consultForm.reset();
                     } else {
                         throw new Error(data.description || 'Помилка');
                     }
                 } catch (error) {
-                    statusDiv.style.color = '#dc2626';
-                    statusDiv.innerText = '❌ Помилка відправки. Спробуйте ще раз.';
+                    if(statusDiv) {
+                        statusDiv.style.color = '#dc2626';
+                        statusDiv.innerText = '❌ Помилка відправки. Спробуйте ще раз.';
+                    }
                     console.error(error);
                 } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Надіслати запит на консультацію';
+                    if(submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Надіслати запит на консультацію';
+                    }
                 }
             });
         }
@@ -2104,9 +2135,14 @@
 
         function addNewComment(e) {
             e.preventDefault();
-            const author = document.getElementById('commentAuthor').value.trim();
-            const rating = document.getElementById('commentRating').value;
-            const text = document.getElementById('commentText').value.trim();
+            const authorInput = document.getElementById('commentAuthor');
+            const ratingInput = document.getElementById('commentRating');
+            const textInput = document.getElementById('commentText');
+            if(!authorInput || !textInput) return;
+
+            const author = authorInput.value.trim();
+            const rating = ratingInput ? ratingInput.value : '⭐⭐⭐⭐⭐';
+            const text = textInput.value.trim();
             if (!author || !text) return;
 
             const newComment = { author: `— ${author}`, rating, text };
@@ -2118,7 +2154,8 @@
             currentPage = 1;
             isShowingAll = false;
             renderReviews();
-            document.getElementById('commentForm').reset();
+            const commentForm = document.getElementById('commentForm');
+            if(commentForm) commentForm.reset();
         }
 
         const translations = {
@@ -2232,72 +2269,79 @@
             currentLang = lang;
             const t = translations[lang];
 
-            document.getElementById('page-title').innerText = t.pageTitle;
-            document.getElementById('nav-menu-text').innerText = t.navMenu;
-            document.getElementById('cart-text-btn').innerText = t.cartBtn;
-            document.getElementById('header-title').innerText = t.headerTitle;
-            document.getElementById('header-subtitle').innerText = t.headerSubtitle;
+            const safeSetText = (id, text) => {
+                const el = document.getElementById(id);
+                if(el) el.innerText = text;
+            };
 
-            document.getElementById('may-honey-title').innerText = t.mayHoneyTitle;
-            document.getElementById('may-honey-desc').innerText = t.mayHoneyDesc;
-            document.getElementById('honey-title').innerText = t.honeyTitle;
-            document.getElementById('honey-desc').innerText = t.honeyDesc;
-            document.getElementById('candle-title').innerText = t.candleTitle;
-            document.getElementById('candle-desc').innerText = t.candleDesc;
-            document.getElementById('pollen-title').innerText = t.pollenTitle;
-            document.getElementById('pollen-desc').innerText = t.pollenDesc;
-            document.getElementById('propolis-title').innerText = t.propolisTitle;
-            document.getElementById('propolis-desc').innerText = t.propolisDesc;
-            document.getElementById('comb-title').innerText = t.combTitle;
-            document.getElementById('comb-desc').innerText = t.combDesc;
+            safeSetText('page-title', t.pageTitle);
+            safeSetText('nav-menu-text', t.navMenu);
+            safeSetText('cart-text-btn', t.cartBtn);
+            safeSetText('header-title', t.headerTitle);
+            safeSetText('header-subtitle', t.headerSubtitle);
+
+            safeSetText('may-honey-title', t.mayHoneyTitle);
+            safeSetText('may-honey-desc', t.mayHoneyDesc);
+            safeSetText('honey-title', t.honeyTitle);
+            safeSetText('honey-desc', t.honeyDesc);
+            safeSetText('candle-title', t.candleTitle);
+            safeSetText('candle-desc', t.candleDesc);
+            safeSetText('pollen-title', t.pollenTitle);
+            safeSetText('pollen-desc', t.pollenDesc);
+            safeSetText('propolis-title', t.propolisTitle);
+            safeSetText('propolis-desc', t.propolisDesc);
+            safeSetText('comb-title', t.combTitle);
+            safeSetText('comb-desc', t.combDesc);
 
             const stockMay = document.getElementById('stock-may');
             const stockPollen = document.getElementById('stock-pollen');
             if(stockMay) stockMay.innerText = stockMay.getAttribute(`data-${lang}`);
             if(stockPollen) stockPollen.innerText = stockPollen.getAttribute(`data-${lang}`);
 
-            document.getElementById('ben-1-title').innerText = t.ben1Title;
-            document.getElementById('ben-1-desc').innerText = t.ben1Desc;
-            document.getElementById('ben-2-title').innerText = t.ben2Title;
-            document.getElementById('ben-2-desc').innerText = t.ben2Desc;
-            document.getElementById('ben-3-title').innerText = t.ben3Title;
-            document.getElementById('ben-3-desc').innerText = t.ben3Desc;
+            safeSetText('ben-1-title', t.ben1Title);
+            safeSetText('ben-1-desc', t.ben1Desc);
+            safeSetText('ben-2-title', t.ben2Title);
+            safeSetText('ben-2-desc', t.ben2Desc);
+            safeSetText('ben-3-title', t.ben3Title);
+            safeSetText('ben-3-desc', t.ben3Desc);
 
             document.querySelectorAll('[data-translate="add-to-cart"]').forEach(el => el.innerText = t.addToCart);
             document.querySelectorAll('[data-translate="details-btn"]').forEach(el => el.innerText = t.detailsBtn);
 
-            document.getElementById('about-heading').innerText = t.aboutHeading;
-            document.getElementById('about-text-1').innerText = t.aboutText1;
-            document.getElementById('about-text-2').innerText = t.aboutText2;
-            document.getElementById('contacts-heading').innerText = t.contactsHeading;
-            document.getElementById('footer-copy').innerText = t.footerCopy;
+            safeSetText('about-heading', t.aboutHeading);
+            safeSetText('about-text-1', t.aboutText1);
+            safeSetText('about-text-2', t.aboutText2);
+            safeSetText('contacts-heading', t.contactsHeading);
+            safeSetText('footer-copy', t.footerCopy);
 
-            document.getElementById('modal-title').innerText = t.modalTitle;
-            document.getElementById('label-name').innerText = t.labelName;
-            document.getElementById('label-phone').innerText = t.labelPhone;
-            document.getElementById('label-delivery').innerText = t.labelDelivery;
-            document.getElementById('label-comment').innerText = t.labelComment;
-            document.getElementById('del-placeholder').innerText = t.delPlaceholder;
-            document.getElementById('del-np').innerText = t.delNp;
-            document.getElementById('del-ukr').innerText = t.delUkr;
-            document.getElementById('del-pickup').innerText = t.delPickup;
-            document.getElementById('btn-close-modal').innerText = t.btnCloseModal || "Закрити";
-            document.getElementById('submitBtn').innerText = t.submitBtn;
+            safeSetText('modal-title', t.modalTitle);
+            safeSetText('label-name', t.labelName);
+            safeSetText('label-phone', t.labelPhone);
+            safeSetText('label-delivery', t.labelDelivery);
+            safeSetText('label-comment', t.labelComment);
+            safeSetText('del-placeholder', t.delPlaceholder);
+            safeSetText('del-np', t.delNp);
+            safeSetText('del-ukr', t.delUkr);
+            safeSetText('del-pickup', t.delPickup);
+            safeSetText('btn-close-modal', t.btnCloseModal || "Закрити");
+            safeSetText('submitBtn', t.submitBtn);
+            safeSetText('lbl-weight', t.lblWeight);
 
-            document.getElementById('lbl-weight').innerText = t.lblWeight;
+            safeSetText('badge-may', t.badgeMay);
+            safeSetText('badge-sun', t.badgeSun);
+            safeSetText('badge-candle', t.badgeCandle);
+            safeSetText('badge-pollen', t.badgePollen);
+            safeSetText('badge-prop', t.badgeProp);
+            safeSetText('badge-comb', t.badgeComb);
+            safeSetText('badge-gift2', t.badgeGift2);
 
-            document.getElementById('badge-may').innerText = t.badgeMay;
-            document.getElementById('badge-sun').innerText = t.badgeSun;
-            document.getElementById('badge-candle').innerText = t.badgeCandle;
-            document.getElementById('badge-pollen').innerText = t.badgePollen;
-            document.getElementById('badge-prop').innerText = t.badgeProp;
-            document.getElementById('badge-comb').innerText = t.badgeComb;
-            document.getElementById('badge-gift2').innerText = t.badgeGift2;
-
-            document.getElementById('btn-uk').classList.toggle('active', lang === 'uk');
-            document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+            const btnUk = document.getElementById('btn-uk');
+            const btnRu = document.getElementById('btn-ru');
+            if(btnUk) btnUk.classList.toggle('active', lang === 'uk');
+            if(btnRu) btnRu.classList.toggle('active', lang === 'ru');
             
-            if(document.getElementById('cartModal').style.display === 'flex') {
+            const cartModal = document.getElementById('cartModal');
+            if(cartModal && cartModal.style.display === 'flex') {
                 renderCartModal();
             }
         }
