@@ -8,10 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    
-    <!-- Підключаємо Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <style>
         :root {
             --bg-light: #fdfbf7;
@@ -204,31 +200,6 @@
             border-color: var(--primary-amber);
             transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(217, 119, 6, 0.25);
-        }
-
-        /* Стиль для кнопки входа через Google */
-        .google-login-btn {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px 20px;
-            border-radius: 24px;
-            font-weight: 600;
-            font-size: 0.88rem;
-            text-decoration: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .google-login-btn:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
         }
 
         .container {
@@ -1222,11 +1193,6 @@
     <div class="site-nav-bar">
         <a href="#about-section" class="site-nav-link">🍯 Про пасеку</a>
         <a href="#productsGrid" class="site-nav-link">📦 Товары</a>
-        <!-- Кнопка входа через Google, интегрированная в навигацию -->
-        <button id="google-login-btn" class="google-login-btn">
-            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.19-1.84H9v3.48h4.84c-.21 1.13-.84 2.08-1.79 2.72v2.26h2.92c1.71-1.57 2.67-3.88 2.67-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33C2.45 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.75c-.18-.54-.28-1.12-.28-1.75s.1-1.21.28-1.75V4.92H.96C.35 6.13 0 7.5 0 9s.35 2.87.96 4.08l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.48 0 2.45 2.02.96 4.92l3.01 2.33c.71-2.13 2.69-3.67 5.03-3.67z"/></svg>
-            <span>Увійти через Google</span>
-        </button>
     </div>
 
     <div class="container">
@@ -1626,9 +1592,6 @@
         const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
         const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
 
-        // Инициализация Supabase клиента
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         let cart = [];
         let currentLang = 'uk';
 
@@ -1650,31 +1613,7 @@
             renderReviews();
             startPromoTimers();
             initScrollAnimation();
-            initGoogleAuth();
         };
-
-        // Обработка входа через Google (Supabase OAuth)
-        function initGoogleAuth() {
-            const googleBtn = document.getElementById('google-login-btn');
-            if (googleBtn) {
-                googleBtn.addEventListener('click', async () => {
-                    try {
-                        const { data, error } = await supabase.auth.signInWithOAuth({
-                            provider: 'google',
-                            options: {
-                                redirectTo: window.location.origin
-                            }
-                        });
-                        if (error) {
-                            console.error('Помилка входу через Google:', error.message);
-                            alert('Не вдалося увійти через Google. Спробуйте ще раз.');
-                        }
-                    } catch (err) {
-                        console.error('Збій мережі або скрипта:', err);
-                    }
-                });
-            }
-        }
 
         // Функция фильтрации товаров по категориям
         function filterProducts(category) {
@@ -2178,7 +2117,7 @@
                 labelName: "ФИО (Фамилия и Имя):",
                 labelPhone: "Номер телефона:",
                 labelDelivery: "Способ доставки:",
-                labelКомментарий: "Комментарий к заказу:",
+                labelComment: "Комментарий к заказу:",
                 delPlaceholder: "Выберите способ доставки",
                 delNp: "Новая почта",
                 delUkr: "Укрпочта",
@@ -2225,11 +2164,13 @@
             document.getElementById('comb-title').innerText = t.combTitle;
             document.getElementById('comb-desc').innerText = t.combDesc;
 
+            // Обновление текстов "Нет в наличии" / "Немає в наявності"
             const stockMay = document.getElementById('stock-may');
             const stockPollen = document.getElementById('stock-pollen');
             if(stockMay) stockMay.innerText = stockMay.getAttribute(`data-${lang}`);
             if(stockPollen) stockPollen.innerText = stockPollen.getAttribute(`data-${lang}`);
 
+            // Обновление перенесенных нижних плашек преимуществ
             document.getElementById('ben-1-title').innerText = t.ben1Title;
             document.getElementById('ben-1-desc').innerText = t.ben1Desc;
             document.getElementById('ben-2-title').innerText = t.ben2Title;
