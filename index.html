@@ -4,6 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Медова Пасіка | Натуральний мед та продукти бджільництва</title>
+    <meta name="description" content="Крафтовий мед, воскові свічки та продукти бджільництва напряму з сімейної пасіки в селі Захарівка. Без домішок і цукру.">
+    <link rel="canonical" href="https://medova-paseka.top/">
+
+    <!-- Open Graph / Поиск и пересылка ссылок (index.html -> https://medova-paseka.top/) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Медова Пасіка">
+    <meta property="og:url" content="https://medova-paseka.top/">
+    <meta property="og:title" content="Медова Пасіка | Натуральний мед та продукти бджільництва">
+    <meta property="og:description" content="Крафтовий мед, воскові свічки та продукти бджільництва напряму з сімейної пасіки в селі Захарівка.">
+    <meta property="og:image" content="https://medova-paseka.top/med-tityl.jpg">
+    <meta property="og:image:secure_url" content="https://medova-paseka.top/med-tityl.jpg">
+    <meta property="og:image:alt" content="Медова Пасіка — травневий та соняшниковий мед">
+    <meta property="og:image" content="https://medova-paseka.top/pollen-title.jpg">
+    <meta property="og:image:alt" content="Бджолиний пилок з пасіки">
+    <meta property="og:image" content="https://medova-paseka.top/svecha.jpg">
+    <meta property="og:image:alt" content="Натуральні свічки з вощини">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Медова Пасіка | Натуральний мед та продукти бджільництва">
+    <meta name="twitter:description" content="Крафтовий мед, воскові свічки та продукти бджільництва напряму з сімейної пасіки в селі Захарівка.">
+    <meta name="twitter:image" content="https://medova-paseka.top/med-tityl.jpg">
+
+    <!-- Структурированные данные Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Медова Пасіка",
+      "url": "https://medova-paseka.top/",
+      "image": [
+        "https://medova-paseka.top/med-tityl.jpg",
+        "https://medova-paseka.top/pollen-title.jpg",
+        "https://medova-paseka.top/svecha.jpg"
+      ],
+      "telephone": "+380968980543",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Захарівка",
+        "addressRegion": "Одеська область",
+        "addressCountry": "UA"
+      }
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -296,9 +340,12 @@
             .product-desc { font-size: 12px; margin-bottom: 12px; }
             .size-btn { font-size: 11px; padding: 5px 8px; }
             .sizes { gap: 5px; margin-bottom: 14px; }
-            .product-footer { flex-direction: column; align-items: stretch; gap: 8px; }
-            .price { font-size: 18px; white-space: nowrap; }
-            .btn-buy { padding: 9px 12px; font-size: 12px; border-radius: 9px; width: 100%; justify-content: center; }
+
+            /* Цена под описанием по центру, кнопка ниже тоже строго по центру */
+            .product-footer { flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; }
+            .price { font-size: 18px; white-space: nowrap; width: 100%; text-align: center; }
+            .btn-buy { padding: 9px 16px; font-size: 12px; border-radius: 9px; width: auto; min-width: 110px; margin: 0 auto; justify-content: center; }
+
             .badge { font-size: 9px; padding: 4px 10px; top: 10px; left: 10px; }
             .timer-box { font-size: 10px; padding: 6px; margin-bottom: 12px; }
 
@@ -446,8 +493,8 @@
 
     <div class="products-grid">
         <!-- 1. Соняшниковий мед -->
-        <div class="product-card" data-cat="honey">
-            <a href="product.html?item=sunflower" class="product-img" style="background-image: url('med.jpg');"><div class="badge">Хіт</div></a>
+        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/med-tityl.jpg">
+            <a href="product.html?item=sunflower" class="product-img" style="background-image: url('med-tityl.jpg');"><div class="badge">Хіт</div></a>
             <div class="product-body">
                 <div>
                     <h3><a href="product.html?item=sunflower" id="p1-t">Мед соняшниковий</a></h3>
@@ -466,8 +513,8 @@
         </div>
 
         <!-- 2. Травневий мед -->
-        <div class="product-card" data-cat="honey">
-            <a href="product.html?item=may" class="product-img" style="background-image: url('may1.jpg');"><div class="badge">Весна</div></a>
+        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/med-tityl.jpg">
+            <a href="product.html?item=may" class="product-img" style="background-image: url('med-tityl.jpg');"><div class="badge">Весна</div></a>
             <div class="product-body">
                 <div>
                     <h3><a href="product.html?item=may" id="p2-t">Мед Травневий</a></h3>
@@ -522,7 +569,7 @@
         </div>
 
         <!-- 5. Свічка з вощини -->
-        <div class="product-card" data-cat="candles">
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
             <a href="product.html?item=candles" class="product-img" style="background-image: url('svecha.jpg');"><div class="badge">Ручна робота</div></a>
             <div class="product-body">
                 <div>
@@ -558,8 +605,8 @@
         </div>
 
         <!-- 7. Бджолиний пилок -->
-        <div class="product-card" data-cat="other">
-            <a href="product.html?item=pollen" class="product-img" style="background-image: url('pollen.jpg');"></a>
+        <div class="product-card" data-cat="other" data-share-img="https://medova-paseka.top/pollen-title.jpg">
+            <a href="product.html?item=pollen" class="product-img" style="background-image: url('pollen-title.jpg');"></a>
             <div class="product-body">
                 <div>
                     <h3><a href="product.html?item=pollen" id="p7-t">Бджолиний пилок</a></h3>
@@ -577,7 +624,7 @@
         </div>
 
         <!-- 8. Патріотичний набір свічок -->
-        <div class="product-card" data-cat="candles">
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
             <div class="product-img" style="background-image: url('nabor3.jpg');"><div class="badge" style="background:#EF4444;">Акція -15%</div></div>
             <div class="product-body">
                 <div>
@@ -596,7 +643,7 @@
         </div>
 
         <!-- 9. Набір «Медовий затишок» -->
-        <div class="product-card" data-cat="candles">
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
             <div class="product-img" style="background-image: url('svechi-podarok.jpg');"><div class="badge">Акція</div></div>
             <div class="product-body">
                 <div>
@@ -615,7 +662,7 @@
         </div>
 
         <!-- 10. Набір з натуральної вощини -->
-        <div class="product-card" data-cat="candles">
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
             <div class="product-img" style="background-image: url('svecha3.jpg');"><div class="badge" style="background:#EF4444;">-15%</div></div>
             <div class="product-body">
                 <div>
@@ -1002,7 +1049,7 @@
             faqTitle: "Частые вопросы",
             q1: "Как правильно хранить мед?", a1: "В стеклянной таре с плотно закрытой крышкой, в темном и сухом месте.",
             q2: "Почему мед кристаллизуется?", a2: "Это естественный процесс для качественного меда, подтверждающий его зрелость.",
-            q3: "Каковы условия доставки?", a3: "Отправка Новой Почтой по всей Украине по тарифам перевозчика. Бесплатная доставка от 1000 грн.",
+            q3: "Каковы условия доставки?", a3: "Отправка Новой Почтой по всей Украине по тарифами перевозчика. Бесплатная доставка от 1000 грн.",
             ftDesc: "Натуральный мед и изделия из воска напрямую с пасеки.",
             ftCon: "Контакты", ftInf: "Навигация", ftAdr: "Адрес", ftAdrT: "с. Захаровка, Раздельнянский р-н, Одесская обл.",
             mTitle: "📋 Корзина заказа", mTot: "Общая сумма:",
@@ -1407,4 +1454,4 @@
 </script>
 
 </body>
-                            </html>
+</html>
