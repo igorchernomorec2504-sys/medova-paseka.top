@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="https://medova-paseka.top/images/favicon.png">
     <link rel="apple-touch-icon" href="https://medova-paseka.top/images/favicon.png">
 
-    <!-- Open Graph / Поиск и пересылка ссылок (index.html -> https://medova-paseka.top/) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Медова Пасіка">
     <meta property="og:url" content="https://medova-paseka.top/">
@@ -140,7 +140,6 @@
         .btn-callback { width: 100%; background: var(--primary); border: 1px solid var(--primary); padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .btn-callback:hover { background: #B45309; border-color: #B45309; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25); }
 
-        /* ===== МЕССЕНДЖЕРЫ В ШТОРКЕ ===== */
         .drawer-messengers { display: flex; gap: 8px; margin-top: 12px; }
         .drawer-phones .msg-btn { display: inline-flex; flex: 1; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 700; text-decoration: none; color: #fff; margin-bottom: 0; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.25s; }
         .drawer-phones .msg-btn.viber { background: #7360F2; }
@@ -262,6 +261,24 @@
         .delivery-card li b { color: var(--text); }
         .delivery-free { margin-top: 14px; font-style: italic; font-weight: 600; color: var(--primary-dark); font-size: 14px; }
 
+        /* ===== ОТЗЫВЫ ПОКУПАТЕЛЕЙ (SUPABASE) ===== */
+        .reviews-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 50px 40px; box-shadow: var(--shadow-soft); margin-top: 20px; }
+        .reviews-layout { display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 36px; align-items: start; }
+        .reviews-list { display: flex; flex-direction: column; gap: 16px; max-height: 540px; overflow-y: auto; padding-right: 6px; }
+        .review-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; transition: all 0.25s; }
+        .review-card:hover { border-color: #FDE68A; }
+        .review-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+        .review-author { font-weight: 700; font-size: 15px; color: var(--text); }
+        .review-product-tag { display: inline-block; background: #FFFBEB; color: var(--primary-dark); border: 1px solid #FDE68A; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-top: 4px; }
+        .review-stars { color: #F59E0B; font-size: 15px; letter-spacing: 2px; white-space: nowrap; }
+        .review-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-top: 8px; }
+        .review-date { font-size: 12px; color: #9CA3AF; margin-top: 10px; }
+        .review-form-card { background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
+        .review-form-card h4 { font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+        .star-picker { display: flex; gap: 8px; margin-bottom: 4px; }
+        .star-pick-btn { background: #fff; border: 1px solid var(--border); width: 38px; height: 38px; border-radius: 10px; font-size: 19px; cursor: pointer; color: #D1D5DB; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .star-pick-btn.active { color: #F59E0B; border-color: #F59E0B; background: #FFFBEB; }
+
         .faq-list { max-width: 750px; margin: 0 auto; }
         .faq-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; transition: all 0.3s; }
         .faq-item:hover { border-color: #FDE68A; }
@@ -311,7 +328,6 @@
         .np-option:last-child { border-bottom: none; }
         .np-option:hover { background: #FFFBEB; color: var(--primary-dark); }
 
-        /* ===== СТИЛИ СПИСКА ПРАВ В МОДАЛКЕ ===== */
         .policy-content { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
         .policy-point { margin-bottom: 18px; }
         .policy-point-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
@@ -319,7 +335,6 @@
         .policy-sublist li { margin-bottom: 6px; }
         .policy-sublist li b { color: var(--text); }
 
-        /* ===== КНОПКА «ПРОДОВЖИТИ ПОКУПКИ» ===== */
         .btn-continue { width: 100%; margin-top: 10px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .btn-continue:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
 
@@ -327,6 +342,7 @@
         @media (max-width: 1024px) {
             .features-grid { grid-template-columns: repeat(2, 1fr); }
             .consult-box { grid-template-columns: 1fr; gap: 28px; padding: 36px 28px; }
+            .reviews-layout { grid-template-columns: 1fr; }
         }
 
         /* ===== МОБИЛКА ===== */
@@ -398,6 +414,9 @@
             .delivery-card li { font-size: 13px; }
             .delivery-free { font-size: 13px; }
 
+            .reviews-box { padding: 26px 18px; border-radius: 18px; }
+            .review-form-card { padding: 20px 16px; }
+
             .modal-box { padding: 26px 20px; }
         }
 
@@ -426,6 +445,7 @@
             <a href="#catalog" id="m-cat">Каталог</a>
             <a href="#about" id="m-about">Про нас</a>
             <a href="#delivery" id="m-del">Доставка</a>
+            <a href="#reviews" id="m-rev">Відгуки</a>
             <a href="#contacts" id="m-cont">Контакти</a>
             <a href="#faq" id="m-faq">FAQ</a>
         </div>
@@ -464,6 +484,7 @@
         <a href="#about" onclick="closeDrawer()" class="drawer-item"><span id="dr-about">Про нас</span> <span class="arrow">›</span></a>
         <a href="#consult" onclick="closeDrawer()" class="drawer-item"><span id="dr-consult">💬 Консультація бджоляра</span> <span class="arrow">›</span></a>
         <a href="#delivery" onclick="closeDrawer()" class="drawer-item"><span id="dr-delivery">Оплата і доставка</span> <span class="arrow">›</span></a>
+        <a href="#reviews" onclick="closeDrawer()" class="drawer-item"><span id="dr-reviews">⭐ Відгуки покупців</span> <span class="arrow">›</span></a>
         <a href="#contacts" onclick="closeDrawer()" class="drawer-item"><span id="dr-contacts">Контакти</span> <span class="arrow">›</span></a>
     </div>
 
@@ -804,6 +825,65 @@
         </div>
     </section>
 
+    <!-- ===== ОТЗЫВЫ ПОКУПАТЕЛЕЙ (SUPABASE) ===== -->
+    <section id="reviews">
+        <div class="reviews-box">
+            <h2 class="section-title" id="rev-title">Відгуки наших покупців</h2>
+            <p class="section-subtitle" id="rev-sub">Діліться враженнями про наш мед, свічки та продукти бджільництва</p>
+
+            <div class="reviews-layout">
+                <div>
+                    <div id="reviewsList" class="reviews-list">
+                        <p style="text-align:center; color:var(--text-muted); font-size:14px;" id="rev-loading">Завантаження відгуків...</p>
+                    </div>
+                </div>
+
+                <div class="review-form-card">
+                    <h4 id="rev-form-title">✍️ Залишити відгук</h4>
+                    <form onsubmit="submitReviewToSupabase(event)">
+                        <div class="form-group">
+                            <label id="rev-l-product">Товар *</label>
+                            <select id="revProduct" required>
+                                <option value="Мед соняшниковий">🌻 Мед соняшниковий</option>
+                                <option value="Мед Травневий">🌿 Мед Травневий</option>
+                                <option value="Мед з волоським горіхом">🥜 Мед з волоським горіхом</option>
+                                <option value="Стільниковий Мед">🍯 Стільниковий Мед</option>
+                                <option value="Свічки з вощини">🕯️ Свічки з вощини</option>
+                                <option value="Прополіс">🛡️ Прополіс</option>
+                                <option value="Бджолиний пилок">⚡ Бджолиний пилок</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="rev-l-rating">Ваша оцінка *</label>
+                            <div class="star-picker" id="starPicker">
+                                <button type="button" class="star-pick-btn active" data-val="1" onclick="setReviewRating(1)">★</button>
+                                <button type="button" class="star-pick-btn active" data-val="2" onclick="setReviewRating(2)">★</button>
+                                <button type="button" class="star-pick-btn active" data-val="3" onclick="setReviewRating(3)">★</button>
+                                <button type="button" class="star-pick-btn active" data-val="4" onclick="setReviewRating(4)">★</button>
+                                <button type="button" class="star-pick-btn active" data-val="5" onclick="setReviewRating(5)">★</button>
+                            </div>
+                            <input type="hidden" id="revRating" value="5">
+                        </div>
+
+                        <div class="form-group">
+                            <label id="rev-l-name">Ваше ім'я *</label>
+                            <input type="text" id="revAuthor" required placeholder="Олена Ковальчук">
+                        </div>
+
+                        <div class="form-group">
+                            <label id="rev-l-text">Ваш відгук *</label>
+                            <textarea id="revText" rows="3" required placeholder="Напишіть, чи сподобався мед, аромат, пакування та доставка..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="rev-btn">⭐ Опублікувати відгук</button>
+                        <div id="reviewStatus" style="margin-top: 12px; text-align: center; font-weight: 600; font-size: 14px;"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contacts" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 50px 40px; margin-top: 20px; box-shadow: var(--shadow-soft);">
         <h2 class="section-title" id="cont-title">Контакти та зв'язок</h2>
         <p class="section-subtitle" id="cont-sub">Зв'яжіться з нами будь-яким зручним способом</p>
@@ -870,6 +950,7 @@
                 <a href="#catalog" id="ft-c">Каталог</a>
                 <a href="#about" id="ft-a">Про нас</a>
                 <a href="#delivery" id="ft-d">Доставка</a>
+                <a href="#reviews" id="ft-rev">Відгуки</a>
                 <a href="#faq" id="ft-f">FAQ</a>
                 <button type="button" class="footer-link-btn" onclick="openPrivacyModal()" id="ft-privacy">🔒 Конфіденційність та права</button>
             </div>
@@ -1094,9 +1175,9 @@
 
     const dict = {
         uk: {
-            lLogo: "Медова Пасіка", mCat: "Каталог", mAbout: "Про нас", mDel: "Доставка", mCont: "Контакти", mFAQ: "FAQ",
+            lLogo: "Медова Пасіка", mCat: "Каталог", mAbout: "Про нас", mDel: "Доставка", mRev: "Відгуки", mCont: "Контакти", mFAQ: "FAQ",
             drTitle: "Медова Пасіка", drP1: "🌻 Мед соняшниковий", drP2: "🌿 Мед травневий", drP3: "🥜 Мед з волоським горіхом", drP4: "🍯 Стільниковий мед", drP5: "🕯️ Свічки з вощини", drP6: "🛡️ Прополіс", drP7: "⚡ Бджолиний пилок",
-            drAbout: "Про нас", drDelivery: "Оплата і доставка", drContacts: "Контакти", drConsult: "💬 Консультація бджоляра",
+            drAbout: "Про нас", drDelivery: "Оплата і доставка", drReviews: "⭐ Відгуки покупців", drContacts: "Контакти", drConsult: "💬 Консультація бджоляра",
             drHoursTitle: "Графік роботи", drHoursText: "Будні: 08:00–20:00<br>Сб-Нд: вихідний (прийом замовлень онлайн)",
             drCallback: "📞 Замовити дзвінок", drProfile: "👤 Особистий кабінет",
             cbTitle: "📞 Замовити дзвінок", cbLName: "Ваше ім'я *", cbLPhone: "Номер телефону *",
@@ -1147,6 +1228,17 @@
             delP1: "<b>Visa / Mastercard</b> (оплата онлайн або на банківський рахунок).",
             delP2: "<b>Передоплата</b> (зручний розрахунок перед відправкою посилки).",
             delP3: "<b>Накладений платіж</b> (оплата готівкою або карткою при отриманні на пошті).",
+            revTitle: "Відгуки наших покупців",
+            revSub: "Діліться враженнями про наш мед, свічки та продукти бджільництва",
+            revFormTitle: "✍️ Залишити відгук",
+            revLProduct: "Товар *",
+            revLRating: "Ваша оцінка *",
+            revLName: "Ваше ім'я *",
+            revPhName: "Олена Ковальчук",
+            revLText: "Ваш відгук *",
+            revPhText: "Напишіть, чи сподобався мед, аромат, пакування та доставка...",
+            revBtn: "⭐ Опублікувати відгук",
+            revEmpty: "Поки що немає опублікованих відгуків. Будьте першим!",
             contTitle: "Контакти та зв'язок", contSub: "Зв'яжіться з нами будь-яким зручним способом",
             contPhoneLbl: "📞 Тел.", contPhoneTxt: "Тел.: +380 96 898 0543",
             contTg: "Написати в Telegram", contIg: "Переглянути Instagram",
@@ -1157,7 +1249,7 @@
             q3: "Які умови доставки?", a3: "Відправка Новою Поштою по всій Україні за тарифами перевізника. Безкоштовна доставка від 1000 грн.",
             ftDesc: "Натуральний мед та вироби з воску напряму з пасіки в с. Захарівка — без домішок і зайвого.",
             ftPhone: "📞 Тел.: +380 96 898 0543",
-            ftCon: "Контакти", ftInf: "Навігація", ftC: "Каталог", ftA: "Про нас", ftDel: "Доставка", ftF: "FAQ",
+            ftCon: "Контакти", ftInf: "Навігація", ftC: "Каталог", ftA: "Про нас", ftDel: "Доставка", ftRev: "Відгуки", ftF: "FAQ",
             ftPrivacy: "🔒 Конфіденційність та права",
             ftAdr: "Адреса", ftAdrT: "с. Захарівка, Роздільнянський р-н, Одеська обл.",
             ftCopy: "© 2026 Медова Пасіка. Всі права захищені.",
@@ -1183,9 +1275,9 @@
             mPhComm: "Побажання до замовлення, оплати тощо..."
         },
         ru: {
-            lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mCont: "Контакты", mFAQ: "FAQ",
+            lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mRev: "Отзывы", mCont: "Контакты", mFAQ: "FAQ",
             drTitle: "Медовая Пасека", drP1: "🌻 Мед подсолнечный", drP2: "🌿 Мед майский", drP3: "🥜 Мед с грецким орехом", drP4: "🍯 Сотовый мед", drP5: "🕯️ Свечи из вощины", drP6: "🛡️ Прополис", drP7: "⚡ Пчелиная пыльца",
-            drAbout: "О нас", drDelivery: "Оплата и доставка", drContacts: "Контакты", drConsult: "💬 Консультация пчеловода",
+            drAbout: "О нас", drDelivery: "Оплата и доставка", drReviews: "⭐ Отзывы покупателей", drContacts: "Контакты", drConsult: "💬 Консультация пчеловода",
             drHoursTitle: "График работы", drHoursText: "Будни: 08:00–20:00<br>Сб-Вс: выходной (прием заказов онлайн)",
             drCallback: "📞 Заказать звонок", drProfile: "👤 Личный кабинет",
             cbTitle: "📞 Заказать звонок", cbLName: "Ваше имя *", cbLPhone: "Номер телефона *",
@@ -1236,6 +1328,17 @@
             delP1: "<b>Visa / Mastercard</b> (оплата онлайн или на банковский счёт).",
             delP2: "<b>Предоплата</b> (удобный расчёт перед отправкой посылки).",
             delP3: "<b>Наложенный платёж</b> (оплата наличными или картой при получении на почте).",
+            revTitle: "Отзывы наших покупателей",
+            revSub: "Делитесь впечатлениями о нашем меде, свечах и продуктах пчеловодства",
+            revFormTitle: "✍️ Оставить отзыв",
+            revLProduct: "Товар *",
+            revLRating: "Ваша оценка *",
+            revLName: "Ваше имя *",
+            revPhName: "Елена Ковальчук",
+            revLText: "Ваш отзыв *",
+            revPhText: "Напишите, понравился ли мед, аромат, упаковка и доставка...",
+            revBtn: "⭐ Опубликовать отзыв",
+            revEmpty: "Пока нет опубликованных отзывов. Будьте первым!",
             contTitle: "Контакты и связь", contSub: "Свяжитесь с нами любым удобным способом",
             contPhoneLbl: "📞 Тел.", contPhoneTxt: "Тел.: +380 96 898 0543",
             contTg: "Написать в Telegram", contIg: "Посмотреть Instagram",
@@ -1246,7 +1349,7 @@
             q3: "Каковы условия доставки?", a3: "Отправка Новой Почтой по всей Украине по тарифам перевозчика. Бесплатная доставка от 1000 грн.",
             ftDesc: "Натуральный мед и изделия из воска напрямую с пасеки в с. Захаровка — без примесей и лишнего.",
             ftPhone: "📞 Тел.: +380 96 898 0543",
-            ftCon: "Контакты", ftInf: "Навигация", ftC: "Каталог", ftA: "О нас", ftDel: "Доставка", ftF: "FAQ",
+            ftCon: "Контакты", ftInf: "Навигация", ftC: "Каталог", ftA: "О нас", ftDel: "Доставка", ftRev: "Отзывы", ftF: "FAQ",
             ftPrivacy: "🔒 Конфиденциальность и права",
             ftAdr: "Адрес", ftAdrT: "с. Захаровка, Раздельнянский р-н, Одесская обл.",
             ftCopy: "© 2026 Медовая Пасека. Все права защищены.",
@@ -1281,6 +1384,7 @@
         document.getElementById('m-cat').textContent = t.mCat;
         document.getElementById('m-about').textContent = t.mAbout;
         document.getElementById('m-del').textContent = t.mDel;
+        document.getElementById('m-rev').textContent = t.mRev;
         document.getElementById('m-cont').textContent = t.mCont;
         document.getElementById('m-faq').textContent = t.mFAQ;
 
@@ -1295,6 +1399,7 @@
         document.getElementById('dr-about').textContent = t.drAbout;
         document.getElementById('dr-consult').textContent = t.drConsult;
         document.getElementById('dr-delivery').textContent = t.drDelivery;
+        document.getElementById('dr-reviews').textContent = t.drReviews;
         document.getElementById('dr-contacts').textContent = t.drContacts;
         document.getElementById('dr-hours-title').textContent = t.drHoursTitle;
         document.getElementById('dr-hours-text').innerHTML = t.drHoursText;
@@ -1370,6 +1475,17 @@
         document.getElementById('del-p2').innerHTML = t.delP2;
         document.getElementById('del-p3').innerHTML = t.delP3;
 
+        document.getElementById('rev-title').textContent = t.revTitle;
+        document.getElementById('rev-sub').textContent = t.revSub;
+        document.getElementById('rev-form-title').textContent = t.revFormTitle;
+        document.getElementById('rev-l-product').textContent = t.revLProduct;
+        document.getElementById('rev-l-rating').textContent = t.revLRating;
+        document.getElementById('rev-l-name').textContent = t.revLName;
+        document.getElementById('revAuthor').placeholder = t.revPhName;
+        document.getElementById('rev-l-text').textContent = t.revLText;
+        document.getElementById('revText').placeholder = t.revPhText;
+        document.getElementById('rev-btn').textContent = t.revBtn;
+
         document.getElementById('cont-title').textContent = t.contTitle;
         document.getElementById('cont-sub').textContent = t.contSub;
         document.getElementById('cont-phone-lbl').textContent = t.contPhoneLbl;
@@ -1391,6 +1507,7 @@
         document.getElementById('ft-c').textContent = t.ftC;
         document.getElementById('ft-a').textContent = t.ftA;
         document.getElementById('ft-d').textContent = t.ftDel;
+        document.getElementById('ft-rev').textContent = t.ftRev;
         document.getElementById('ft-f').textContent = t.ftF;
         document.getElementById('ft-privacy').textContent = t.ftPrivacy;
         document.getElementById('ft-adr').textContent = t.ftAdr;
@@ -1432,6 +1549,7 @@
         document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
         document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
         updateCartUI();
+        loadReviewsFromSupabase();
     }
 
     function filterCat(cat, btn) {
@@ -1545,6 +1663,121 @@
         localStorage.setItem('medova_cart', JSON.stringify(cart));
         updateCartUI();
         openCartModal();
+    }
+
+    /* ===== ОТЗЫВЫ В SUPABASE ===== */
+    function setReviewRating(val) {
+        document.getElementById('revRating').value = val;
+        document.querySelectorAll('#starPicker .star-pick-btn').forEach(btn => {
+            btn.classList.toggle('active', parseInt(btn.dataset.val) <= val);
+        });
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    async function loadReviewsFromSupabase() {
+        const listEl = document.getElementById('reviewsList');
+        if (!listEl) return;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from('reviews')
+                .select('*')
+                .eq('is_approved', true)
+                .order('created_at', { ascending: false })
+                .limit(30);
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 24px 0;">${dict[currentLang].revEmpty}</p>`;
+                return;
+            }
+
+            listEl.innerHTML = data.map(rev => {
+                const stars = '★'.repeat(rev.rating || 5) + '☆'.repeat(5 - (rev.rating || 5));
+                const dateStr = rev.created_at
+                    ? new Date(rev.created_at).toLocaleDateString(currentLang === 'uk' ? 'uk-UA' : 'ru-RU')
+                    : '';
+                return `
+                    <div class="review-card">
+                        <div class="review-top">
+                            <div>
+                                <div class="review-author">${escapeHtml(rev.author_name)}</div>
+                                <span class="review-product-tag">${escapeHtml(rev.product_name)}</span>
+                            </div>
+                            <div class="review-stars">${stars}</div>
+                        </div>
+                        <div class="review-text">${escapeHtml(rev.comment)}</div>
+                        ${dateStr ? `<div class="review-date">${dateStr}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        } catch (err) {
+            console.error('Supabase load reviews error:', err);
+            listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 24px 0;">${dict[currentLang].revEmpty}</p>`;
+        }
+    }
+
+    async function submitReviewToSupabase(e) {
+        e.preventDefault();
+        const productName = document.getElementById('revProduct').value;
+        const rating = parseInt(document.getElementById('revRating').value, 10) || 5;
+        const authorName = document.getElementById('revAuthor').value.trim();
+        const comment = document.getElementById('revText').value.trim();
+        const statusDiv = document.getElementById('reviewStatus');
+
+        if (!authorName || !comment) return;
+
+        statusDiv.style.color = 'var(--primary)';
+        statusDiv.innerText = currentLang === 'uk' ? 'Збереження відгуку...' : 'Сохранение отзыва...';
+
+        try {
+            const { error } = await supabaseClient
+                .from('reviews')
+                .insert([{
+                    product_name: productName,
+                    author_name: authorName,
+                    rating: rating,
+                    comment: comment,
+                    is_approved: false
+                }]);
+
+            if (error) throw error;
+
+            const tgText = `<b>⭐ Новий відгук на сайті!</b>\n\n` +
+                           `<b>🍯 Товар:</b> ${escapeHtml(productName)}\n` +
+                           `<b>👤 Автор:</b> ${escapeHtml(authorName)}\n` +
+                           `<b>🌟 Оцінка:</b> ${'★'.repeat(rating)} (${rating}/5)\n` +
+                           `<b>💬 Відгук:</b> ${escapeHtml(comment)}\n\n` +
+                           `<i>Щоб опублікувати на сайті, поставте is_approved = true у таблиці reviews в Supabase.</i>`;
+
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: tgText, parse_mode: 'HTML' })
+            });
+
+            statusDiv.style.color = '#059669';
+            statusDiv.innerText = currentLang === 'uk'
+                ? '✅ Дякуємо! Відгук надіслано та з’явиться на сайті після перевірки.'
+                : '✅ Спасибо! Отзыв отправлен и появится на сайте после проверки.';
+            e.target.reset();
+            setReviewRating(5);
+            setTimeout(() => { statusDiv.innerText = ''; }, 5000);
+        } catch (err) {
+            console.error('Submit review error:', err);
+            statusDiv.style.color = '#EF4444';
+            statusDiv.innerText = currentLang === 'uk'
+                ? '❌ Помилка збереження відгуку. Спробуйте пізніше.'
+                : '❌ Ошибка сохранения отзыва. Попробуйте позже.';
+        }
     }
 
     /* ===== ПОИСК ГОРОДОВ / СЁЛ И ОТДЕЛЕНИЙ НОВОЙ ПОЧТЫ ===== */
@@ -1904,6 +2137,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         updateCartUI();
         renderPrivacyText(currentLang);
+        loadReviewsFromSupabase();
 
         /* Запасной красивый фон для фото, которые не загрузились */
         document.querySelectorAll('.product-img, .about-img').forEach(el => {
