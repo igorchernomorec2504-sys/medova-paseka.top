@@ -13,20 +13,20 @@
     <meta property="og:url" content="https://medova-paseka.top/">
     <meta property="og:title" content="Медова Пасіка | Натуральний мед та продукти бджільництва">
     <meta property="og:description" content="Крафтовий мед, воскові свічки та продукти бджільництва напряму з сімейної пасіки в селі Захарівка.">
-    <meta property="og:image" content="https://medova-paseka.top/med-tityl.jpg">
-    <meta property="og:image:secure_url" content="https://medova-paseka.top/med-tityl.jpg">
+    <meta property="og:image" content="https://medova-paseka.top/images/med.jpg">
+    <meta property="og:image:secure_url" content="https://medova-paseka.top/images/med.jpg">
     <meta property="og:image:alt" content="Медова Пасіка — натуральний мед з пасіки">
-    <meta property="og:image" content="https://medova-paseka.top/med.jpg">
-    <meta property="og:image:alt" content="Соняшниковий мед з пасіки">
-    <meta property="og:image" content="https://medova-paseka.top/pollen-title.jpg">
+    <meta property="og:image" content="https://medova-paseka.top/images/may1.jpg">
+    <meta property="og:image:alt" content="Травневий мед з пасіки">
+    <meta property="og:image" content="https://medova-paseka.top/images/pollen-title.jpg">
     <meta property="og:image:alt" content="Бджолиний пилок з пасіки">
-    <meta property="og:image" content="https://medova-paseka.top/svecha.jpg">
+    <meta property="og:image" content="https://medova-paseka.top/images/svecha.jpg">
     <meta property="og:image:alt" content="Натуральні свічки з вощини">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Медова Пасіка | Натуральний мед та продукти бджільництва">
     <meta name="twitter:description" content="Крафтовий мед, воскові свічки та продукти бджільництва напряму з сімейної пасіки в селі Захарівка.">
-    <meta name="twitter:image" content="https://medova-paseka.top/med-tityl.jpg">
+    <meta name="twitter:image" content="https://medova-paseka.top/images/med.jpg">
 
     <!-- Структурированные данные Schema.org -->
     <script type="application/ld+json">
@@ -36,10 +36,10 @@
       "name": "Медова Пасіка",
       "url": "https://medova-paseka.top/",
       "image": [
-        "https://medova-paseka.top/med-tityl.jpg",
-        "https://medova-paseka.top/med.jpg",
-        "https://medova-paseka.top/pollen-title.jpg",
-        "https://medova-paseka.top/svecha.jpg"
+        "https://medova-paseka.top/images/med.jpg",
+        "https://medova-paseka.top/images/may1.jpg",
+        "https://medova-paseka.top/images/pollen-title.jpg",
+        "https://medova-paseka.top/images/svecha.jpg"
       ],
       "telephone": "+380968980543",
       "address": {
@@ -142,13 +142,11 @@
         .drawer-info-block .text-content { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
         .drawer-info-block .text-content strong { color: var(--text); display: block; font-size: 15px; margin-bottom: 4px; font-family: 'Cormorant Garamond', serif; font-weight: 700; }
         .drawer-phones { padding: 20px 24px; border-bottom: 1px solid var(--border); text-align: center; }
-        .drawer-phones a { display: block; font-size: 20px; font-weight: 700; color: var(--text); text-decoration: none; margin-bottom: 8px; font-family: 'Cormorant Garamond', serif; }
-        .drawer-phones a:hover { color: var(--primary); }
-        .btn-callback { margin-top: 12px; width: 100%; background: var(--card-bg); border: 1px solid var(--border); padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; color: var(--text); transition: all 0.25s; }
-        .btn-callback:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
+        .btn-callback { width: 100%; background: var(--primary); border: 1px solid var(--primary); padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .btn-callback:hover { background: #B45309; border-color: #B45309; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25); }
 
         /* ===== МЕССЕНДЖЕРЫ В ШТОРКЕ ===== */
-        .drawer-messengers { display: flex; gap: 8px; margin-top: 10px; }
+        .drawer-messengers { display: flex; gap: 8px; margin-top: 12px; }
         .drawer-phones .msg-btn { display: inline-flex; flex: 1; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 700; text-decoration: none; color: #fff; margin-bottom: 0; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.25s; }
         .drawer-phones .msg-btn.viber { background: #7360F2; }
         .drawer-phones .msg-btn.viber:hover { background: #5D48E0; color: #fff; }
@@ -280,13 +278,18 @@
         footer { background: var(--text); color: #A8A29E; padding: 60px 0 30px; margin-top: 60px; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px; }
         .footer-grid h4 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 20px; }
-        .footer-grid a { display: block; color: #A8A29E; text-decoration: none; font-size: 14px; margin-bottom: 10px; transition: all 0.2s; }
-        .footer-grid a:hover { color: var(--accent); transform: translateX(4px); }
+        .footer-grid a, .footer-grid button.footer-link-btn {
+            display: block; color: #A8A29E; text-decoration: none; font-size: 14px; margin-bottom: 10px;
+            transition: all 0.2s; background: none; border: none; padding: 0; cursor: pointer;
+            text-align: left; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .footer-grid a:hover, .footer-grid button.footer-link-btn:hover { color: var(--accent); transform: translateX(4px); }
         .footer-copy { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; font-size: 14px; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
         .modal.active { display: flex; }
         .modal-box { background: var(--card-bg); border-radius: 24px; padding: 36px; max-width: 480px; width: 92%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .modal-box.wide-modal { max-width: 620px; }
         .close-modal { position: absolute; top: 20px; right: 20px; background: var(--bg); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .close-modal:hover { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
         .form-group { margin-bottom: 18px; }
@@ -296,6 +299,14 @@
         .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A6A52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
         .btn-submit { width: 100%; background: #059669; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.25s; }
         .btn-submit:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); }
+
+        /* ===== СТИЛИ СПИСКА ПРАВ В МОДАЛКЕ ===== */
+        .policy-content { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+        .policy-point { margin-bottom: 18px; }
+        .policy-point-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .policy-sublist { list-style: none; padding-left: 6px; }
+        .policy-sublist li { margin-bottom: 6px; }
+        .policy-sublist li b { color: var(--text); }
 
         /* ===== КНОПКА «ПРОДОВЖИТИ ПОКУПКИ» ===== */
         .btn-continue { width: 100%; margin-top: 10px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -398,7 +409,7 @@
     <div class="nav-container">
         <div class="logo-area">
             <button class="menu-burger-btn" onclick="openDrawer()">☰</button>
-            <a href="index.html" class="logo"><span id="l-logo">Медова Пасіка</span></a>
+            <a href="/" class="logo"><span id="l-logo">Медова Пасіка</span></a>
         </div>
 
         <div class="nav-links">
@@ -410,7 +421,7 @@
         </div>
 
         <div class="header-actions">
-            <a href="account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
+            <a href="/pages/account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
             <div style="display: flex; gap: 4px;">
                 <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
                 <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
@@ -430,13 +441,13 @@
     </div>
 
     <div class="drawer-section">
-        <a href="product.html?item=sunflower" class="drawer-item"><span id="dr-p1">🌻 Мед соняшниковий</span> <span class="arrow">›</span></a>
-        <a href="product.html?item=may" class="drawer-item"><span id="dr-p2">🌿 Мед травневий</span> <span class="arrow">›</span></a>
-        <a href="product.html?item=walnut" class="drawer-item"><span id="dr-p3">🥜 Мед з волоським горіхом</span> <span class="arrow">›</span></a>
+        <a href="/pages/sunflower.html" class="drawer-item"><span id="dr-p1">🌻 Мед соняшниковий</span> <span class="arrow">›</span></a>
+        <a href="/pages/may.html" class="drawer-item"><span id="dr-p2">🌿 Мед травневий</span> <span class="arrow">›</span></a>
+        <a href="/pages/walnut.html" class="drawer-item"><span id="dr-p3">🥜 Мед з волоським горіхом</span> <span class="arrow">›</span></a>
         <a href="#catalog" onclick="filterCat('honey'); closeDrawer()" class="drawer-item"><span id="dr-p4">🍯 Стільниковий мед</span> <span class="arrow">›</span></a>
-        <a href="product.html?item=candles" class="drawer-item"><span id="dr-p5">🕯️ Свічки з вощини</span> <span class="arrow">›</span></a>
-        <a href="product.html?item=propolis" class="drawer-item"><span id="dr-p6">🛡️ Прополіс</span> <span class="arrow">›</span></a>
-        <a href="product.html?item=pollen" class="drawer-item"><span id="dr-p7">⚡ Бджолиний пилок</span> <span class="arrow">›</span></a>
+        <a href="/pages/candles.html" class="drawer-item"><span id="dr-p5">🕯️ Свічки з вощини</span> <span class="arrow">›</span></a>
+        <a href="/pages/propolis.html" class="drawer-item"><span id="dr-p6">🛡️ Прополіс</span> <span class="arrow">›</span></a>
+        <a href="/pages/pollen.html" class="drawer-item"><span id="dr-p7">⚡ Бджолиний пилок</span> <span class="arrow">›</span></a>
     </div>
 
     <div class="drawer-section">
@@ -455,8 +466,7 @@
     </div>
 
     <div class="drawer-phones">
-        <a href="tel:+380968980543">+380 96 898 0543</a>
-        <button class="btn-callback" onclick="closeDrawer(); location.href='tel:+380968980543';" id="dr-callback">Замовити дзвінок</button>
+        <button type="button" class="btn-callback" onclick="openCallbackModal()" id="dr-callback">📞 Замовити дзвінок</button>
         <div class="drawer-messengers">
             <a href="viber://chat?number=%2B380968980543" class="msg-btn viber">💜 Viber</a>
             <a href="https://wa.me/380968980543" target="_blank" class="msg-btn whatsapp">💚 WhatsApp</a>
@@ -464,7 +474,7 @@
     </div>
 
     <div class="drawer-section">
-        <a href="account.html" class="drawer-item"><span id="dr-profile">👤 Мій профіль / Вхід</span> <span class="arrow">›</span></a>
+        <a href="/pages/account.html" class="drawer-item"><span id="dr-profile">👤 Особистий кабінет</span> <span class="arrow">›</span></a>
     </div>
 </aside>
 
@@ -486,21 +496,21 @@
 
     <div class="filters">
         <button class="filter-btn active" onclick="filterCat('all', this)" id="f-all">Усі товари</button>
-        <a href="product.html?item=may" class="filter-btn" id="f-tab-may">🌿 Травневий мед</a>
-        <a href="product.html?item=sunflower" class="filter-btn" id="f-tab-sun">🌻 Соняшниковий мед</a>
-        <a href="product.html?item=walnut" class="filter-btn" id="f-tab-wal">🥜 Мед з горіхом</a>
-        <a href="product.html?item=candles" class="filter-btn" id="f-tab-cand">🕯️ Свічки</a>
-        <a href="product.html?item=propolis" class="filter-btn" id="f-tab-prop">🛡️ Прополіс</a>
-        <a href="product.html?item=pollen" class="filter-btn" id="f-tab-poll">⚡ Пилок</a>
+        <a href="/pages/may.html" class="filter-btn" id="f-tab-may">🌿 Травневий мед</a>
+        <a href="/pages/sunflower.html" class="filter-btn" id="f-tab-sun">🌻 Соняшниковий мед</a>
+        <a href="/pages/walnut.html" class="filter-btn" id="f-tab-wal">🥜 Мед з горіхом</a>
+        <a href="/pages/candles.html" class="filter-btn" id="f-tab-cand">🕯️ Свічки</a>
+        <a href="/pages/propolis.html" class="filter-btn" id="f-tab-prop">🛡️ Прополіс</a>
+        <a href="/pages/pollen.html" class="filter-btn" id="f-tab-poll">⚡ Пилок</a>
     </div>
 
     <div class="products-grid">
         <!-- 1. Соняшниковий мед -->
-        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/med.jpg">
-            <a href="product.html?item=sunflower" class="product-img" style="background-image: url('med.jpg');"><div class="badge">Хіт</div></a>
+        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/images/med.jpg">
+            <a href="/pages/sunflower.html" class="product-img" style="background-image: url('/images/med.jpg');"><div class="badge">Хіт</div></a>
             <div class="product-body">
                 <div>
-                    <h3><a href="product.html?item=sunflower" id="p1-t">Мед соняшниковий</a></h3>
+                    <h3><a href="/pages/sunflower.html" id="p1-t">Мед соняшниковий</a></h3>
                     <p class="product-desc" id="p1-d">Густий, сонячний та найсолодший мед з власним ароматом.</p>
                     <div class="sizes">
                         <span class="size-btn active" data-price="250" data-size="1 л">1 л — 250 ₴</span>
@@ -510,17 +520,17 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">250 <small>₴</small></div>
-                    <a href="product.html?item=sunflower" class="btn-buy" id="b1-more">Детальніше</a>
+                    <a href="/pages/sunflower.html" class="btn-buy" id="b1-more">Детальніше</a>
                 </div>
             </div>
         </div>
 
         <!-- 2. Травневий мед -->
-        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/may1.jpg">
-            <a href="product.html?item=may" class="product-img" style="background-image: url('may1.jpg');"><div class="badge">Весна</div></a>
+        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/images/may1.jpg">
+            <a href="/pages/may.html" class="product-img" style="background-image: url('/images/may1.jpg');"><div class="badge">Весна</div></a>
             <div class="product-body">
                 <div>
-                    <h3><a href="product.html?item=may" id="p2-t">Мед Травневий</a></h3>
+                    <h3><a href="/pages/may.html" id="p2-t">Мед Травневий</a></h3>
                     <p class="product-desc" id="p2-d">Ароматний і ніжний мед із перших весняних квітів.</p>
                     <div class="sizes">
                         <span class="size-btn active" data-price="350" data-size="1 л">1 л — 350 ₴</span>
@@ -528,17 +538,17 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">350 <small>₴</small></div>
-                    <a href="product.html?item=may" class="btn-buy" id="b2-more">Детальніше</a>
+                    <a href="/pages/may.html" class="btn-buy" id="b2-more">Детальніше</a>
                 </div>
             </div>
         </div>
 
         <!-- 3. Мед з горіхом -->
         <div class="product-card" data-cat="honey">
-            <a href="product.html?item=walnut" class="product-img" style="background-image: url('med-voloskyi.jpg');"><div class="badge">Вітаміни</div></a>
+            <a href="/pages/walnut.html" class="product-img" style="background-image: url('/images/med-voloskyi.jpg');"><div class="badge">Вітаміни</div></a>
             <div class="product-body">
                 <div>
-                    <h3><a href="product.html?item=walnut" id="p3-t">Мед з волоським горіхом</a></h3>
+                    <h3><a href="/pages/walnut.html" id="p3-t">Мед з волоським горіхом</a></h3>
                     <p class="product-desc" id="p3-d">Відбірний мед з додаванням добірного волоського горіха.</p>
                     <div class="sizes">
                         <span class="size-btn active" data-price="150" data-size="0.25 л">0.25 л — 150 ₴</span>
@@ -548,14 +558,14 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">150 <small>₴</small></div>
-                    <a href="product.html?item=walnut" class="btn-buy" id="b3-more">Детальніше</a>
+                    <a href="/pages/walnut.html" class="btn-buy" id="b3-more">Детальніше</a>
                 </div>
             </div>
         </div>
 
         <!-- 4. Стільниковий Мед -->
         <div class="product-card" data-cat="honey">
-            <div class="product-img" style="background-image: url('sotu.jpg');"><div class="badge">100% Еко</div></div>
+            <div class="product-img" style="background-image: url('/images/sotu.jpg');"><div class="badge">100% Еко</div></div>
             <div class="product-body">
                 <div>
                     <h3 id="p4-t">Стільниковий Мед</h3>
@@ -572,11 +582,11 @@
         </div>
 
         <!-- 5. Свічка з вощини -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
-            <a href="product.html?item=candles" class="product-img" style="background-image: url('svecha.jpg');"><div class="badge">Ручна робота</div></a>
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <a href="/pages/candles.html" class="product-img" style="background-image: url('/images/svecha.jpg');"><div class="badge">Ручна робота</div></a>
             <div class="product-body">
                 <div>
-                    <h3><a href="product.html?item=candles" id="p5-t">Свічка з вощини</a></h3>
+                    <h3><a href="/pages/candles.html" id="p5-t">Свічка з вощини</a></h3>
                     <p class="product-desc" id="p5-d">100% чистий віск, дарують затишок та аромат.</p>
                     <div class="sizes">
                         <span class="size-btn active" data-price="40" data-size="1 шт">1 шт — 40 ₴</span>
@@ -584,17 +594,17 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">40 <small>₴</small></div>
-                    <a href="product.html?item=candles" class="btn-buy" id="b5-more">Детальніше</a>
+                    <a href="/pages/candles.html" class="btn-buy" id="b5-more">Детальніше</a>
                 </div>
             </div>
         </div>
 
         <!-- 6. Прополіс -->
         <div class="product-card" data-cat="other">
-            <a href="product.html?item=propolis" class="product-img" style="background-image: url('propolis1.jpg');"></a>
+            <a href="/pages/propolis.html" class="product-img" style="background-image: url('/images/propolis1.jpg');"></a>
             <div class="product-body">
                 <div>
-                    <h3><a href="product.html?item=propolis" id="p6-t">Прополіс</a></h3>
+                    <h3><a href="/pages/propolis.html" id="p6-t">Прополіс</a></h3>
                     <p class="product-desc" id="p6-d">Природний антисептик та захисник здоров'я.</p>
                     <div class="sizes">
                         <span class="size-btn active" data-price="300" data-size="100 г">100 г — 300 ₴</span>
@@ -602,17 +612,17 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">300 <small>₴</small></div>
-                    <a href="product.html?item=propolis" class="btn-buy" id="b6-more">Детальніше</a>
+                    <a href="/pages/propolis.html" class="btn-buy" id="b6-more">Детальніше</a>
                 </div>
             </div>
         </div>
 
         <!-- 7. Бджолиний пилок -->
-        <div class="product-card" data-cat="other" data-share-img="https://medova-paseka.top/pollen-title.jpg">
-            <a href="product.html?item=pollen" class="product-img" style="background-image: url('pollen-title.jpg');"></a>
+        <div class="product-card" data-cat="other" data-share-img="https://medova-paseka.top/images/pollen-title.jpg">
+            <a href="/pages/pollen.html" class="product-img" style="background-image: url('/images/pollen-title.jpg');"></a>
             <div class="product-body">
                 <div>
-                    <h3><a href="product.html?item=pollen" id="p7-t">Бджолиний пилок</a></h3>
+                    <h3><a href="/pages/pollen.html" id="p7-t">Бджолиний пилок</a></h3>
                     <p class="product-desc" id="p7-d">Мікс вітамінів та амінокислот для енергії.</p>
                     <div class="sizes">
                         <span class="size-btn active" data-price="70" data-size="100 г">100 г — 70 ₴</span>
@@ -621,14 +631,14 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">70 <small>₴</small></div>
-                    <a href="product.html?item=pollen" class="btn-buy" id="b7-more">Детальніше</a>
+                    <a href="/pages/pollen.html" class="btn-buy" id="b7-more">Детальніше</a>
                 </div>
             </div>
         </div>
 
         <!-- 8. Патріотичний набір свічок -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
-            <div class="product-img" style="background-image: url('nabor3.jpg');"><div class="badge" style="background:#EF4444;">Акція -15%</div></div>
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <div class="product-img" style="background-image: url('/images/nabor3.jpg');"><div class="badge" style="background:#EF4444;">Акція -15%</div></div>
             <div class="product-body">
                 <div>
                     <h3 id="p8-t">Патріотичний набір свічок</h3>
@@ -646,8 +656,8 @@
         </div>
 
         <!-- 9. Набір «Медовий затишок» -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
-            <div class="product-img" style="background-image: url('svechi-podarok.jpg');"><div class="badge">Акція</div></div>
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <div class="product-img" style="background-image: url('/images/svechi-podarok.jpg');"><div class="badge">Акція</div></div>
             <div class="product-body">
                 <div>
                     <h3 id="p9-t">Набір «Медовий затишок»</h3>
@@ -665,8 +675,8 @@
         </div>
 
         <!-- 10. Набір з натуральної вощини -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/svecha.jpg">
-            <div class="product-img" style="background-image: url('svecha3.jpg');"><div class="badge" style="background:#EF4444;">-15%</div></div>
+        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <div class="product-img" style="background-image: url('/images/svecha3.jpg');"><div class="badge" style="background:#EF4444;">-15%</div></div>
             <div class="product-body">
                 <div>
                     <h3 id="p10-t">Набір з натуральної вощини</h3>
@@ -717,9 +727,9 @@
                 <h3 id="ab-t">Про нашу пасіку</h3>
                 <p id="ab-d1">Ми — родина бджолярів з села Захарівка (Роздільнянський район, Одещина). Наша пасіка налічує десятки вуликів, розташованих у мальовничій та чистій місцевості.</p>
                 <p id="ab-d2">Ми не використовуємо хімію чи штучні добавки. Весь мед качаємо самостійно, дбаючи про те, щоб зберегти всі цілющі властивості природи.</p>
-                <p style="margin-top: 16px;"><a href="tel:+380968980543" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 18px; font-family: 'Cormorant Garamond', serif;">📞 +380 96 898 0543</a></p>
+                <p style="margin-top: 16px;"><a href="tel:+380968980543" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 18px; font-family: 'Cormorant Garamond', serif;">📞 Тел.: +380 96 898 0543</a></p>
             </div>
-            <div class="about-img" style="background-image: url('yliki.jpg');"></div>
+            <div class="about-img" style="background-image: url('/images/yliki.jpg');"></div>
         </div>
     </section>
 
@@ -789,8 +799,8 @@
         <p class="section-subtitle" id="cont-sub">Зв'яжіться з нами будь-яким зручним способом</p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; text-align: center; margin-top: 30px;">
             <div style="padding: 24px; background: var(--bg); border-radius: 16px; border: 1px solid var(--border);">
-                <h4 style="font-size: 20px; margin-bottom: 8px;">📞 Телефон</h4>
-                <p style="margin-top: 8px;"><a href="tel:+380968980543" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 17px;">+380 96 898 0543</a></p>
+                <h4 style="font-size: 20px; margin-bottom: 8px;" id="cont-phone-lbl">📞 Тел.</h4>
+                <p style="margin-top: 8px;"><a href="tel:+380968980543" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 17px;">Тел.: +380 96 898 0543</a></p>
             </div>
             <div style="padding: 24px; background: var(--bg); border-radius: 16px; border: 1px solid var(--border);">
                 <h4 style="font-size: 20px; margin-bottom: 8px;">✈️ Telegram</h4>
@@ -835,11 +845,11 @@
         <div class="footer-grid">
             <div>
                 <h4>🍯 Медова Пасіка</h4>
-                <p style="font-size: 14px; line-height: 1.6;" id="ft-desc">Натуральний мед та вироби з воску напряму з пасіки.</p>
+                <p style="font-size: 14px; line-height: 1.6;" id="ft-desc">Натуральний мед та вироби з воску напряму з пасіки в с. Захарівка — без домішок і зайвого.</p>
             </div>
             <div>
                 <h4 id="ft-con">Контакти</h4>
-                <a href="tel:+380968980543">📞 +380 96 898 0543</a>
+                <a href="tel:+380968980543" id="ft-phone">📞 Тел.: +380 96 898 0543</a>
                 <a href="https://t.me/igor_chernomorec" target="_blank">✈️ Telegram</a>
                 <a href="viber://chat?number=%2B380968980543">💜 Viber</a>
                 <a href="https://wa.me/380968980543" target="_blank">💚 WhatsApp</a>
@@ -849,8 +859,9 @@
                 <h4 id="ft-inf">Навігація</h4>
                 <a href="#catalog" id="ft-c">Каталог</a>
                 <a href="#about" id="ft-a">Про нас</a>
-                <a href="#delivery">Доставка</a>
+                <a href="#delivery" id="ft-d">Доставка</a>
                 <a href="#faq" id="ft-f">FAQ</a>
+                <button type="button" class="footer-link-btn" onclick="openPrivacyModal()" id="ft-privacy">🔒 Конфіденційність та права</button>
             </div>
             <div>
                 <h4 id="ft-adr">Адреса</h4>
@@ -858,10 +869,44 @@
             </div>
         </div>
         <div class="footer-copy">
-            <p>© 2026 Медова Пасіка. Всі права захищені.</p>
+            <p id="ft-copy">© 2026 Медова Пасіка. Всі права захищені.</p>
         </div>
     </div>
 </footer>
+
+<!-- Модалка замовлення дзвінка -->
+<div class="modal" id="callbackModal">
+    <div class="modal-box">
+        <button class="close-modal" onclick="closeModal('callbackModal')">✕</button>
+        <h3 id="cb-title" style="margin-bottom: 16px; font-size: 26px;">📞 Замовити дзвінок</h3>
+        <form onsubmit="sendCallbackToTelegram(event)">
+            <div class="form-group">
+                <label id="cb-l-name">Ваше ім'я *</label>
+                <input type="text" id="cbName" required placeholder="Іван Іванов">
+            </div>
+            <div class="form-group">
+                <label id="cb-l-phone">Номер телефону *</label>
+                <input type="tel" id="cbPhone" required placeholder="+380XXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label id="cb-l-when">Коли передзвонити та причина звернення</label>
+                <textarea id="cbWhenReason" rows="3" placeholder="Наприклад: після 18:00, уточнити наявність меду або замовлення..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit" id="cb-btn">📤 Надіслати запит на дзвінок</button>
+            <div id="callbackStatus" style="margin-top: 12px; text-align: center; font-weight: 600; font-size: 14px;"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Модалка конфіденційності та прав -->
+<div class="modal" id="privacyModal">
+    <div class="modal-box wide-modal">
+        <button class="close-modal" onclick="closeModal('privacyModal')">✕</button>
+        <h3 id="pr-title" style="margin-bottom: 18px; font-size: 28px;">🔒 Конфіденційність та права</h3>
+        <div class="policy-content" id="pr-body"></div>
+        <button type="button" class="btn-continue" onclick="closeModal('privacyModal')" id="pr-btn-close">Закрити</button>
+    </div>
+</div>
 
 <div class="modal" id="orderModal">
     <div class="modal-box">
@@ -896,7 +941,7 @@
             </div>
             <div class="form-group">
                 <label id="m-l-comm">Коментар до замовлення</label>
-                <textarea id="orderComment" rows="3" placeholder="Номер відділення, побажання тощо..."></textarea>
+                <textarea id="orderComment" rows="3" placeholder="Номер відділення або адреса отримувача, побажання тощо..."></textarea>
             </div>
             <div style="display: flex; gap: 10px;">
                 <button type="button" class="btn-continue" style="flex: 1; margin-top: 0;" onclick="closeModal('orderModal')" id="m-btn-close">Закрити</button>
@@ -925,13 +970,103 @@
         document.getElementById('drawerOverlay').classList.remove('open');
     }
 
+    function openCallbackModal() {
+        closeDrawer();
+        document.getElementById('callbackModal').classList.add('active');
+    }
+
+    function openPrivacyModal() {
+        renderPrivacyText(currentLang);
+        document.getElementById('privacyModal').classList.add('active');
+    }
+
+    const privacyTexts = {
+        uk: `
+            <div class="policy-point">
+                <div class="policy-point-title">1. Які дані ми збираємо</div>
+                <ul class="policy-sublist">
+                    <li><b>1.1.</b> Прізвище, ім'я та по батькові або ініціали отримувача.</li>
+                    <li><b>1.2.</b> Номер телефону для зв'язку щодо замовлення або запиту.</li>
+                    <li><b>1.3.</b> Дані для доставки: місто, номер відділення або адреса отримувача (зокрема для відправки через Нову пошту чи іншу обрану службу).</li>
+                    <li><b>1.4.</b> За бажанням — email, зручний час для дзвінка, причина звернення або коментар до замовлення.</li>
+                </ul>
+            </div>
+            <div class="policy-point">
+                <div class="policy-point-title">2. Мета та спосіб обробки даних</div>
+                <ul class="policy-sublist">
+                    <li><b>2.1.</b> Особисті дані використовуються виключно для оформлення, уточнення та швидкої відправки вашої посилки.</li>
+                    <li><b>2.2.</b> Усі звернення та дані опрацьовуються вручну — без ботів, роботів та автоматичних розсилок.</li>
+                    <li><b>2.3.</b> Інформація зберігається конфіденційно та не використовується для сторонніх цілей чи реклами.</li>
+                </ul>
+            </div>
+            <div class="policy-point">
+                <div class="policy-point-title">3. Передача третім особам</div>
+                <ul class="policy-sublist">
+                    <li><b>3.1.</b> Третім особам ми не передаємо персональні дані ні в якому разі.</li>
+                    <li><b>3.2.</b> Виняток становить лише безпосередня передача даних отримувача службі доставки (наприклад, Новій пошті) виключно для відправки та отримання вашого замовлення.</li>
+                </ul>
+            </div>
+            <div class="policy-point">
+                <div class="policy-point-title">4. Ваші права</div>
+                <ul class="policy-sublist">
+                    <li><b>4.1.</b> Ви маєте право уточнити свої контактні або платіжно-доставкові дані.</li>
+                    <li><b>4.2.</b> Ви маєте право звернутися з проханням видалити ваші дані з листування чи записів після завершення замовлення або звернення.</li>
+                    <li><b>4.3.</b> З будь-яких питань щодо обробки даних ви можете зв'язатися з нами напряму через контакти на сайті.</li>
+                </ul>
+            </div>
+        `,
+        ru: `
+            <div class="policy-point">
+                <div class="policy-point-title">1. Какие данные мы собираем</div>
+                <ul class="policy-sublist">
+                    <li><b>1.1.</b> Фамилия, имя и отчество или инициалы получателя.</li>
+                    <li><b>1.2.</b> Номер телефона для связи по заказу или обращению.</li>
+                    <li><b>1.3.</b> Данные для доставки: город, номер отделения или адрес получателя (в том числе для отправки через Новую почту или другую выбранную службу).</li>
+                    <li><b>1.4.</b> По желанию — email, удобное время для звонка, причина обращения или комментарий к заказу.</li>
+                </ul>
+            </div>
+            <div class="policy-point">
+                <div class="policy-point-title">2. Цель и способ обработки данных</div>
+                <ul class="policy-sublist">
+                    <li><b>2.1.</b> Личные данные используются исключительно для оформления, уточнения и быстрой отправки вашей посылки.</li>
+                    <li><b>2.2.</b> Все обращения и данные обрабатываются вручную — без ботов, роботов и автоматических рассылок.</li>
+                    <li><b>2.3.</b> Информация хранится конфиденциально и не применяется для сторонних целей или рекламы.</li>
+                </ul>
+            </div>
+            <div class="policy-point">
+                <div class="policy-point-title">3. Передача третьим лицам</div>
+                <ul class="policy-sublist">
+                    <li><b>3.1.</b> Третьим лицам мы не передаём персональные данные ни в коем случае.</li>
+                    <li><b>3.2.</b> Исключение составляет только непосредственная передача данных получателя службе доставки (например, Новой почте) исключительно для отправки и вручения вашего заказа.</li>
+                </ul>
+            </div>
+            <div class="policy-point">
+                <div class="policy-point-title">4. Ваши права</div>
+                <ul class="policy-sublist">
+                    <li><b>4.1.</b> Вы вправе уточнить свои контактные данные или данные получателя для отправки.</li>
+                    <li><b>4.2.</b> Вы вправе попросить удалить ваши данные после завершения заказа или обращения.</li>
+                    <li><b>4.3.</b> По любым вопросам обработки данных можно связаться с нами напрямую через контакты на сайте.</li>
+                </ul>
+            </div>
+        `
+    };
+
+    function renderPrivacyText(lang) {
+        const bodyEl = document.getElementById('pr-body');
+        if (bodyEl) bodyEl.innerHTML = privacyTexts[lang] || privacyTexts.uk;
+    }
+
     const dict = {
         uk: {
             lLogo: "Медова Пасіка", mCat: "Каталог", mAbout: "Про нас", mDel: "Доставка", mCont: "Контакти", mFAQ: "FAQ",
             drTitle: "Медова Пасіка", drP1: "🌻 Мед соняшниковий", drP2: "🌿 Мед травневий", drP3: "🥜 Мед з волоським горіхом", drP4: "🍯 Стільниковий мед", drP5: "🕯️ Свічки з вощини", drP6: "🛡️ Прополіс", drP7: "⚡ Бджолиний пилок",
             drAbout: "Про нас", drDelivery: "Оплата і доставка", drContacts: "Контакти", drConsult: "💬 Консультація бджоляра",
             drHoursTitle: "Графік роботи", drHoursText: "Будні: 08:00–20:00<br>Сб-Нд: вихідний (прийом замовлень онлайн)",
-            drCallback: "Замовити дзвінок", drProfile: "👤 Мій профіль / Вхід",
+            drCallback: "📞 Замовити дзвінок", drProfile: "👤 Особистий кабінет",
+            cbTitle: "📞 Замовити дзвінок", cbLName: "Ваше ім'я *", cbLPhone: "Номер телефону *",
+            cbLWhen: "Коли передзвонити та причина звернення", cbBtn: "📤 Надіслати запит на дзвінок",
+            cbPhName: "Іван Іванов", cbPhPhone: "+380XXXXXXXXX",
+            cbPhWhen: "Наприклад: після 18:00, уточнити наявність меду або замовлення...",
             hTag: "🐝 Натуральний мед з Одещини",
             hTitle: "Справжній мед <span>з любов'ю</span> до бджіл",
             hDesc: "Крафтовий мед, воскові свічки та продукти бджільництва напряму з сімейної пасіки в селі Захарівка. Без домішок і цукру.",
@@ -955,6 +1090,7 @@
             abT: "Про нашу пасіку",
             abD1: "Ми — родина бджолярів з села Захарівка (Роздільнянський район, Одещина). Наша пасіка налічує десятки вуликів, розташованих у мальовничій та чистій місцевості.",
             abD2: "Ми не використовуємо хімію чи штучні добавки. Весь мед качаємо самостійно, дбаючи про те, щоб зберегти всі цілющі властивості природи.",
+            abPhone: "📞 Тел.: +380 96 898 0543",
             consTitle: "Консультація бджоляра",
             consSub: "Не знаєте, який мед обрати? Наш бджоляр з радістю підкаже — безкоштовно та з турботою.",
             consP1: "🍯 Підбір меду під ваш смак та потреби",
@@ -976,14 +1112,20 @@
             delP2: "<b>Передоплата</b> (зручний розрахунок перед відправкою посилки).",
             delP3: "<b>Накладений платіж</b> (оплата готівкою або карткою при отриманні на пошті).",
             contTitle: "Контакти та зв'язок", contSub: "Зв'яжіться з нами будь-яким зручним способом",
+            contPhoneLbl: "📞 Тел.", contPhoneTxt: "Тел.: +380 96 898 0543",
             contTg: "Написати в Telegram", contIg: "Переглянути Instagram",
             contViber: "Написати у Viber", contWa: "Написати у WhatsApp",
             faqTitle: "Часті запитання",
             q1: "Як правильно зберігати мед?", a1: "У скляній тарі з щільно закритою кришкою, в темному та сухому місці при кімнатній температурі.",
             q2: "Чому мед кристалізується?", a2: "Це природний процес для якісного натурального меду, який свідчить про його зрілість.",
             q3: "Які умови доставки?", a3: "Відправка Новою Поштою по всій Україні за тарифами перевізника. Безкоштовна доставка від 1000 грн.",
-            ftDesc: "Натуральний мед та вироби з воску напряму з пасіки.",
-            ftCon: "Контакти", ftInf: "Навігація", ftAdr: "Адреса", ftAdrT: "с. Захарівка, Роздільнянський р-н, Одеська обл.",
+            ftDesc: "Натуральний мед та вироби з воску напряму з пасіки в с. Захарівка — без домішок і зайвого.",
+            ftPhone: "📞 Тел.: +380 96 898 0543",
+            ftCon: "Контакти", ftInf: "Навігація", ftC: "Каталог", ftA: "Про нас", ftDel: "Доставка", ftF: "FAQ",
+            ftPrivacy: "🔒 Конфіденційність та права",
+            ftAdr: "Адреса", ftAdrT: "с. Захарівка, Роздільнянський р-н, Одеська обл.",
+            ftCopy: "© 2026 Медова Пасіка. Всі права захищені.",
+            prTitle: "🔒 Конфіденційність та права", prBtnClose: "Закрити",
             mTitle: "📋 Кошик замовлення", mTot: "Загальна сума:",
             mLName: "ПІБ (Прізвище та Ім'я) *", mLPhone: "Номер телефону *",
             mLEmail: "Email (необов'язково)",
@@ -995,14 +1137,19 @@
             mLComm: "Коментар до замовлення",
             mBtnClose: "Закрити",
             mBtnSend: "📤 Надіслати замовлення",
-            mPhName: "Іванов Іван", mPhPhone: "+380XXXXXXXXXX", mPhEmail: "example@gmail.com", mPhComm: "Номер відділення, побажання тощо..."
+            mPhName: "Іванов Іван", mPhPhone: "+380XXXXXXXXXX", mPhEmail: "example@gmail.com",
+            mPhComm: "Номер відділення або адреса отримувача, побажання тощо..."
         },
         ru: {
             lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mCont: "Контакты", mFAQ: "FAQ",
             drTitle: "Медовая Пасека", drP1: "🌻 Мед подсолнечный", drP2: "🌿 Мед майский", drP3: "🥜 Мед с грецким орехом", drP4: "🍯 Сотовый мед", drP5: "🕯️ Свечи из вощины", drP6: "🛡️ Прополис", drP7: "⚡ Пчелиная пыльца",
             drAbout: "О нас", drDelivery: "Оплата и доставка", drContacts: "Контакты", drConsult: "💬 Консультация пчеловода",
             drHoursTitle: "График работы", drHoursText: "Будни: 08:00–20:00<br>Сб-Вс: выходной (прием заказов онлайн)",
-            drCallback: "Заказать звонок", drProfile: "👤 Мой профиль / Вход",
+            drCallback: "📞 Заказать звонок", drProfile: "👤 Личный кабинет",
+            cbTitle: "📞 Заказать звонок", cbLName: "Ваше имя *", cbLPhone: "Номер телефона *",
+            cbLWhen: "Когда перезвонить и причина обращения", cbBtn: "📤 Отправить запрос на звонок",
+            cbPhName: "Иван Иванов", cbPhPhone: "+380XXXXXXXXX",
+            cbPhWhen: "Например: после 18:00, уточнить наличие меда или заказ...",
             hTag: "🐝 Натуральный мед с Одесчины",
             hTitle: "Настоящий мед <span>с любовью</span> к пчелам",
             hDesc: "Крафтовый мед, восковые свечи и продукты пчеловодства напрямую с семейной пасеки в селе Захаровка. Без примесей и сахара.",
@@ -1016,9 +1163,9 @@
             p5t: "Свеча из вощины", p5d: "100% чистый воск, дарят уют и аромат.",
             p6t: "Прополис", p6d: "Природный антисептик и защитник здоровья.",
             p7t: "Пчелиная пыльца", p7d: "Микс витаминов и аминокислот для энергии.",
-            p8t: "Патриотический набор свечей", p8d: "Сине-желтые свечи из вощини с нежным ароматом.",
+            p8t: "Патриотический набор свечей", p8d: "Сине-желтые свечи из вощины с нежным ароматом.",
             p9t: "Набор «Медовый уют»", p9d: "Прекрасный комплект свечей ручной работы. Размеры свечей: 20×3 см.",
-            p10t: "Набор из натуральной вощини", p10d: "С медовым запахом и нежным природным ароматом.",
+            p10t: "Набор из натуральной вощины", p10d: "С медовым запахом и нежным природным ароматом.",
             f1t: "100% натурально", f1d: "Никаких примесей, сахара и консервантов.",
             f2t: "Экологичный регион", f2d: "Пасека в с. Захаровка, вдали от трасс.",
             f3t: "Семейная пасека", f3d: "Семейное дело с многолетним опытом.",
@@ -1026,6 +1173,7 @@
             abT: "О нашей пасеке",
             abD1: "Мы — семья пчеловодов из села Захаровка (Раздельнянский район, Одесщина). Наша пасека насчитывает десятки ульев в чистой местности.",
             abD2: "Мы не используем химию или искусственные добавки. Весь мед качаем самостоятельно, сохраняя природную пользу.",
+            abPhone: "📞 Тел.: +380 96 898 0543",
             consTitle: "Консультация пчеловода",
             consSub: "Не знаете, какой мед выбрать? Наш пчеловод с радостью подскажет — бесплатно и с заботой.",
             consP1: "🍯 Подбор меда под ваш вкус и потребности",
@@ -1047,14 +1195,20 @@
             delP2: "<b>Предоплата</b> (удобный расчёт перед отправкой посылки).",
             delP3: "<b>Наложенный платёж</b> (оплата наличными или картой при получении на почте).",
             contTitle: "Контакты и связь", contSub: "Свяжитесь с нами любым удобным способом",
+            contPhoneLbl: "📞 Тел.", contPhoneTxt: "Тел.: +380 96 898 0543",
             contTg: "Написать в Telegram", contIg: "Посмотреть Instagram",
             contViber: "Написать в Viber", contWa: "Написать в WhatsApp",
             faqTitle: "Частые вопросы",
             q1: "Как правильно хранить мед?", a1: "В стеклянной таре с плотно закрытой крышкой, в темном и сухом месте.",
             q2: "Почему мед кристаллизуется?", a2: "Это естественный процесс для качественного меда, подтверждающий его зрелость.",
             q3: "Каковы условия доставки?", a3: "Отправка Новой Почтой по всей Украине по тарифам перевозчика. Бесплатная доставка от 1000 грн.",
-            ftDesc: "Натуральный мед и изделия из воска напрямую с пасеки.",
-            ftCon: "Контакты", ftInf: "Навигация", ftAdr: "Адрес", ftAdrT: "с. Захаровка, Раздельнянский р-н, Одесская обл.",
+            ftDesc: "Натуральный мед и изделия из воска напрямую с пасеки в с. Захаровка — без примесей и лишнего.",
+            ftPhone: "📞 Тел.: +380 96 898 0543",
+            ftCon: "Контакты", ftInf: "Навигация", ftC: "Каталог", ftA: "О нас", ftDel: "Доставка", ftF: "FAQ",
+            ftPrivacy: "🔒 Конфиденциальность и права",
+            ftAdr: "Адрес", ftAdrT: "с. Захаровка, Раздельнянский р-н, Одесская обл.",
+            ftCopy: "© 2026 Медовая Пасека. Все права защищены.",
+            prTitle: "🔒 Конфиденциальность и права", prBtnClose: "Закрыть",
             mTitle: "📋 Корзина заказа", mTot: "Общая сумма:",
             mLName: "ФИО (Фамилия и Имя) *", mLPhone: "Номер телефона *",
             mLEmail: "Email (необязательно)",
@@ -1066,7 +1220,8 @@
             mLComm: "Комментарий к заказу",
             mBtnClose: "Закрыть",
             mBtnSend: "📤 Отправить заказ",
-            mPhName: "Иванов Иван", mPhPhone: "+380XXXXXXXXXX", mPhEmail: "example@gmail.com", mPhComm: "Номер отделения, пожелания и т.д..."
+            mPhName: "Иванов Иван", mPhPhone: "+380XXXXXXXXXX", mPhEmail: "example@gmail.com",
+            mPhComm: "Номер отделения или адрес получателя, пожелания и т.д..."
         }
     };
 
@@ -1097,6 +1252,15 @@
         document.getElementById('dr-hours-text').innerHTML = t.drHoursText;
         document.getElementById('dr-callback').textContent = t.drCallback;
         document.getElementById('dr-profile').textContent = t.drProfile;
+
+        document.getElementById('cb-title').textContent = t.cbTitle;
+        document.getElementById('cb-l-name').textContent = t.cbLName;
+        document.getElementById('cb-l-phone').textContent = t.cbLPhone;
+        document.getElementById('cb-l-when').textContent = t.cbLWhen;
+        document.getElementById('cb-btn').textContent = t.cbBtn;
+        document.getElementById('cbName').placeholder = t.cbPhName;
+        document.getElementById('cbPhone').placeholder = t.cbPhPhone;
+        document.getElementById('cbWhenReason').placeholder = t.cbPhWhen;
 
         document.getElementById('h-tag').textContent = t.hTag;
         document.getElementById('h-title').innerHTML = t.hTitle;
@@ -1131,6 +1295,7 @@
         document.getElementById('ab-t').textContent = t.abT;
         document.getElementById('ab-d1').textContent = t.abD1;
         document.getElementById('ab-d2').textContent = t.abD2;
+        document.querySelector('#about a[href^="tel:"]').textContent = t.abPhone;
 
         document.getElementById('cons-title').textContent = t.consTitle;
         document.getElementById('cons-sub').textContent = t.consSub;
@@ -1159,6 +1324,8 @@
 
         document.getElementById('cont-title').textContent = t.contTitle;
         document.getElementById('cont-sub').textContent = t.contSub;
+        document.getElementById('cont-phone-lbl').textContent = t.contPhoneLbl;
+        document.querySelector('#contacts a[href^="tel:"]').textContent = t.contPhoneTxt;
         document.getElementById('cont-tg').textContent = t.contTg;
         document.getElementById('cont-ig').textContent = t.contIg;
         document.getElementById('cont-viber').textContent = t.contViber;
@@ -1170,10 +1337,21 @@
         document.getElementById('q3').textContent = t.q3; document.getElementById('a3').textContent = t.a3;
 
         document.getElementById('ft-desc').textContent = t.ftDesc;
+        document.getElementById('ft-phone').textContent = t.ftPhone;
         document.getElementById('ft-con').textContent = t.ftCon;
         document.getElementById('ft-inf').textContent = t.ftInf;
+        document.getElementById('ft-c').textContent = t.ftC;
+        document.getElementById('ft-a').textContent = t.ftA;
+        document.getElementById('ft-d').textContent = t.ftDel;
+        document.getElementById('ft-f').textContent = t.ftF;
+        document.getElementById('ft-privacy').textContent = t.ftPrivacy;
         document.getElementById('ft-adr').textContent = t.ftAdr;
         document.getElementById('ft-adr-t').textContent = t.ftAdrT;
+        document.getElementById('ft-copy').textContent = t.ftCopy;
+
+        document.getElementById('pr-title').textContent = t.prTitle;
+        document.getElementById('pr-btn-close').textContent = t.prBtnClose;
+        renderPrivacyText(lang);
 
         document.getElementById('m-title').textContent = t.mTitle;
         document.getElementById('m-tot').textContent = t.mTot;
@@ -1398,6 +1576,51 @@
         }
     }
 
+    /* ===== Отправка запроса на обратный звонок в Telegram ===== */
+    async function sendCallbackToTelegram(e) {
+        e.preventDefault();
+        const name = document.getElementById('cbName').value.trim();
+        const phone = document.getElementById('cbPhone').value.trim();
+        const whenReason = document.getElementById('cbWhenReason').value.trim();
+        const statusDiv = document.getElementById('callbackStatus');
+
+        statusDiv.style.color = 'var(--primary)';
+        statusDiv.innerText = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
+
+        try {
+            const text = `<b>📞 Замовлення дзвінка з меню!</b>\n\n` +
+                         `<b>👤 Ім'я:</b> ${name}\n` +
+                         `<b>📞 Телефон:</b> ${phone}\n` +
+                         `<b>🕒 Коли передзвонити / причина:</b> ${whenReason || '—'}`;
+
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'HTML' })
+            });
+            const data = await response.json();
+
+            if (data.ok) {
+                statusDiv.style.color = '#059669';
+                statusDiv.innerText = currentLang === 'uk'
+                    ? '✅ Запит на дзвінок надіслано! Передзвонимо вам.'
+                    : '✅ Запрос на звонок отправлен! Перезвоним вам.';
+                e.target.reset();
+                setTimeout(() => {
+                    closeModal('callbackModal');
+                    statusDiv.innerText = '';
+                }, 2000);
+            } else {
+                throw new Error('Telegram error');
+            }
+        } catch (err) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.innerText = currentLang === 'uk'
+                ? '❌ Помилка відправки!'
+                : '❌ Ошибка отправки!';
+        }
+    }
+
     /* ===== Отправка запроса на консультацию бджоляру в Telegram ===== */
     async function sendConsultToTelegram(e) {
         e.preventDefault();
@@ -1442,6 +1665,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         updateCartUI();
+        renderPrivacyText(currentLang);
 
         /* Запасной красивый фон для фото, которые не загрузились */
         document.querySelectorAll('.product-img, .about-img').forEach(el => {
