@@ -47,19 +47,26 @@
             border-bottom: 1px solid rgba(232, 220, 200, 0.5); padding: 14px 0;
         }
         .nav-container { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-        .logo-area { display: flex; align-items: center; gap: 12px; min-width: 0; }
-        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .logo span { color: var(--primary); }
+        .logo-area { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .back-arrow-btn {
+            background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%;
+            font-size: 18px; cursor: pointer; display: none; align-items: center; justify-content: center;
+            transition: all 0.25s ease; color: var(--text); text-decoration: none; flex-shrink: 0;
+        }
+        .back-arrow-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
         .menu-burger-btn {
             background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%;
             font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
             transition: all 0.25s ease; color: var(--text); flex-shrink: 0;
         }
         .menu-burger-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
+        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .logo span { color: var(--primary); }
         .nav-links { display: flex; align-items: center; gap: 28px; }
         .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 15px; font-weight: 600; transition: color 0.25s; white-space: nowrap; }
         .nav-links a:hover { color: var(--primary); }
         .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .lang-switch { display: flex; gap: 4px; }
         .btn-auth, .lang-btn {
             background: var(--card-bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px;
             font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.25s ease;
@@ -154,24 +161,35 @@
         .article-box p { color: var(--text-muted); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
         .article-box p:last-child { margin-bottom: 0; }
 
-        /* ===== МОДАЛКА І ДВОХЕТАПНИЙ КОШИК ===== */
+        /* ===== МОДАЛКА І ДВОХЕТАПНИЙ КОШИК (ЯК НА 2-МУ ФОТО) ===== */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 16px; }
         .modal.active { display: flex; }
-        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 30px; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
-        .close-modal { position: absolute; top: 18px; right: 18px; background: var(--bg); border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+        .modal-box { background: var(--card-bg); border-radius: 20px; padding: 28px; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .close-modal { position: absolute; top: 18px; right: 18px; background: var(--bg); border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); }
         .close-modal:hover { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
 
-        .cart-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-        .cart-step-pill { padding: 8px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; text-align: center; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); transition: .2s; }
+        .cart-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .cart-step-pill { padding: 10px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-muted); transition: .2s; }
         .cart-step-pill.active { background: #FFFBEB; border-color: var(--primary); color: var(--primary-dark); }
         .cart-step-pill.done { background: #ECFDF5; border-color: #10B981; color: #047857; }
 
+        .cart-item-card {
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            padding: 14px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border);
+            margin-bottom: 10px; font-size: 14px;
+        }
         .promo-red-txt { color: var(--promo-red); font-weight: 800; }
-        .mprog { padding: 11px 12px; border-radius: 12px; background: var(--promo-red-bg); border: 1px solid var(--promo-red-border); margin-bottom: 16px; font-size: 13px; font-weight: 700; color: var(--promo-red); text-align: center; }
+        .mprog { padding: 12px 14px; border-radius: 12px; background: var(--promo-red-bg); border: 1px solid var(--promo-red-border); margin-bottom: 14px; font-size: 13px; font-weight: 700; color: var(--promo-red); text-align: center; }
         .mprog.done { background: #ECFDF5; border-color: #A7F3D0; color: #047857; }
 
-        .qty-mini { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
-        .qty-btn { width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: .15s; }
+        .cart-total-banner {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #FDE68A; padding: 16px; border-radius: 14px; margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: 700;
+        }
+
+        .qty-mini { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: .15s; }
         .qty-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
 
         .form-group { margin-bottom: 14px; position: relative; }
@@ -189,8 +207,10 @@
         .np-option:last-child { border-bottom: none; }
         .np-option:hover { background: #FFFBEB; color: var(--primary-dark); }
 
-        .btn-submit { width: 100%; background: #059669; color: #fff; border: none; padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; }
-        .btn-continue { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: .2s; }
+        .btn-submit:hover { background: #B45309; }
+        .btn-continue { width: 100%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 13px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: .2s; }
+        .btn-continue:hover { border-color: var(--primary); background: #FFFBEB; }
 
         footer { background: var(--text); color: #A8A29E; padding: 36px 0; text-align: center; font-size: 14px; margin-top: 20px; }
         footer a { color: var(--accent); text-decoration: none; }
@@ -212,6 +232,9 @@
         @media (max-width: 768px) {
             body { padding-top: 64px; }
             .nav-links { display: none; }
+            .menu-burger-btn { display: none; }
+            .back-arrow-btn { display: inline-flex; }
+            .lang-switch { display: none; }
             .logo { font-size: 18px; }
             .btn-auth .auth-text { display: none; }
             .btn-auth { padding: 8px 11px; }
@@ -223,7 +246,8 @@
 <header>
     <div class="nav-container">
         <div class="logo-area">
-            <button class="menu-burger-btn" onclick="openDrawer()">☰</button>
+            <a href="/#catalog" class="back-arrow-btn" aria-label="Назад до каталогу">←</a>
+            <button class="menu-burger-btn" onclick="openDrawer()" aria-label="Меню">☰</button>
             <a href="/" class="logo"><span id="l-logo">Медова Пасіка</span></a>
         </div>
         <div class="nav-links">
@@ -234,7 +258,7 @@
         </div>
         <div class="header-actions">
             <a href="/pages/account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
-            <div style="display: flex; gap: 4px;">
+            <div class="lang-switch">
                 <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
                 <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
             </div>
@@ -282,13 +306,13 @@
 
             <span class="size-label" id="size-label">Оберіть об'єм:</span>
             <div class="sizes" id="sizeGroup">
-                <button type="button" class="size-btn active" data-price="150" data-size="0.25 л">0.25 л — 150 ₴</button>
-                <button type="button" class="size-btn" data-price="280" data-size="0.5 л">0.5 л — 280 ₴</button>
-                <button type="button" class="size-btn" data-price="500" data-size="1 л">1 л — 500 ₴</button>
+                <button type="button" class="size-btn active" data-price="150" data-size="0.25 л">0.25 л — 150 грн</button>
+                <button type="button" class="size-btn" data-price="280" data-size="0.5 л">0.5 л — 280 грн</button>
+                <button type="button" class="size-btn" data-price="500" data-size="1 л">1 л — 500 грн</button>
             </div>
 
             <div class="price-box">
-                <div class="price-current"><span id="selectedPrice">150</span> <small style="font-size:20px;">₴</small></div>
+                <div class="price-current"><span id="selectedPrice">150</span> <small style="font-size:20px;">грн</small></div>
                 <button type="button" class="btn-buy-main" id="btnAddMain" onclick="addSelectedToCart()">🛒 Додати в кошик</button>
             </div>
         </div>
@@ -325,7 +349,7 @@
 <div class="modal" id="orderModal">
     <div class="modal-box">
         <button class="close-modal" onclick="closeModal('orderModal')">✕</button>
-        <h3 id="m-title" style="margin-bottom: 14px; font-size: 26px;">📋 Кошик замовлення</h3>
+        <h3 id="m-title" style="margin-bottom: 16px; font-size: 26px; display:flex; align-items:center; gap:8px;">📋 <span>Ваш Кошик</span></h3>
 
         <div class="cart-steps" id="cartStepsBar">
             <div class="cart-step-pill active" id="stepPill1">1. Товари</div>
@@ -334,22 +358,23 @@
 
         <!-- ЕТАП 1 -->
         <div id="cartStep1">
-            <div id="cartItemsList" style="margin-bottom: 14px; max-height: 210px; overflow-y: auto;"></div>
+            <div id="cartItemsList" style="margin-bottom: 14px; max-height: 220px; overflow-y: auto;"></div>
             <div class="mprog" id="deliveryProgressBox"></div>
-            <div style="background: var(--bg); padding: 12px 14px; border-radius: 12px; margin-bottom: 16px; text-align: right; font-weight: 700; font-size: 18px;">
-                <span id="m-tot" style="font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-muted);">Загальна сума:</span> <span id="cartTotalSum" style="color: var(--primary);">0</span> ₴
+            <div class="cart-total-banner">
+                <span id="m-tot" style="font-size: 14px; color: var(--text-muted);">Загальна сума:</span>
+                <span style="font-size: 22px; color: var(--primary-dark); font-family: 'Cormorant Garamond', serif; font-weight: 700;"><span id="cartTotalSum">0</span> грн</span>
             </div>
-            <div id="cartStep1Actions" style="display:flex; gap:10px;">
-                <button type="button" class="btn-continue" style="flex:1;" onclick="closeModal('orderModal')" id="m-btn-close">Закрити</button>
-                <button type="button" class="btn-submit" style="flex:2; background: var(--primary);" id="m-btn-next" onclick="goToCheckoutStep(2)">Далі до оформлення →</button>
+            <div id="cartStep1Actions" style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="btn-submit" id="m-btn-next" onclick="goToCheckoutStep(2)">Далі до оформлення →</button>
+                <button type="button" class="btn-continue" onclick="closeModal('orderModal')" id="m-btn-close">Продовжити покупки</button>
             </div>
         </div>
 
         <!-- ЕТАП 2 -->
         <form id="orderForm" style="display:none;" onsubmit="sendOrderToTelegram(event)">
-            <div style="background: var(--bg); padding: 10px 14px; border-radius: 12px; margin-bottom: 14px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:15px;">
+            <div class="cart-total-banner" style="padding: 12px 16px; margin-bottom: 14px;">
                 <span id="m-tot-step2" style="font-size:13px; color:var(--text-muted);">До сплати за товари:</span>
-                <span><span id="step2TotalSum" style="color: var(--primary); font-size:19px;">0</span> ₴</span>
+                <span style="font-size: 20px; color: var(--primary-dark); font-family: 'Cormorant Garamond', serif; font-weight: 700;"><span id="step2TotalSum">0</span> грн</span>
             </div>
             <div class="form-group">
                 <label id="m-l-name">ПІБ *</label>
@@ -395,8 +420,8 @@
                 <textarea id="orderComment" rows="2" placeholder="Побажання або зручний час для дзвінка..."></textarea>
             </div>
             <div style="display:flex; gap:10px;">
-                <button type="button" class="btn-continue" style="flex:1;" onclick="goToCheckoutStep(1)" id="m-btn-back">← Назад</button>
-                <button type="submit" class="btn-submit" style="flex:2;" id="m-btn-send">📤 Надіслати замовлення</button>
+                <button type="button" class="btn-continue" style="width:auto; flex:1;" onclick="goToCheckoutStep(1)" id="m-btn-back">← Назад</button>
+                <button type="submit" class="btn-submit" style="width:auto; flex:2; background:#059669;" id="m-btn-send">📤 Надіслати замовлення</button>
             </div>
             <div id="orderStatus" style="margin-top:12px; text-align:center; font-weight:700; font-size:13px;"></div>
         </form>
@@ -449,13 +474,13 @@
             artP1: "Волоський горіх у поєднанні з натуральним медом — це приємний, м'який і водночас ситний смак без нудотної солодкості. Хрумкі горіхові ядра гармонійно доповнюють густу медову текстуру, тож ложка такого десерту легко замінює солодощі до чаю чи кави.",
             artP2: "Окрім чудового смаку, волоський горіх цінують за природний набір вітамінів і поживних речовин: у ньому містяться вітаміни групи B, вітамін E, корисні ненасичені жирні кислоти, антиоксиданти та мінерали. Разом із натуральним медом він допомагає підтримувати бадьорість, працездатність і тонус протягом дня.",
             ftRights: "Медова пасіка / всі права захищені",
-            mTitle: "📋 Кошик замовлення", mTot: "Загальна сума:", mTotStep2: "До сплати за товари:",
+            mTitle: "Ваш Кошик", mTot: "Загальна сума:", mTotStep2: "До сплати за товари:",
             mLName: "ПІБ *", mLPhone: "Номер телефону *",
             mLDelivery: "Спосіб доставки *", mDelOptDefault: "Оберіть спосіб доставки",
             mDelOptNP: "Нова Пошта", mDelOptUP: "Укрпошта", mDelOptPickup: "Самовивіз",
             mLCity: "Місто / село *", mLWh: "Відділення / поштомат Нової пошти *",
             mLAddr: "Індекс та адреса отримувача *", mWhOptDefault: "Спочатку оберіть місто або село",
-            mLComm: "Коментар", mBtnClose: "Закрити", mBtnNext: "Далі до оформлення →",
+            mLComm: "Коментар", mBtnClose: "Продовжити покупки", mBtnNext: "Далі до оформлення →",
             mBtnBack: "← Назад", mBtnSend: "📤 Надіслати замовлення",
             cartName: "Мед з волоським горіхом",
             step1Label: "1. Товари", step2Label: "2. Оформлення"
@@ -477,13 +502,13 @@
             artP1: "Грецкий орех в сочетании с натуральным медом — это приятный, мягкий и при этом сытный вкус без приторной сладости. Хрустящие ядра ореха гармонично дополняют густую медовую текстуру, поэтому ложка такого десерта легко заменяет сладости к чаю или кофе.",
             artP2: "Помимо отличного вкуса, грецкий орех ценят за природный набор витаминов и питательных веществ: в нем содержатся витамины группы B, витамин E, полезные ненасыщенные жирные кислоты, антиоксиданты и минералы. Вместе с натуральным медом он помогает поддерживать бодрость, работоспособность и тонус в течение дня.",
             ftRights: "Медовая пасека / все права защищены",
-            mTitle: "📋 Корзина заказа", mTot: "Общая сумма:", mTotStep2: "К оплате за товары:",
+            mTitle: "Ваш Кошик", mTot: "Общая сумма:", mTotStep2: "К оплате за товары:",
             mLName: "ФИО *", mLPhone: "Номер телефона *",
             mLDelivery: "Способ доставки *", mDelOptDefault: "Выберите способ доставки",
             mDelOptNP: "Новая Почта", mDelOptUP: "Укрпочта", mDelOptPickup: "Самовывоз",
             mLCity: "Город / село *", mLWh: "Отделение / почтомат Новой почты *",
             mLAddr: "Индекс и адрес получателя *", mWhOptDefault: "Сначала выберите город или село",
-            mLComm: "Комментарий", mBtnClose: "Закрыть", mBtnNext: "Далее к оформлению →",
+            mLComm: "Комментарий", mBtnClose: "Продолжить покупки", mBtnNext: "Далее к оформлению →",
             mBtnBack: "← Назад", mBtnSend: "📤 Отправить заказ",
             cartName: "Мед с грецким орехом",
             step1Label: "1. Товары", step2Label: "2. Оформление"
@@ -583,7 +608,7 @@
         document.getElementById('art-p1').textContent = t.artP1;
         document.getElementById('art-p2').textContent = t.artP2;
         document.getElementById('ft-rights').textContent = t.ftRights;
-        document.getElementById('m-title').textContent = t.mTitle;
+        document.getElementById('m-title').lastElementChild.textContent = t.mTitle;
         document.getElementById('stepPill1').textContent = t.step1Label;
         document.getElementById('stepPill2').textContent = t.step2Label;
         document.getElementById('m-tot').textContent = t.mTot;
@@ -855,22 +880,22 @@
             return;
         }
 
-        if (nextBtn) nextBtn.style.display = 'inline-block';
+        if (nextBtn) nextBtn.style.display = 'block';
         let html = '';
         let total = 0;
         cart.forEach((item, idx) => {
             const sub = item.price * item.qty;
             total += sub;
-            html += `<div style="display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
-                <div style="flex:1; min-width:0;"><strong>${escapeHtml(item.name)}</strong><br><span style="color:var(--text-muted); font-size:12px;">${item.price} ₴ / шт.</span></div>
+            html += `<div class="cart-item-card">
+                <div style="flex:1; min-width:0;"><strong>${escapeHtml(item.name)}</strong><br><span style="color:var(--text-muted); font-size:12px;">${item.price} грн / шт.</span></div>
                 <div class="qty-mini">
                     <button type="button" class="qty-btn" onclick="changeCartItemQty(${idx}, -1)">−</button>
                     <span style="min-width:18px;text-align:center;font-weight:700;font-size:13px;">${item.qty}</span>
                     <button type="button" class="qty-btn" onclick="changeCartItemQty(${idx}, 1)">+</button>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-                    <strong style="min-width:52px;text-align:right;">${sub} ₴</strong>
-                    <button type="button" onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold;">✕</button>
+                    <strong style="min-width:58px;text-align:right;">${sub} грн</strong>
+                    <button type="button" onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold; font-size:15px;">✕</button>
                 </div>
             </div>`;
         });
@@ -966,7 +991,7 @@
         const itemsList = cart.map(i => {
             const sub = i.price * i.qty;
             total += sub;
-            return `• ${escapeHtml(i.name)} — ${i.qty} шт. (${sub} ₴)`;
+            return `• ${escapeHtml(i.name)} — ${i.qty} шт. (${sub} грн)`;
         }).join('\n');
         const freeShipLine = total >= 1000 ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 грн)' : '';
 
@@ -1003,7 +1028,7 @@
                          (deliveryCode === 'ukr_poshta' && altAddressText ? `<b>✉️ Адреса Укрпошти:</b> ${escapeHtml(altAddressText)}\n` : '') +
                          `<b>💬 Коментар:</b> ${escapeHtml(comm || 'Відсутній')}\n\n` +
                          `<b>📦 Товари:</b>\n${itemsList}\n\n` +
-                         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>${freeShipLine}`;
+                         `💰 <b>Загальна сума:</b> <b>${total} грн</b>${freeShipLine}`;
 
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
