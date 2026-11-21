@@ -259,7 +259,52 @@
         .delivery-card li { position: relative; padding-left: 16px; margin-bottom: 10px; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
         .delivery-card li::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
         .delivery-card li b { color: var(--text); }
-        .delivery-free { margin-top: 14px; font-style: italic; font-weight: 600; color: var(--primary-dark); font-size: 14px; }
+
+        .delivery-promo-block {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+        .delivery-promo-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #991B1B;
+            background: #FEE2E2;
+            padding: 2px 9px;
+            border-radius: 999px;
+        }
+        .delivery-free {
+            font-style: italic;
+            font-weight: 700;
+            color: #DC2626;
+            font-size: 14px;
+            line-height: 1.45;
+            animation: softPromoPulse 2.6s ease-in-out infinite;
+        }
+        @keyframes softPromoPulse {
+            0%, 100% {
+                color: #DC2626;
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                color: #991B1B;
+                opacity: 0.84;
+                transform: scale(1.012);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .delivery-free { animation: none; }
+        }
 
         /* ===== ОТЗЫВЫ ПОКУПАТЕЛЕЙ (SUPABASE) ===== */
         .reviews-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 50px 40px; box-shadow: var(--shadow-soft); margin-top: 20px; }
@@ -298,9 +343,10 @@
         .footer-grid a:hover, .footer-grid button.footer-link-btn:hover { color: var(--accent); transform: translateX(4px); }
         .footer-copy { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; font-size: 14px; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
-        .modal.active { display: flex; }
-        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 36px; max-width: 480px; width: 92%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.28s ease; }
+        .modal.active { display: flex; opacity: 1; }
+        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 36px; max-width: 480px; width: 92%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(10px) scale(0.985); transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease; }
+        .modal.active .modal-box { transform: translateY(0) scale(1); }
         .modal-box.wide-modal { max-width: 620px; }
         .close-modal { position: absolute; top: 20px; right: 20px; background: var(--bg); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .close-modal:hover { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
@@ -309,8 +355,63 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; background: var(--bg); transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1); }
         .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A6A52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
-        .btn-submit { width: 100%; background: #059669; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.25s; }
+        .btn-submit { width: 100%; background: #059669; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .btn-submit:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); }
+
+        /* ===== ДВУХШАГОВАЯ КОРЗИНА С ПЛАВНЫМ ПЕРЕХОДОМ ===== */
+        .cart-step-pane {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.24s ease, transform 0.24s ease;
+        }
+        .cart-step-pane.is-fading {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        .cart-step-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .btn-checkout-step {
+            width: 100%;
+            background: #059669;
+            color: #fff;
+            border: none;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-checkout-step:hover {
+            background: #047857;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        .btn-back-to-cart {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-align: left;
+        }
+        .btn-back-to-cart:hover {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: #FFFBEB;
+        }
 
         /* ===== ВЫПАДАЮЩИЙ СПИСОК НАСЕЛЁННЫХ ПУНКТОВ НОВОЙ ПОЧТЫ ===== */
         .np-dropdown {
@@ -335,7 +436,7 @@
         .policy-sublist li { margin-bottom: 6px; }
         .policy-sublist li b { color: var(--text); }
 
-        .btn-continue { width: 100%; margin-top: 10px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .btn-continue { width: 100%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .btn-continue:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
 
         /* ===== ПЛАНШЕТ ===== */
@@ -452,11 +553,11 @@
 
         <div class="header-actions">
             <a href="/pages/account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
+            <button class="btn-cart-header" onclick="openCartModal()" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
             <div style="display: flex; gap: 4px;">
                 <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
                 <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
             </div>
-            <button class="btn-cart-header" onclick="openCartModal()" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
         </div>
     </div>
 </header>
@@ -811,7 +912,10 @@
                         <li id="del-d2"><b>Укрпошта</b> (доставка 2–4 дні).</li>
                         <li id="del-d3"><b>Самовивіз</b> (з нашої пасіки за попередньою домовленістю).</li>
                     </ul>
-                    <p class="delivery-free" id="del-free">✨ Безкоштовна доставка замовлень на суму від 1000 грн!</p>
+                    <div class="delivery-promo-block">
+                        <span class="delivery-promo-badge" id="del-promo-badge">Акція</span>
+                        <p class="delivery-free" id="del-free">✨ Безкоштовна доставка замовлень на суму від 1000 грн!</p>
+                    </div>
                 </div>
                 <div class="delivery-card">
                     <h4 id="del-p-title">💳 Варіанти оплати</h4>
@@ -995,74 +1099,85 @@
         <button class="close-modal" onclick="closeModal('privacyModal')">✕</button>
         <h3 id="pr-title" style="margin-bottom: 18px; font-size: 28px;">🔒 Конфіденційність та права</h3>
         <div class="policy-content" id="pr-body"></div>
-        <button type="button" class="btn-continue" onclick="closeModal('privacyModal')" id="pr-btn-close">Закрити</button>
+        <button type="button" class="btn-continue" style="margin-top: 10px;" onclick="closeModal('privacyModal')" id="pr-btn-close">Закрити</button>
     </div>
 </div>
 
-<!-- Модалка кошика -->
+<!-- Двухшаговое модальное окно корзины и оформления заказа -->
 <div class="modal" id="orderModal">
     <div class="modal-box">
         <button class="close-modal" onclick="closeModal('orderModal')">✕</button>
-        <h3 id="m-title" style="margin-bottom: 20px; font-size: 26px;">📋 Кошик замовлення</h3>
-        <div id="cartItemsList" style="margin-bottom: 20px; max-height: 180px; overflow-y: auto;"></div>
-        <div id="deliveryProgressBox" style="background: #FFFBEB; border: 1px dashed var(--primary); padding: 12px; border-radius: 12px; margin-bottom: 16px; font-size: 14px; text-align: center; color: var(--primary-dark); font-weight: 600; display: none;"></div>
-        <div style="background: var(--bg); padding: 14px; border-radius: 12px; margin-bottom: 20px; text-align: right; font-weight: 700; font-size: 18px; font-family: 'Cormorant Garamond', serif;">
-            <span id="m-tot" style="font-size: 15px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; color: var(--text-muted);">Загальна сума:</span> <span id="cartTotalSum" style="color: var(--primary);">0</span> ₴
+
+        <!-- Шаг 1: Корзина -->
+        <div id="cartStep1" class="cart-step-pane">
+            <h3 id="m-title" style="margin-bottom: 20px; font-size: 26px;">🛒 Кошик</h3>
+            <div id="cartItemsList" style="margin-bottom: 18px; max-height: 220px; overflow-y: auto;"></div>
+            <div id="deliveryProgressBox" style="background: #FFFBEB; border: 1px dashed var(--primary); padding: 12px; border-radius: 12px; margin-bottom: 16px; font-size: 14px; text-align: center; color: var(--primary-dark); font-weight: 600; display: none;"></div>
+            <div style="background: var(--bg); padding: 14px; border-radius: 12px; margin-bottom: 20px; text-align: right; font-weight: 700; font-size: 18px; font-family: 'Cormorant Garamond', serif;">
+                <span id="m-tot" style="font-size: 15px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; color: var(--text-muted);">Загальна сума:</span> <span id="cartTotalSum" style="color: var(--primary);">0</span> ₴
+            </div>
+            <div class="cart-step-actions">
+                <button type="button" class="btn-checkout-step" id="btnGoToCheckout" onclick="switchCartStep(2)">Оформити замовлення</button>
+                <button type="button" class="btn-continue" id="btnContinueShopping" onclick="closeModal('orderModal')">Продовжити покупку</button>
+            </div>
         </div>
-        <form onsubmit="sendOrderToTelegram(event)">
-            <div class="form-group">
-                <label id="m-l-name">ПІБ (Прізвище та Ім'я) *</label>
-                <input type="text" id="orderName" required placeholder="Іванов Іван">
-            </div>
-            <div class="form-group">
-                <label id="m-l-phone">Номер телефону *</label>
-                <input type="tel" id="orderContact" required placeholder="+380XXXXXXXXXX">
-            </div>
-            <div class="form-group">
-                <label id="m-l-email">Email (необов'язково)</label>
-                <input type="email" id="orderEmail" placeholder="example@gmail.com">
-            </div>
-            <div class="form-group">
-                <label id="m-l-delivery">Спосіб доставки *</label>
-                <select id="orderDelivery" required onchange="onDeliveryMethodChange()">
-                    <option value="" disabled selected id="del-opt-default">Оберіть спосіб доставки</option>
-                    <option value="nova_poshta" id="del-opt-np">Нова Пошта</option>
-                    <option value="ukr_poshta" id="del-opt-up">Укрпошта</option>
-                    <option value="pickup" id="del-opt-pickup">Самовивіз</option>
-                </select>
-            </div>
 
-            <div id="npAddressFields" style="display: none;">
-                <div class="form-group" style="position: relative;">
-                    <label for="orderCityInput" id="m-l-city">Місто / село *</label>
-                    <input type="text" id="orderCityInput" autocomplete="off" placeholder="Почніть вводити назву (напр. Захарівка)...">
-                    <input type="hidden" id="orderCityRef">
-                    <div class="np-dropdown" id="npCityDropdown"></div>
+        <!-- Шаг 2: Оформление заказа -->
+        <div id="cartStep2" class="cart-step-pane" style="display: none;">
+            <button type="button" class="btn-back-to-cart" id="btnBackToCart" onclick="switchCartStep(1)">← Назад до кошика</button>
+            <h3 id="m-checkout-title" style="margin-bottom: 18px; font-size: 26px;">📋 Оформлення замовлення</h3>
+            <form onsubmit="sendOrderToTelegram(event)">
+                <div class="form-group">
+                    <label id="m-l-name">ПІБ (Прізвище та Ім'я) *</label>
+                    <input type="text" id="orderName" required placeholder="Іванов Іван">
                 </div>
-
-                <div class="form-group" id="npWarehouseGroup">
-                    <label for="orderWarehouseSelect" id="m-l-warehouse">Відділення / поштомат Нової пошти *</label>
-                    <select id="orderWarehouseSelect" disabled>
-                        <option value="">Спочатку оберіть місто або село</option>
+                <div class="form-group">
+                    <label id="m-l-phone">Номер телефону *</label>
+                    <input type="tel" id="orderContact" required placeholder="+380XXXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label id="m-l-email">Email (необов'язково)</label>
+                    <input type="email" id="orderEmail" placeholder="example@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label id="m-l-delivery">Спосіб доставки *</label>
+                    <select id="orderDelivery" required onchange="onDeliveryMethodChange()">
+                        <option value="" disabled selected id="del-opt-default">Оберіть спосіб доставки</option>
+                        <option value="nova_poshta" id="del-opt-np">Нова Пошта</option>
+                        <option value="ukr_poshta" id="del-opt-up">Укрпошта</option>
+                        <option value="pickup" id="del-opt-pickup">Самовивіз</option>
                     </select>
                 </div>
 
-                <div class="form-group" id="altAddressGroup" style="display: none;">
-                    <label for="orderAltAddress" id="m-l-alt-addr">Індекс та адреса отримувача *</label>
-                    <input type="text" id="orderAltAddress" placeholder="Напр.: 66700, смт Захарівка, вул. Центральна, 10">
-                </div>
-            </div>
+                <div id="npAddressFields" style="display: none;">
+                    <div class="form-group" style="position: relative;">
+                        <label for="orderCityInput" id="m-l-city">Місто / село *</label>
+                        <input type="text" id="orderCityInput" autocomplete="off" placeholder="Почніть вводити назву (напр. Захарівка)...">
+                        <input type="hidden" id="orderCityRef">
+                        <div class="np-dropdown" id="npCityDropdown"></div>
+                    </div>
 
-            <div class="form-group">
-                <label id="m-l-comm">Коментар до замовлення</label>
-                <textarea id="orderComment" rows="3" placeholder="Побажання до замовлення, оплати тощо..."></textarea>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button type="button" class="btn-continue" style="flex: 1; margin-top: 0;" onclick="closeModal('orderModal')" id="m-btn-close">Закрити</button>
-                <button type="submit" class="btn-submit" style="flex: 2;" id="m-btn-send">📤 Надіслати замовлення</button>
-            </div>
-            <div id="orderStatus" style="margin-top: 16px; text-align: center; font-weight: 600; font-size: 14px;"></div>
-        </form>
+                    <div class="form-group" id="npWarehouseGroup">
+                        <label for="orderWarehouseSelect" id="m-l-warehouse">Відділення / поштомат Нової пошти *</label>
+                        <select id="orderWarehouseSelect" disabled>
+                            <option value="">Спочатку оберіть місто або село</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="altAddressGroup" style="display: none;">
+                        <label for="orderAltAddress" id="m-l-alt-addr">Індекс та адреса отримувача *</label>
+                        <input type="text" id="orderAltAddress" placeholder="Напр.: 66700, смт Захарівка, вул. Центральна, 10">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="m-l-comm">Коментар до замовлення</label>
+                    <textarea id="orderComment" rows="3" placeholder="Побажання до замовлення, оплати тощо..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="m-btn-send">📤 Надіслати замовлення</button>
+                <div id="orderStatus" style="margin-top: 16px; text-align: center; font-weight: 600; font-size: 14px;"></div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -1076,6 +1191,8 @@
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let npSearchTimer = null;
+    let activeCartStep = 1;
+    let stepTransitionTimer = null;
 
     function openDrawer() {
         document.getElementById('sideDrawer').classList.add('open');
@@ -1223,6 +1340,7 @@
             delD1: "<b>Нова Пошта</b> (щоденна відправка за тарифами перевізника).",
             delD2: "<b>Укрпошта</b> (доставка 2–4 дні).",
             delD3: "<b>Самовивіз</b> (з нашої пасіки за попередньою домовленістю).",
+            delPromoBadge: "Акція",
             delFree: "✨ Безкоштовна доставка замовлень на суму від 1000 грн!",
             delPTitle: "💳 Варіанти оплати",
             delP1: "<b>Visa / Mastercard</b> (оплата онлайн або на банківський рахунок).",
@@ -1254,7 +1372,8 @@
             ftAdr: "Адреса", ftAdrT: "с. Захарівка, Роздільнянський р-н, Одеська обл.",
             ftCopy: "© 2026 Медова Пасіка. Всі права захищені.",
             prTitle: "🔒 Конфіденційність та права", prBtnClose: "Закрити",
-            mTitle: "📋 Кошик замовлення", mTot: "Загальна сума:",
+            mTitle: "🛒 Кошик", mCheckoutTitle: "📋 Оформлення замовлення", mTot: "Загальна сума:",
+            btnGoToCheckout: "Оформити замовлення", btnContinueShopping: "Продовжити покупку", btnBackToCart: "← Назад до кошика",
             mLName: "ПІБ (Прізвище та Ім'я) *", mLPhone: "Номер телефону *",
             mLEmail: "Email (необов'язково)",
             mLDelivery: "Спосіб доставки *",
@@ -1269,7 +1388,6 @@
             mLAltAddr: "Індекс та адреса отримувача *",
             mPhAltAddr: "Індекс, вулиця, будинок, квартира",
             mLComm: "Коментар до замовлення",
-            mBtnClose: "Закрити",
             mBtnSend: "📤 Надіслати замовлення",
             mPhName: "Іванов Іван", mPhPhone: "+380XXXXXXXXXX", mPhEmail: "example@gmail.com",
             mPhComm: "Побажання до замовлення, оплати тощо..."
@@ -1323,6 +1441,7 @@
             delD1: "<b>Новая Почта</b> (ежедневная отправка по тарифам перевозчика).",
             delD2: "<b>Укрпочта</b> (доставка 2–4 дня).",
             delD3: "<b>Самовывоз</b> (с нашей пасеки по предварительной договоренности).",
+            delPromoBadge: "Акция",
             delFree: "✨ Бесплатная доставка заказов на сумму от 1000 грн!",
             delPTitle: "💳 Варианты оплаты",
             delP1: "<b>Visa / Mastercard</b> (оплата онлайн или на банковский счёт).",
@@ -1354,7 +1473,8 @@
             ftAdr: "Адрес", ftAdrT: "с. Захаровка, Раздельнянский р-н, Одесская обл.",
             ftCopy: "© 2026 Медовая Пасека. Все права защищены.",
             prTitle: "🔒 Конфиденциальность и права", prBtnClose: "Закрыть",
-            mTitle: "📋 Корзина заказа", mTot: "Общая сумма:",
+            mTitle: "🛒 Корзина", mCheckoutTitle: "📋 Оформление заказа", mTot: "Общая сумма:",
+            btnGoToCheckout: "Оформить заказ", btnContinueShopping: "Продолжить покупку", btnBackToCart: "← Назад к корзине",
             mLName: "ФИО (Фамилия и Имя) *", mLPhone: "Номер телефона *",
             mLEmail: "Email (необязательно)",
             mLDelivery: "Способ доставки *",
@@ -1369,7 +1489,6 @@
             mLAltAddr: "Индекс и адрес получателя *",
             mPhAltAddr: "Индекс, улица, дом, квартира",
             mLComm: "Комментарий к заказу",
-            mBtnClose: "Закрыть",
             mBtnSend: "📤 Отправить заказ",
             mPhName: "Иванов Иван", mPhPhone: "+380XXXXXXXXXX", mPhEmail: "example@gmail.com",
             mPhComm: "Пожелания к заказу, оплате и т.д..."
@@ -1469,6 +1588,7 @@
         document.getElementById('del-d1').innerHTML = t.delD1;
         document.getElementById('del-d2').innerHTML = t.delD2;
         document.getElementById('del-d3').innerHTML = t.delD3;
+        document.getElementById('del-promo-badge').textContent = t.delPromoBadge;
         document.getElementById('del-free').textContent = t.delFree;
         document.getElementById('del-p-title').textContent = t.delPTitle;
         document.getElementById('del-p1').innerHTML = t.delP1;
@@ -1519,7 +1639,11 @@
         renderPrivacyText(lang);
 
         document.getElementById('m-title').textContent = t.mTitle;
+        document.getElementById('m-checkout-title').textContent = t.mCheckoutTitle;
         document.getElementById('m-tot').textContent = t.mTot;
+        document.getElementById('btnGoToCheckout').textContent = t.btnGoToCheckout;
+        document.getElementById('btnContinueShopping').textContent = t.btnContinueShopping;
+        document.getElementById('btnBackToCart').textContent = t.btnBackToCart;
         document.getElementById('m-l-name').textContent = t.mLName;
         document.getElementById('m-l-phone').textContent = t.mLPhone;
         document.getElementById('m-l-email').textContent = t.mLEmail;
@@ -1534,7 +1658,6 @@
         document.getElementById('m-l-alt-addr').textContent = t.mLAltAddr;
         document.getElementById('orderAltAddress').placeholder = t.mPhAltAddr;
         document.getElementById('m-l-comm').textContent = t.mLComm;
-        document.getElementById('m-btn-close').textContent = t.mBtnClose;
         document.getElementById('m-btn-send').textContent = t.mBtnSend;
         document.getElementById('orderName').placeholder = t.mPhName;
         document.getElementById('orderContact').placeholder = t.mPhPhone;
@@ -1549,6 +1672,9 @@
         document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
         document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
         updateCartUI();
+        if (document.getElementById('orderModal').classList.contains('active')) {
+            renderCartStep1Content();
+        }
         loadReviewsFromSupabase();
     }
 
@@ -1598,7 +1724,7 @@
 
         localStorage.setItem('medova_cart', JSON.stringify(cart));
         updateCartUI();
-        openCartModal();
+        openCartModal(1);
     }
 
     function updateCartUI() {
@@ -1610,18 +1736,59 @@
         }
     }
 
-    function openCartModal() {
+    function setStepImmediate(stepNum) {
+        clearTimeout(stepTransitionTimer);
+        activeCartStep = stepNum;
+        const step1 = document.getElementById('cartStep1');
+        const step2 = document.getElementById('cartStep2');
+        if (!step1 || !step2) return;
+
+        if (stepNum === 2) {
+            step1.style.display = 'none';
+            step1.classList.remove('is-fading');
+            step2.style.display = 'block';
+            step2.classList.remove('is-fading');
+        } else {
+            step2.style.display = 'none';
+            step2.classList.remove('is-fading');
+            step1.style.display = 'block';
+            step1.classList.remove('is-fading');
+        }
+    }
+
+    function switchCartStep(targetStep) {
+        if (targetStep === 2 && cart.length === 0) return;
+        const currentEl = activeCartStep === 1 ? document.getElementById('cartStep1') : document.getElementById('cartStep2');
+        const nextEl = targetStep === 1 ? document.getElementById('cartStep1') : document.getElementById('cartStep2');
+        if (!currentEl || !nextEl || activeCartStep === targetStep) return;
+
+        clearTimeout(stepTransitionTimer);
+        activeCartStep = targetStep;
+        currentEl.classList.add('is-fading');
+
+        stepTransitionTimer = setTimeout(() => {
+            currentEl.style.display = 'none';
+            currentEl.classList.remove('is-fading');
+            nextEl.style.display = 'block';
+            nextEl.classList.add('is-fading');
+            void nextEl.offsetWidth;
+            nextEl.classList.remove('is-fading');
+        }, 180);
+    }
+
+    function renderCartStep1Content() {
         const list = document.getElementById('cartItemsList');
         const sumEl = document.getElementById('cartTotalSum');
         const progressBox = document.getElementById('deliveryProgressBox');
-        const orderForm = document.querySelector('#orderModal form');
-        if (orderForm) orderForm.style.display = cart.length === 0 ? 'none' : 'block';
+        const checkoutBtn = document.getElementById('btnGoToCheckout');
 
         if (cart.length === 0) {
             list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
             sumEl.textContent = '0';
             progressBox.style.display = 'none';
+            if (checkoutBtn) checkoutBtn.style.display = 'none';
         } else {
+            if (checkoutBtn) checkoutBtn.style.display = 'block';
             let html = '';
             let total = 0;
             cart.forEach((item, idx) => {
@@ -1655,6 +1822,11 @@
                 progressBox.style.borderColor = 'var(--primary)';
             }
         }
+    }
+
+    function openCartModal(startStep = 1) {
+        renderCartStep1Content();
+        setStepImmediate(startStep);
         document.getElementById('orderModal').classList.add('active');
     }
 
@@ -1662,7 +1834,10 @@
         cart.splice(idx, 1);
         localStorage.setItem('medova_cart', JSON.stringify(cart));
         updateCartUI();
-        openCartModal();
+        renderCartStep1Content();
+        if (cart.length === 0 && activeCartStep === 2) {
+            setStepImmediate(1);
+        }
     }
 
     /* ===== ОТЗЫВЫ В SUPABASE ===== */
@@ -1751,11 +1926,18 @@
 
             if (error) throw error;
 
-            const tgText = `<b>⭐ Новий відгук на сайті!</b>\n\n` +
-                           `<b>🍯 Товар:</b> ${escapeHtml(productName)}\n` +
-                           `<b>👤 Автор:</b> ${escapeHtml(authorName)}\n` +
-                           `<b>🌟 Оцінка:</b> ${'★'.repeat(rating)} (${rating}/5)\n` +
-                           `<b>💬 Відгук:</b> ${escapeHtml(comment)}\n\n` +
+            const tgText = `<b>⭐ Новий відгук на сайті!</b>
+
+` +
+                           `<b>🍯 Товар:</b> ${escapeHtml(productName)}
+` +
+                           `<b>👤 Автор:</b> ${escapeHtml(authorName)}
+` +
+                           `<b>🌟 Оцінка:</b> ${'★'.repeat(rating)} (${rating}/5)
+` +
+                           `<b>💬 Відгук:</b> ${escapeHtml(comment)}
+
+` +
                            `<i>Щоб опублікувати на сайті, поставте is_approved = true у таблиці reviews в Supabase.</i>`;
 
             await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -1978,7 +2160,8 @@
             let sub = i.price * i.qty;
             total += sub;
             return `• ${i.name} — ${i.qty} шт. (${sub} ₴)`;
-        }).join('\n');
+        }).join('
+');
 
         const fullItemsStr = cart.map(item => `${item.name} (${item.qty} шт.)`).join(', ');
 
@@ -2006,16 +2189,30 @@
                 throw new Error("Supabase error");
             }
 
-            const text = `<b>🛒 Нове замовлення з сайту!</b>\n\n` +
-                         `<b>👤 ПІБ:</b> ${name}\n` +
-                         `<b>📞 Телефон:</b> ${contact}\n` +
-                         (email ? `<b>📧 Email:</b> ${email}\n` : '') +
-                         `<b>🚚 Доставка:</b> ${deliveryText}\n` +
-                         (cityText ? `<b>📍 Місто / село:</b> ${cityText}\n` : '') +
-                         (deliveryCode === 'nova_poshta' && warehouseText ? `<b>🏢 Відділення НП:</b> ${warehouseText}\n` : '') +
-                         (deliveryCode === 'ukr_poshta' && altAddressText ? `<b>✉️ Адреса Укрпошти:</b> ${altAddressText}\n` : '') +
-                         `<b>💬 Коментар:</b> ${comm || 'Відсутній'}\n\n` +
-                         `<b>📦 Товари:</b>\n${itemsList}\n\n` +
+            const text = `<b>🛒 Нове замовлення з сайту!</b>
+
+` +
+                         `<b>👤 ПІБ:</b> ${name}
+` +
+                         `<b>📞 Телефон:</b> ${contact}
+` +
+                         (email ? `<b>📧 Email:</b> ${email}
+` : '') +
+                         `<b>🚚 Доставка:</b> ${deliveryText}
+` +
+                         (cityText ? `<b>📍 Місто / село:</b> ${cityText}
+` : '') +
+                         (deliveryCode === 'nova_poshta' && warehouseText ? `<b>🏢 Відділення НП:</b> ${warehouseText}
+` : '') +
+                         (deliveryCode === 'ukr_poshta' && altAddressText ? `<b>✉️ Адреса Укрпошти:</b> ${altAddressText}
+` : '') +
+                         `<b>💬 Коментар:</b> ${comm || 'Відсутній'}
+
+` +
+                         `<b>📦 Товари:</b>
+${itemsList}
+
+` +
                          `💰 <b>Загальна сума:</b> <b>${total} ₴</b>`;
 
             const resUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -2037,6 +2234,7 @@
                 setTimeout(() => {
                     closeModal('orderModal');
                     statusDiv.innerText = '';
+                    setStepImmediate(1);
                 }, 2500);
             } else {
                 throw new Error("Telegram error");
@@ -2059,9 +2257,13 @@
         statusDiv.innerText = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
 
         try {
-            const text = `<b>📞 Замовлення дзвінка з меню!</b>\n\n` +
-                         `<b>👤 Ім'я:</b> ${name}\n` +
-                         `<b>📞 Телефон:</b> ${phone}\n` +
+            const text = `<b>📞 Замовлення дзвінка з меню!</b>
+
+` +
+                         `<b>👤 Ім'я:</b> ${name}
+` +
+                         `<b>📞 Телефон:</b> ${phone}
+` +
                          `<b>🕒 Коли передзвонити / причина:</b> ${whenReason || '—'}`;
 
             const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -2104,9 +2306,13 @@
         statusDiv.innerText = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
 
         try {
-            const text = `<b>💬 Запит на консультацію бджоляра!</b>\n\n` +
-                         `<b>👤 Ім'я:</b> ${name}\n` +
-                         `<b>📞 Телефон:</b> ${phone}\n` +
+            const text = `<b>💬 Запит на консультацію бджоляра!</b>
+
+` +
+                         `<b>👤 Ім'я:</b> ${name}
+` +
+                         `<b>📞 Телефон:</b> ${phone}
+` +
                          `<b>❓ Запитання:</b> ${question || '—'}`;
 
             const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
