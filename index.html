@@ -1171,6 +1171,65 @@
     let npSearchTimer = null;
     let currentCartStep = 1;
 
+    /* ===== ИДЕНТИФИКАТОР КОРЗИНЫ ДЛЯ СИНХРОНИЗАЦИИ С SUPABASE ===== */
+    function getCartSessionId() {
+        let sid = localStorage.getItem('medova_cart_session_id');
+        if (!sid) {
+            sid = 'cart_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+            localStorage.setItem('medova_cart_session_id', sid);
+        }
+        return sid;
+    }
+
+    async function syncCartToSupabase(cartItems) {
+        try {
+            const sessionId = getCartSessionId();
+            const totalQty = cartItems.reduce((sum, i) => sum + i.qty, 0);
+            const totalSum = cartItems.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+            const { error } = await supabaseClient
+                .from('cart_items')
+                .upsert([{
+                    session_id: sessionId,
+                    items: cartItems,
+                    total_qty: totalQty,
+                    total_price: totalSum,
+                    updated_at: new Date().toISOString()
+                }], { onConflict: 'session_id' });
+
+            if (error) {
+                console.warn('Supabase cart_items sync notice:', error.message || error);
+            }
+        } catch (err) {
+            console.warn('Supabase cart_items sync error:', err);
+        }
+    }
+
+    async function loadCartFromSupabaseIfLocalEmpty() {
+        try {
+            const localRaw = localStorage.getItem('medova_cart');
+            const localCart = localRaw ? JSON.parse(localRaw) : [];
+            if (Array.isArray(localCart) && localCart.length > 0) return;
+
+            const sessionId = localStorage.getItem('medova_cart_session_id');
+            if (!sessionId) return;
+
+            const { data, error } = await supabaseClient
+                .from('cart_items')
+                .select('items')
+                .eq('session_id', sessionId)
+                .maybeSingle();
+
+            if (!error && data && Array.isArray(data.items) && data.items.length > 0) {
+                cart = data.items;
+                localStorage.setItem('medova_cart', JSON.stringify(cart));
+                updateCartUI();
+            }
+        } catch (err) {
+            console.warn('Supabase cart load notice:', err);
+        }
+    }
+
     /* ===== ТАЙМЕР НА 24 ЧАСА С АВТОПЕРЕЗАПУСКОМ НА СУТКИ ===== */
     const DAY_MS = 24 * 60 * 60 * 1000;
     const CANDLE_TIMER_STORAGE_KEY = 'medova_candle_promo_deadline';
@@ -1698,6 +1757,9 @@
         document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
         updateCandleTimers();
         updateCartUI();
+        if (document.getElementById('orderModal').classList.contains('active') && currentCartStep === 1) {
+            renderCartStep1();
+        }
         loadReviewsFromSupabase();
     }
 
@@ -1730,6 +1792,13 @@
 
     let cart = JSON.parse(localStorage.getItem('medova_cart')) || [];
 
+    function saveCartState(nextCart) {
+        cart = nextCart;
+        localStorage.setItem('medova_cart', JSON.stringify(cart));
+        updateCartUI();
+        syncCartToSupabase(cart);
+    }
+
     function addToCart(nameKey, basePrice, defaultSize, btnEl) {
         const card = btnEl.closest('.product-card');
         let price = basePrice;
@@ -1741,12 +1810,12 @@
         }
 
         const fullName = `${nameKey} (${size})`;
-        const existing = cart.find(i => i.name === fullName);
+        const nextCart = [...cart];
+        const existing = nextCart.find(i => i.name === fullName);
         if (existing) { existing.qty += 1; } 
-        else { cart.push({ name: fullName, price: price, qty: 1 }); }
+        else { nextCart.push({ name: fullName, price: price, qty: 1 }); }
 
-        localStorage.setItem('medova_cart', JSON.stringify(cart));
-        updateCartUI();
+        saveCartState(nextCart);
         openCartModal(1);
     }
 
@@ -1852,14 +1921,14 @@
 
     function changeCartQty(idx, delta) {
         if (!cart[idx]) return;
-        const nextQty = cart[idx].qty + delta;
+        const nextCart = [...cart];
+        const nextQty = nextCart[idx].qty + delta;
         if (nextQty <= 0) {
-            cart.splice(idx, 1);
+            nextCart.splice(idx, 1);
         } else {
-            cart[idx].qty = nextQty;
+            nextCart[idx] = { ...nextCart[idx], qty: nextQty };
         }
-        localStorage.setItem('medova_cart', JSON.stringify(cart));
-        updateCartUI();
+        saveCartState(nextCart);
         if (cart.length === 0) {
             goToCartStep(1);
         } else {
@@ -1868,9 +1937,9 @@
     }
 
     function removeFromCart(idx) {
-        cart.splice(idx, 1);
-        localStorage.setItem('medova_cart', JSON.stringify(cart));
-        updateCartUI();
+        const nextCart = [...cart];
+        nextCart.splice(idx, 1);
+        saveCartState(nextCart);
         if (cart.length === 0) {
             goToCartStep(1);
         } else {
@@ -2243,9 +2312,7 @@
             if (data.ok) {
                 statusDiv.style.color = '#059669';
                 statusDiv.innerText = currentLang === 'uk' ? '✅ Замовлення успішно відправлено та збережено!' : '✅ Заказ успешно отправлен и сохранен!';
-                cart = [];
-                localStorage.setItem('medova_cart', JSON.stringify(cart));
-                updateCartUI();
+                saveCartState([]);
                 e.target.reset();
                 document.getElementById('npAddressFields').style.display = 'none';
                 setTimeout(() => {
@@ -2355,6 +2422,7 @@
         loadReviewsFromSupabase();
         updateCandleTimers();
         setInterval(updateCandleTimers, 1000);
+        loadCartFromSupabaseIfLocalEmpty();
 
         /* Запасной красивый фон для фото, которые не загрузились */
         document.querySelectorAll('.product-img, .about-img').forEach(el => {
