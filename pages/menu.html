@@ -1,1 +1,243 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навігаційне меню | Медова Пасіка</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAFAF7;
+            --card-bg: #FFFFFF;
+            --primary: #D97706;
+            --primary-dark: #92400E;
+            --accent: #F59E0B;
+            --text: #1C1917;
+            --text-muted: #78716C;
+            --border: #E7E5E4;
+            --radius: 20px;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.5; padding-top: 100px; }
+
+        /* Шапка та меню */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            background: rgba(250, 250, 247, 0.9); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 12px 0;
+        }
+        .nav-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 20px; font-weight: 800; color: var(--primary-dark); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .dropdown { position: relative; display: inline-block; }
+        .drop-btn { text-decoration: none; color: var(--text-muted); font-size: 14px; font-weight: 600; transition: color 0.2s; padding: 8px 0; display: inline-block; cursor: pointer; }
+        .drop-btn:hover { color: var(--primary); }
+
+        .dropdown-content {
+            display: none; position: absolute; top: 100%; left: 0; background-color: #fff;
+            min-width: 230px; box-shadow: 0 12px 30px rgba(0,0,0,0.1); border: 1px solid var(--border);
+            border-radius: 14px; padding: 8px 0; z-index: 200;
+        }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        .dropdown-content a {
+            color: var(--text); padding: 9px 16px; text-decoration: none; display: block;
+            font-size: 13px; font-weight: 600; transition: background 0.2s;
+        }
+        .dropdown-content a:hover { background-color: #FEF3C7; color: var(--primary-dark); }
+
+        .schedule-box { padding: 14px 16px; min-width: 240px; right: 0; left: auto; font-size: 13px; color: var(--text); }
+
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .btn-auth, .lang-btn {
+            background: #fff; border: 1px solid var(--border); padding: 6px 14px; border-radius: 30px;
+            font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.2s;
+        }
+        .btn-auth:hover, .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .lang-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* Мобільне меню */
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text); }
+        .mobile-menu {
+            display: none; flex-direction: column; background: #fff; position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 1px solid var(--border); box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            padding: 16px 20px; gap: 10px; max-height: 85vh; overflow-y: auto;
+        }
+        .mobile-menu.active { display: flex; }
+        .mobile-menu > a, .mob-acc-title {
+            text-decoration: none; color: var(--text); font-size: 15px; font-weight: 700;
+            padding: 10px 0; border-bottom: 1px solid #f3f3f0; cursor: pointer;
+        }
+        .mob-sub-list { display: none; flex-direction: column; padding-left: 14px; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid #f3f3f0; }
+        .mob-sub-list.open { display: flex; }
+        .mob-sub-list a { text-decoration: none; color: var(--text-muted); font-size: 14px; font-weight: 600; }
+        .mob-schedule { background: #FFFBEB; padding: 10px 12px; border-radius: 10px; font-size: 13px; color: var(--primary-dark); margin-top: 4px; }
+
+        /* Демо-контент сторінки */
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; text-align: center; }
+        .demo-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .demo-card h2 { font-size: 24px; color: var(--primary-dark); margin-bottom: 12px; }
+        .demo-card p { color: var(--text-muted); font-size: 15px; }
+
+        /* Модальне вікно входу */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal.active { display: flex; }
+        .modal-box { background: #fff; border-radius: var(--radius); padding: 30px; max-width: 450px; width: 90%; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; }
+        .btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; padding: 13px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+
+        @media(max-width: 900px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            #authBtn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка та Меню -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">🍯 <span id="l-logo">Медова Пасіка</span></a>
+
+            <!-- Десктопне меню -->
+            <nav class="nav-links">
+                <!-- Каталог з випадаючим списком усіх продуктів бджільництва -->
+                <div class="dropdown">
+                    <a href="/#catalog" class="drop-btn" id="m-cat">Каталог ▾</a>
+                    <div class="dropdown-content">
+                        <a href="/#catalog">📦 Усі товари</a>
+                        <a href="/pages/sunflower.html">🌻 Мед соняшниковий</a>
+                        <a href="/pages/may.html">🌿 Мед травневий</a>
+                        <a href="/pages/walnut.html">🥜 Мед з волоським горіхом</a>
+                        <a href="/#catalog">🍯 Стільниковий мед</a>
+                        <a href="/pages/candles.html">🕯️ Свічки з вощини</a>
+                        <a href="/pages/propolis.html">🛡️ Прополіс</a>
+                        <a href="/pages/pollen.html">⚡ Бджолиний пилок</a>
+                    </div>
+                </div>
+
+                <a href="/#catalog" id="m-promo" style="color: #EF4444; text-decoration: none; font-size: 14px; font-weight: 600;">🔥 Акції</a>
+
+                <!-- Про нас / Про пасіку -->
+                <div class="dropdown">
+                    <a href="/#about" class="drop-btn" id="m-about">Про нас ▾</a>
+                    <div class="dropdown-content">
+                        <a href="/#about">👨‍👩‍👧‍👦 Про нашу родину</a>
+                        <a href="/#about">🐝 Про пасіку (с. Захарівка)</a>
+                    </div>
+                </div>
+
+                <a href="/#contacts" id="m-cont" style="text-decoration: none; color: var(--text-muted); font-size: 14px; font-weight: 600;">Контакти</a>
+
+                <!-- Час роботи -->
+                <div class="dropdown">
+                    <span class="drop-btn" id="m-hours">🕒 Час роботи ▾</span>
+                    <div class="dropdown-content schedule-box">
+                        <p><strong>Прийом замовлень:</strong></p>
+                        <p>Пн – Нд: 08:00 – 20:00</p>
+                        <p style="font-size: 12px; color: #D97706; margin-top: 4px;">Відправка Новою Поштою щодня!</p>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Кнопки дій в шапці -->
+            <div class="header-actions">
+                <button class="btn-auth" id="authBtn" onclick="openAuthModal()">👤 Вхід / Реєстрація</button>
+                <div style="display: flex; gap: 4px;">
+                    <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
+                    <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
+                </div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+
+        <!-- Мобільне меню (акордеон) -->
+        <div class="mobile-menu" id="mobileMenu">
+            <button class="btn-auth" style="width: 100%; text-align: left; padding: 10px 14px;" onclick="toggleMobileMenu(); openAuthModal();">👤 Вхід / Реєстрація</button>
+            
+            <div class="mob-acc-title" onclick="toggleMobSub('mobCatList')">📦 Каталог продукції ▾</div>
+            <div class="mob-sub-list" id="mobCatList">
+                <a href="/#catalog" onclick="toggleMobileMenu()">• Усі товари</a>
+                <a href="/pages/sunflower.html" onclick="toggleMobileMenu()">• Мед соняшниковий</a>
+                <a href="/pages/may.html" onclick="toggleMobileMenu()">• Мед травневий</a>
+                <a href="/pages/walnut.html" onclick="toggleMobileMenu()">• Мед з волоським горіхом</a>
+                <a href="/#catalog" onclick="toggleMobileMenu()">• Стільниковий мед</a>
+                <a href="/pages/candles.html" onclick="toggleMobileMenu()">• Свічки з вощини</a>
+                <a href="/pages/propolis.html" onclick="toggleMobileMenu()">• Прополіс</a>
+                <a href="/pages/pollen.html" onclick="toggleMobileMenu()">• Бджолиний пилок</a>
+            </div>
+
+            <a href="/#catalog" onclick="toggleMobileMenu()" style="color: #EF4444;">🔥 Акції та набори</a>
+            <a href="/#about" onclick="toggleMobileMenu()">🐝 Про нас / Про пасіку</a>
+            <a href="/#contacts" onclick="toggleMobileMenu()">📞 Контакти</a>
+            
+            <div class="mob-schedule">
+                <strong>🕒 Час роботи:</strong> Пн–Нд з 08:00 до 20:00 (без вихідних)
+            </div>
+        </div>
+    </header>
+
+    <!-- Основний вміст сторінки-прикладу -->
+    <div class="container">
+        <div class="demo-card">
+            <h2>Окремий файл меню (menu.html)</h2>
+            <p>Цей файл містить повну навігаційну структуру для вашого сайту. Ви можете підключити його через iframe або інтегрувати готові блоки у свої сторінки index.html та /pages/...</p>
+        </div>
+    </div>
+
+    <!-- Модальне вікно Вхід / Реєстрація -->
+    <div class="modal" id="authModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeAuthModal()">✕</button>
+            <h3 style="margin-bottom: 20px; color: var(--primary-dark);">👤 Вхід в акаунт</h3>
+            <form onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label>Номер телефону</label>
+                    <input type="tel" required placeholder="+380...">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-submit">Увійти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Скрипти керування -->
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+
+        function toggleMobSub(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            alert("Успішний вхід!");
+            closeAuthModal();
+        }
+
+        function setLang(lang) {
+            document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
+            document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
+        }
+    </script>
+</body>
+</html>
