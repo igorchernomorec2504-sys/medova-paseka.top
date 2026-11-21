@@ -25,6 +25,9 @@
             --primary: #D97706;
             --primary-dark: #92400E;
             --accent: #F59E0B;
+            --promo-red: #DC2626;
+            --promo-red-bg: #FEF2F2;
+            --promo-red-border: #FECACA;
             --text: #2B1D0E;
             --text-muted: #7A6A52;
             --border: #E8DCC8;
@@ -151,18 +154,41 @@
         .article-box p { color: var(--text-muted); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
         .article-box p:last-child { margin-bottom: 0; }
 
-        /* ===== МОДАЛКА ===== */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+        /* ===== МОДАЛКА І ДВОХЕТАПНИЙ КОШИК ===== */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 16px; }
         .modal.active { display: flex; }
-        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 32px; max-width: 480px; width: 92%; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 30px; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
         .close-modal { position: absolute; top: 18px; right: 18px; background: var(--bg); border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; }
-        .form-group { margin-bottom: 14px; }
+        .close-modal:hover { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
+
+        .cart-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+        .cart-step-pill { padding: 8px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; text-align: center; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); transition: .2s; }
+        .cart-step-pill.active { background: #FFFBEB; border-color: var(--primary); color: var(--primary-dark); }
+        .cart-step-pill.done { background: #ECFDF5; border-color: #10B981; color: #047857; }
+
+        .promo-red-txt { color: var(--promo-red); font-weight: 800; }
+        .mprog { padding: 11px 12px; border-radius: 12px; background: var(--promo-red-bg); border: 1px solid var(--promo-red-border); margin-bottom: 16px; font-size: 13px; font-weight: 700; color: var(--promo-red); text-align: center; }
+        .mprog.done { background: #ECFDF5; border-color: #A7F3D0; color: #047857; }
+
+        .qty-mini { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+        .qty-btn { width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: .15s; }
+        .qty-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
+
+        .form-group { margin-bottom: 14px; position: relative; }
         .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 12px;
-            font-size: 14px; background: var(--bg); outline: none; font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px; background: var(--bg); outline: none; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: #fff; }
+        .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A6A52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+        .np-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; margin-top: 4px; max-height: 210px; overflow-y: auto; z-index: 1200; box-shadow: 0 10px 25px rgba(43, 29, 14, 0.14); display: none; }
+        .np-dropdown.open { display: block; }
+        .np-option { padding: 10px 14px; font-size: 14px; cursor: pointer; border-bottom: 1px solid rgba(232, 220, 200, 0.45); color: var(--text); transition: background 0.15s; }
+        .np-option:last-child { border-bottom: none; }
+        .np-option:hover { background: #FFFBEB; color: var(--primary-dark); }
+
         .btn-submit { width: 100%; background: #059669; color: #fff; border: none; padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; }
         .btn-continue { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; }
 
@@ -212,7 +238,7 @@
                 <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
                 <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
             </div>
-            <button class="btn-cart-header" onclick="openCartModal()" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
+            <button class="btn-cart-header" onclick="openCartModal(1)" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
         </div>
     </div>
 </header>
@@ -299,35 +325,77 @@
 <div class="modal" id="orderModal">
     <div class="modal-box">
         <button class="close-modal" onclick="closeModal('orderModal')">✕</button>
-        <h3 id="m-title" style="margin-bottom: 18px; font-size: 26px;">📋 Кошик замовлення</h3>
-        <div id="cartItemsList" style="margin-bottom: 18px; max-height: 180px; overflow-y: auto;"></div>
-        <div style="background: var(--bg); padding: 12px 14px; border-radius: 12px; margin-bottom: 18px; text-align: right; font-weight: 700; font-size: 18px;">
-            <span id="m-tot" style="font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-muted);">Загальна сума:</span> <span id="cartTotalSum" style="color: var(--primary);">0</span> ₴
+        <h3 id="m-title" style="margin-bottom: 14px; font-size: 26px;">📋 Кошик замовлення</h3>
+
+        <div class="cart-steps" id="cartStepsBar">
+            <div class="cart-step-pill active" id="stepPill1">1. Товари</div>
+            <div class="cart-step-pill" id="stepPill2">2. Оформлення</div>
         </div>
-        <form onsubmit="sendOrderToTelegram(event)">
+
+        <!-- ЕТАП 1 -->
+        <div id="cartStep1">
+            <div id="cartItemsList" style="margin-bottom: 14px; max-height: 210px; overflow-y: auto;"></div>
+            <div class="mprog" id="deliveryProgressBox"></div>
+            <div style="background: var(--bg); padding: 12px 14px; border-radius: 12px; margin-bottom: 16px; text-align: right; font-weight: 700; font-size: 18px;">
+                <span id="m-tot" style="font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-muted);">Загальна сума:</span> <span id="cartTotalSum" style="color: var(--primary);">0</span> ₴
+            </div>
+            <div id="cartStep1Actions" style="display:flex; gap:10px;">
+                <button type="button" class="btn-continue" style="flex:1;" onclick="closeModal('orderModal')" id="m-btn-close">Закрити</button>
+                <button type="button" class="btn-submit" style="flex:2; background: var(--primary);" id="m-btn-next" onclick="goToCheckoutStep(2)">Далі до оформлення →</button>
+            </div>
+        </div>
+
+        <!-- ЕТАП 2 -->
+        <form id="orderForm" style="display:none;" onsubmit="sendOrderToTelegram(event)">
+            <div style="background: var(--bg); padding: 10px 14px; border-radius: 12px; margin-bottom: 14px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:15px;">
+                <span id="m-tot-step2" style="font-size:13px; color:var(--text-muted);">До сплати за товари:</span>
+                <span><span id="step2TotalSum" style="color: var(--primary); font-size:19px;">0</span> ₴</span>
+            </div>
             <div class="form-group">
                 <label id="m-l-name">ПІБ *</label>
                 <input type="text" id="orderName" required placeholder="Іванов Іван">
             </div>
             <div class="form-group">
                 <label id="m-l-phone">Номер телефону *</label>
-                <input type="tel" id="orderContact" required placeholder="+380XXXXXXXXXX">
+                <input type="tel" id="orderContact" required placeholder="+380XXXXXXXXX">
             </div>
             <div class="form-group">
                 <label id="m-l-delivery">Спосіб доставки *</label>
-                <select id="orderDelivery" required>
+                <select id="orderDelivery" required onchange="onDeliveryMethodChange()">
                     <option value="" disabled selected id="del-opt-default">Оберіть спосіб доставки</option>
                     <option value="nova_poshta" id="del-opt-np">Нова Пошта</option>
                     <option value="ukr_poshta" id="del-opt-up">Укрпошта</option>
                     <option value="pickup" id="del-opt-pickup">Самовивіз</option>
                 </select>
             </div>
+
+            <div id="npAddressFields" style="display: none;">
+                <div class="form-group" style="position: relative;">
+                    <label for="orderCityInput" id="m-l-city">Місто / село *</label>
+                    <input type="text" id="orderCityInput" autocomplete="off" placeholder="Почніть вводити назву (напр. Захарівка)...">
+                    <input type="hidden" id="orderCityRef">
+                    <div class="np-dropdown" id="npCityDropdown"></div>
+                </div>
+
+                <div class="form-group" id="npWarehouseGroup">
+                    <label for="orderWarehouseSelect" id="m-l-wh">Відділення / поштомат Нової пошти *</label>
+                    <select id="orderWarehouseSelect" disabled>
+                        <option value="" id="wh-opt-default">Спочатку оберіть місто або село</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="altAddressGroup" style="display: none;">
+                    <label for="orderAltAddress" id="m-l-addr">Індекс та адреса отримувача *</label>
+                    <input type="text" id="orderAltAddress" placeholder="Напр.: 66700, смт Захарівка, вул. Центральна, 10">
+                </div>
+            </div>
+
             <div class="form-group">
                 <label id="m-l-comm">Коментар</label>
-                <textarea id="orderComment" rows="2" placeholder="Номер відділення або побажання..."></textarea>
+                <textarea id="orderComment" rows="2" placeholder="Побажання або зручний час для дзвінка..."></textarea>
             </div>
             <div style="display:flex; gap:10px;">
-                <button type="button" class="btn-continue" style="flex:1;" onclick="closeModal('orderModal')" id="m-btn-close">Закрити</button>
+                <button type="button" class="btn-continue" style="flex:1;" onclick="goToCheckoutStep(1)" id="m-btn-back">← Назад</button>
                 <button type="submit" class="btn-submit" style="flex:2;" id="m-btn-send">📤 Надіслати замовлення</button>
             </div>
             <div id="orderStatus" style="margin-top:12px; text-align:center; font-weight:700; font-size:13px;"></div>
@@ -350,9 +418,18 @@
     const CHAT_ID = '1763769244';
     const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
     const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
+    const NP_API_KEY = 'eb79541df8160123e2632d92e46171f1';
+    const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
+
+    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+        : null;
 
     let currentLang = 'uk';
-    let cart = JSON.parse(localStorage.getItem('medova_cart')) || [];
+    let cart = [];
+    let npSearchTimer = null;
+
+    try { cart = JSON.parse(localStorage.getItem('medova_cart')) || []; } catch(e){ cart = []; }
 
     const dict = {
         uk: {
@@ -372,11 +449,16 @@
             artP1: "Волоський горіх у поєднанні з натуральним медом — це приємний, м'який і водночас ситний смак без нудотної солодкості. Хрумкі горіхові ядра гармонійно доповнюють густу медову текстуру, тож ложка такого десерту легко замінює солодощі до чаю чи кави.",
             artP2: "Окрім чудового смаку, волоський горіх цінують за природний набір вітамінів і поживних речовин: у ньому містяться вітаміни групи B, вітамін E, корисні ненасичені жирні кислоти, антиоксиданти та мінерали. Разом із натуральним медом він допомагає підтримувати бадьорість, працездатність і тонус протягом дня.",
             ftRights: "Медова пасіка / всі права захищені",
-            mTitle: "📋 Кошик замовлення", mTot: "Загальна сума:", mLName: "ПІБ *", mLPhone: "Номер телефону *",
+            mTitle: "📋 Кошик замовлення", mTot: "Загальна сума:", mTotStep2: "До сплати за товари:",
+            mLName: "ПІБ *", mLPhone: "Номер телефону *",
             mLDelivery: "Спосіб доставки *", mDelOptDefault: "Оберіть спосіб доставки",
             mDelOptNP: "Нова Пошта", mDelOptUP: "Укрпошта", mDelOptPickup: "Самовивіз",
-            mLComm: "Коментар", mBtnClose: "Закрити", mBtnSend: "📤 Надіслати замовлення",
-            cartName: "Мед з волоським горіхом"
+            mLCity: "Місто / село *", mLWh: "Відділення / поштомат Нової пошти *",
+            mLAddr: "Індекс та адреса отримувача *", mWhOptDefault: "Спочатку оберіть місто або село",
+            mLComm: "Коментар", mBtnClose: "Закрити", mBtnNext: "Далі до оформлення →",
+            mBtnBack: "← Назад", mBtnSend: "📤 Надіслати замовлення",
+            cartName: "Мед з волоським горіхом",
+            step1Label: "1. Товари", step2Label: "2. Оформлення"
         },
         ru: {
             lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mCont: "Контакты",
@@ -395,13 +477,78 @@
             artP1: "Грецкий орех в сочетании с натуральным медом — это приятный, мягкий и при этом сытный вкус без приторной сладости. Хрустящие ядра ореха гармонично дополняют густую медовую текстуру, поэтому ложка такого десерта легко заменяет сладости к чаю или кофе.",
             artP2: "Помимо отличного вкуса, грецкий орех ценят за природный набор витаминов и питательных веществ: в нем содержатся витамины группы B, витамин E, полезные ненасыщенные жирные кислоты, антиоксиданты и минералы. Вместе с натуральным медом он помогает поддерживать бодрость, работоспособность и тонус в течение дня.",
             ftRights: "Медовая пасека / все права защищены",
-            mTitle: "📋 Корзина заказа", mTot: "Общая сумма:", mLName: "ФИО *", mLPhone: "Номер телефона *",
+            mTitle: "📋 Корзина заказа", mTot: "Общая сумма:", mTotStep2: "К оплате за товары:",
+            mLName: "ФИО *", mLPhone: "Номер телефона *",
             mLDelivery: "Способ доставки *", mDelOptDefault: "Выберите способ доставки",
             mDelOptNP: "Новая Почта", mDelOptUP: "Укрпочта", mDelOptPickup: "Самовывоз",
-            mLComm: "Комментарий", mBtnClose: "Закрыть", mBtnSend: "📤 Отправить заказ",
-            cartName: "Мед с грецким орехом"
+            mLCity: "Город / село *", mLWh: "Отделение / почтомат Новой почты *",
+            mLAddr: "Индекс и адрес получателя *", mWhOptDefault: "Сначала выберите город или село",
+            mLComm: "Комментарий", mBtnClose: "Закрыть", mBtnNext: "Далее к оформлению →",
+            mBtnBack: "← Назад", mBtnSend: "📤 Отправить заказ",
+            cartName: "Мед с грецким орехом",
+            step1Label: "1. Товары", step2Label: "2. Оформление"
         }
     };
+
+    function escapeHtml(str){
+        return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function getCartSessionId(){
+        let sid = localStorage.getItem('medova_cart_session_id');
+        if (!sid){
+            sid = 'cart_' + Date.now() + '_' + Math.random().toString(36).slice(2,9);
+            localStorage.setItem('medova_cart_session_id', sid);
+        }
+        return sid;
+    }
+
+    async function syncCartToSupabase(cartItems){
+        if (!supabaseClient) return;
+        try {
+            const sessionId = getCartSessionId();
+            const totalQty = cartItems.reduce((s,i)=>s+i.qty,0);
+            const totalSum = cartItems.reduce((s,i)=>s+i.price*i.qty,0);
+            const { error } = await supabaseClient
+                .from('cart_items')
+                .upsert([{
+                    session_id: sessionId,
+                    items: cartItems,
+                    total_qty: totalQty,
+                    total_price: totalSum,
+                    updated_at: new Date().toISOString()
+                }], { onConflict: 'session_id' });
+            if (error) console.warn('Supabase cart_items sync notice:', error.message || error);
+        } catch(err){
+            console.warn('Supabase cart_items sync error:', err);
+        }
+    }
+
+    async function loadCartFromSupabaseIfLocalEmpty(){
+        if (!supabaseClient || cart.length > 0) return;
+        const sessionId = localStorage.getItem('medova_cart_session_id');
+        if (!sessionId) return;
+        try {
+            const { data, error } = await supabaseClient
+                .from('cart_items')
+                .select('items')
+                .eq('session_id', sessionId)
+                .maybeSingle();
+            if (!error && data && Array.isArray(data.items) && data.items.length > 0){
+                cart = data.items;
+                try { localStorage.setItem('medova_cart', JSON.stringify(cart)); } catch(e){}
+                updateCartUI();
+            }
+        } catch(err){
+            console.warn('Supabase cart load notice:', err);
+        }
+    }
+
+    function saveCartState(){
+        try { localStorage.setItem('medova_cart', JSON.stringify(cart)); } catch(e){}
+        updateCartUI();
+        syncCartToSupabase(cart);
+    }
 
     function setLang(lang) {
         currentLang = lang;
@@ -437,7 +584,10 @@
         document.getElementById('art-p2').textContent = t.artP2;
         document.getElementById('ft-rights').textContent = t.ftRights;
         document.getElementById('m-title').textContent = t.mTitle;
+        document.getElementById('stepPill1').textContent = t.step1Label;
+        document.getElementById('stepPill2').textContent = t.step2Label;
         document.getElementById('m-tot').textContent = t.mTot;
+        document.getElementById('m-tot-step2').textContent = t.mTotStep2;
         document.getElementById('m-l-name').textContent = t.mLName;
         document.getElementById('m-l-phone').textContent = t.mLPhone;
         document.getElementById('m-l-delivery').textContent = t.mLDelivery;
@@ -445,8 +595,16 @@
         document.getElementById('del-opt-np').textContent = t.mDelOptNP;
         document.getElementById('del-opt-up').textContent = t.mDelOptUP;
         document.getElementById('del-opt-pickup').textContent = t.mDelOptPickup;
+        document.getElementById('m-l-city').textContent = t.mLCity;
+        document.getElementById('m-l-wh').textContent = t.mLWh;
+        document.getElementById('m-l-addr').textContent = t.mLAddr;
+        if (document.getElementById('wh-opt-default')) {
+            document.getElementById('wh-opt-default').textContent = t.mWhOptDefault;
+        }
         document.getElementById('m-l-comm').textContent = t.mLComm;
         document.getElementById('m-btn-close').textContent = t.mBtnClose;
+        document.getElementById('m-btn-next').textContent = t.mBtnNext;
+        document.getElementById('m-btn-back').textContent = t.mBtnBack;
         document.getElementById('m-btn-send').textContent = t.mBtnSend;
         document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
         document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
@@ -464,6 +622,170 @@
         document.getElementById(id).classList.remove('active');
     }
 
+    /* ===== ПОШУК МІСТ / СІЛ ТА ВІДДІЛЕНЬ НОВОЇ ПОШТИ ===== */
+    function onDeliveryMethodChange() {
+        const method = document.getElementById('orderDelivery').value;
+        const npBox = document.getElementById('npAddressFields');
+        const whGroup = document.getElementById('npWarehouseGroup');
+        const altGroup = document.getElementById('altAddressGroup');
+        const cityInput = document.getElementById('orderCityInput');
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        const altInput = document.getElementById('orderAltAddress');
+
+        if (!method) {
+            npBox.style.display = 'none';
+            cityInput.required = false;
+            whSelect.required = false;
+            altInput.required = false;
+            return;
+        }
+
+        npBox.style.display = 'block';
+
+        if (method === 'nova_poshta') {
+            whGroup.style.display = 'block';
+            altGroup.style.display = 'none';
+            cityInput.required = true;
+            whSelect.required = true;
+            altInput.required = false;
+            if (cityInput.value === 'с. Захарівка, Одеська обл.') {
+                cityInput.value = '';
+            }
+        } else if (method === 'ukr_poshta') {
+            whGroup.style.display = 'none';
+            altGroup.style.display = 'block';
+            cityInput.required = true;
+            whSelect.required = false;
+            altInput.required = true;
+            if (cityInput.value === 'с. Захарівка, Одеська обл.') {
+                cityInput.value = '';
+            }
+        } else if (method === 'pickup') {
+            whGroup.style.display = 'none';
+            altGroup.style.display = 'none';
+            cityInput.required = false;
+            whSelect.required = false;
+            altInput.required = false;
+            if (!cityInput.value.trim()) {
+                cityInput.value = 'с. Захарівка, Одеська обл.';
+            }
+        }
+    }
+
+    async function searchNpSettlements(query) {
+        const dropdown = document.getElementById('npCityDropdown');
+        if (query.trim().length < 2) {
+            dropdown.classList.remove('open');
+            dropdown.innerHTML = '';
+            return;
+        }
+
+        try {
+            const res = await fetch(NP_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    apiKey: NP_API_KEY,
+                    modelName: 'Address',
+                    calledMethod: 'searchSettlements',
+                    methodProperties: {
+                        CityName: query.trim(),
+                        Limit: 15,
+                        Page: 1
+                    }
+                })
+            });
+            const data = await res.json();
+            const addresses = (data.success && data.data && data.data[0] && data.data[0].Addresses) ? data.data[0].Addresses : [];
+
+            if (!addresses.length) {
+                dropdown.innerHTML = '<div class="np-option" style="color:var(--text-muted);cursor:default;">Нічого не знайдено</div>';
+                dropdown.classList.add('open');
+                return;
+            }
+
+            dropdown.innerHTML = addresses.map(addr => {
+                const safePresent = (addr.Present || '').replace(/"/g, '&quot;');
+                const ref = addr.Ref || '';
+                return `<div class="np-option" data-ref="${escapeHtml(ref)}" data-present="${safePresent}">${escapeHtml(addr.Present)}</div>`;
+            }).join('');
+
+            dropdown.querySelectorAll('.np-option[data-ref]').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const chosenName = opt.dataset.present;
+                    const chosenRef = opt.dataset.ref;
+                    document.getElementById('orderCityInput').value = chosenName;
+                    document.getElementById('orderCityRef').value = chosenRef;
+                    dropdown.classList.remove('open');
+                    if (document.getElementById('orderDelivery').value === 'nova_poshta') {
+                        loadNpWarehouses(chosenRef);
+                    }
+                });
+            });
+
+            dropdown.classList.add('open');
+        } catch (err) {
+            console.error('NP settlement search error:', err);
+        }
+    }
+
+    async function loadNpWarehouses(settlementRef) {
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        whSelect.disabled = true;
+        whSelect.innerHTML = '<option value="">Завантаження відділень...</option>';
+
+        try {
+            const res = await fetch(NP_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    apiKey: NP_API_KEY,
+                    modelName: 'Address',
+                    calledMethod: 'getWarehouses',
+                    methodProperties: {
+                        SettlementRef: settlementRef,
+                        Limit: 200,
+                        Page: 1
+                    }
+                })
+            });
+            const data = await res.json();
+            const warehouses = (data.success && Array.isArray(data.data)) ? data.data : [];
+
+            if (!warehouses.length) {
+                whSelect.innerHTML = '<option value="">Відділень не знайдено</option>';
+                whSelect.disabled = false;
+                return;
+            }
+
+            whSelect.innerHTML = '<option value="">Оберіть відділення або поштомат</option>' +
+                warehouses.map(w => {
+                    const desc = (w.Description || '').replace(/"/g, '&quot;');
+                    return `<option value="${desc}">${escapeHtml(w.Description)}</option>`;
+                }).join('');
+            whSelect.disabled = false;
+        } catch (err) {
+            console.error('NP warehouses error:', err);
+            whSelect.innerHTML = '<option value="">Помилка завантаження відділень</option>';
+            whSelect.disabled = false;
+        }
+    }
+
+    document.getElementById('orderCityInput').addEventListener('input', function() {
+        document.getElementById('orderCityRef').value = '';
+        clearTimeout(npSearchTimer);
+        const val = this.value;
+        npSearchTimer = setTimeout(() => searchNpSettlements(val), 250);
+    });
+
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('npCityDropdown');
+        const input = document.getElementById('orderCityInput');
+        if (dropdown && input && !dropdown.contains(e.target) && e.target !== input) {
+            dropdown.classList.remove('open');
+        }
+    });
+
     document.querySelectorAll('#sizeGroup .size-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('#sizeGroup .size-btn').forEach(b => b.classList.remove('active'));
@@ -478,13 +800,33 @@
         const size = active.dataset.size;
         const fullName = `${dict[currentLang].cartName} (${size})`;
 
-        const existing = cart.find(i => i.name === fullName);
+        const nextCart = [...cart];
+        const existing = nextCart.find(i => i.name === fullName);
         if (existing) existing.qty += 1;
-        else cart.push({ name: fullName, price: price, qty: 1 });
+        else nextCart.push({ name: fullName, price: price, qty: 1 });
 
-        localStorage.setItem('medova_cart', JSON.stringify(cart));
-        updateCartUI();
-        openCartModal();
+        cart = nextCart;
+        saveCartState();
+        openCartModal(1);
+    }
+
+    function changeCartItemQty(idx, delta) {
+        if (!cart[idx]) return;
+        const nextCart = [...cart];
+        const nextQty = nextCart[idx].qty + delta;
+        if (nextQty <= 0) nextCart.splice(idx, 1);
+        else nextCart[idx] = { ...nextCart[idx], qty: nextQty };
+        cart = nextCart;
+        saveCartState();
+        renderCartStep1();
+    }
+
+    function removeFromCart(idx) {
+        const nextCart = [...cart];
+        nextCart.splice(idx, 1);
+        cart = nextCart;
+        saveCartState();
+        renderCartStep1();
     }
 
     function updateCartUI() {
@@ -496,37 +838,88 @@
         }
     }
 
-    function openCartModal() {
+    function renderCartStep1() {
         const list = document.getElementById('cartItemsList');
         const sumEl = document.getElementById('cartTotalSum');
+        const prog = document.getElementById('deliveryProgressBox');
+        const nextBtn = document.getElementById('m-btn-next');
+
         if (cart.length === 0) {
-            list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
+            list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding:14px 0;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
             sumEl.textContent = '0';
-        } else {
-            let html = '';
-            let total = 0;
-            cart.forEach((item, idx) => {
-                const sub = item.price * item.qty;
-                total += sub;
-                html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
-                    <div><strong>${item.name}</strong><br><span style="color:var(--text-muted); font-size:12px;">${item.qty} шт. × ${item.price} ₴</span></div>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <strong>${sub} ₴</strong>
-                        <button onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold;">✕</button>
-                    </div>
-                </div>`;
-            });
-            list.innerHTML = html;
-            sumEl.textContent = total;
+            prog.className = 'mprog';
+            prog.innerHTML = currentLang === 'uk'
+                ? `🚚 <span class="promo-red-txt">Акція (від 1000 грн):</span> до безкоштовної доставки ще <b>1000 грн</b>`
+                : `🚚 <span class="promo-red-txt">Акция (от 1000 грн):</span> до бесплатной доставки еще <b>1000 грн</b>`;
+            if (nextBtn) nextBtn.style.display = 'none';
+            return;
         }
-        document.getElementById('orderModal').classList.add('active');
+
+        if (nextBtn) nextBtn.style.display = 'inline-block';
+        let html = '';
+        let total = 0;
+        cart.forEach((item, idx) => {
+            const sub = item.price * item.qty;
+            total += sub;
+            html += `<div style="display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
+                <div style="flex:1; min-width:0;"><strong>${escapeHtml(item.name)}</strong><br><span style="color:var(--text-muted); font-size:12px;">${item.price} ₴ / шт.</span></div>
+                <div class="qty-mini">
+                    <button type="button" class="qty-btn" onclick="changeCartItemQty(${idx}, -1)">−</button>
+                    <span style="min-width:18px;text-align:center;font-weight:700;font-size:13px;">${item.qty}</span>
+                    <button type="button" class="qty-btn" onclick="changeCartItemQty(${idx}, 1)">+</button>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                    <strong style="min-width:52px;text-align:right;">${sub} ₴</strong>
+                    <button type="button" onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold;">✕</button>
+                </div>
+            </div>`;
+        });
+        list.innerHTML = html;
+        sumEl.textContent = total;
+
+        const threshold = 1000;
+        if (total >= threshold) {
+            prog.className = 'mprog done';
+            prog.innerHTML = currentLang === 'uk'
+                ? '🎉 <span class="promo-red-txt" style="color:#047857;">Акція:</span> у вас безкоштовна доставка (від 1000 грн)!'
+                : '🎉 <span class="promo-red-txt" style="color:#047857;">Акция:</span> у вас бесплатная доставка (от 1000 грн)!';
+        } else {
+            prog.className = 'mprog';
+            prog.innerHTML = currentLang === 'uk'
+                ? `🚚 <span class="promo-red-txt">Акція (від 1000 грн):</span> до безкоштовної доставки ще <b>${threshold - total} грн</b>`
+                : `🚚 <span class="promo-red-txt">Акция (от 1000 грн):</span> до бесплатной доставки еще <b>${threshold - total} грн</b>`;
+        }
     }
 
-    function removeFromCart(idx) {
-        cart.splice(idx, 1);
-        localStorage.setItem('medova_cart', JSON.stringify(cart));
-        updateCartUI();
-        openCartModal();
+    function goToCheckoutStep(step) {
+        if (step === 2 && cart.length === 0) return;
+        const step1 = document.getElementById('cartStep1');
+        const form = document.getElementById('orderForm');
+        const pill1 = document.getElementById('stepPill1');
+        const pill2 = document.getElementById('stepPill2');
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+        if (step === 2) {
+            document.getElementById('step2TotalSum').textContent = total;
+            step1.style.display = 'none';
+            form.style.display = 'block';
+            pill1.classList.remove('active');
+            pill1.classList.add('done');
+            pill2.classList.add('active');
+        } else {
+            step1.style.display = 'block';
+            form.style.display = 'none';
+            pill1.classList.add('active');
+            pill1.classList.remove('done');
+            pill2.classList.remove('active');
+            renderCartStep1();
+        }
+    }
+
+    function openCartModal(startStep = 1) {
+        renderCartStep1();
+        goToCheckoutStep(startStep);
+        document.getElementById('orderModal').classList.add('active');
     }
 
     async function sendOrderToTelegram(e) {
@@ -535,22 +928,53 @@
         const name = document.getElementById('orderName').value.trim();
         const contact = document.getElementById('orderContact').value.trim();
         const delSelect = document.getElementById('orderDelivery');
+        const deliveryCode = delSelect.value;
         const deliveryText = delSelect.options[delSelect.selectedIndex].text;
+        const cityText = document.getElementById('orderCityInput').value.trim();
+        const warehouseText = document.getElementById('orderWarehouseSelect').value.trim();
+        const altAddressText = document.getElementById('orderAltAddress').value.trim();
         const comm = document.getElementById('orderComment').value.trim();
         const statusDiv = document.getElementById('orderStatus');
+
+        if (!name || !contact || !deliveryCode) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? 'Заповніть обов’язкові поля!' : 'Заполните обязательные поля!';
+            return;
+        }
+        if (deliveryCode === 'nova_poshta' && (!cityText || !warehouseText)) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? 'Оберіть місто/село та відділення Нової пошти!' : 'Выберите город/село и отделение Новой почты!';
+            return;
+        }
+        if (deliveryCode === 'ukr_poshta' && (!cityText || !altAddressText)) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? 'Вкажіть місто/село та індекс/адресу для Укрпошти!' : 'Укажите город/село и индекс/адрес для Укрпочты!';
+            return;
+        }
+
+        let addressSummary = '';
+        if (deliveryCode === 'nova_poshta') {
+            addressSummary = `${cityText}${warehouseText ? ' — ' + warehouseText : ''}`;
+        } else if (deliveryCode === 'ukr_poshta') {
+            addressSummary = `${cityText}${altAddressText ? ', ' + altAddressText : ''}`;
+        } else if (deliveryCode === 'pickup') {
+            addressSummary = cityText || 'Самовивіз (с. Захарівка)';
+        }
+        const combinedComment = [addressSummary ? `Адреса: ${addressSummary}` : '', comm].filter(Boolean).join(' | ');
 
         let total = 0;
         const itemsList = cart.map(i => {
             const sub = i.price * i.qty;
             total += sub;
-            return `• ${i.name} — ${i.qty} шт. (${sub} ₴)`;
+            return `• ${escapeHtml(i.name)} — ${i.qty} шт. (${sub} ₴)`;
         }).join('\n');
+        const freeShipLine = total >= 1000 ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 грн)' : '';
 
         statusDiv.style.color = 'var(--primary)';
         statusDiv.textContent = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
 
         try {
-            await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+            const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -565,17 +989,21 @@
                     delivery_method: deliveryText,
                     items: cart.map(i => `${i.name} (${i.qty} шт.)`).join(', '),
                     total_price: total,
-                    comment: comm || ''
+                    comment: combinedComment
                 })
             });
+            if (!dbRes.ok) throw new Error('DB error');
 
             const text = `<b>🛒 Нове замовлення з сайту!</b>\n\n` +
-                         `<b>👤 ПІБ:</b> ${name}\n` +
-                         `<b>📞 Телефон:</b> ${contact}\n` +
-                         `<b>🚚 Доставка:</b> ${deliveryText}\n` +
-                         `<b>💬 Коментар:</b> ${comm || 'Відсутній'}\n\n` +
+                         `<b>👤 ПІБ:</b> ${escapeHtml(name)}\n` +
+                         `<b>📞 Телефон:</b> ${escapeHtml(contact)}\n` +
+                         `<b>🚚 Доставка:</b> ${escapeHtml(deliveryText)}\n` +
+                         (cityText ? `<b>📍 Місто / село:</b> ${escapeHtml(cityText)}\n` : '') +
+                         (deliveryCode === 'nova_poshta' && warehouseText ? `<b>🏢 Відділення НП:</b> ${escapeHtml(warehouseText)}\n` : '') +
+                         (deliveryCode === 'ukr_poshta' && altAddressText ? `<b>✉️ Адреса Укрпошти:</b> ${escapeHtml(altAddressText)}\n` : '') +
+                         `<b>💬 Коментар:</b> ${escapeHtml(comm || 'Відсутній')}\n\n` +
                          `<b>📦 Товари:</b>\n${itemsList}\n\n` +
-                         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>`;
+                         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>${freeShipLine}`;
 
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
@@ -588,8 +1016,9 @@
             statusDiv.style.color = '#059669';
             statusDiv.textContent = currentLang === 'uk' ? '✅ Замовлення відправлено!' : '✅ Заказ отправлен!';
             cart = [];
-            localStorage.setItem('medova_cart', JSON.stringify(cart));
-            updateCartUI();
+            saveCartState();
+            document.getElementById('orderForm').reset();
+            document.getElementById('npAddressFields').style.display = 'none';
             setTimeout(() => { closeModal('orderModal'); statusDiv.textContent = ''; }, 2000);
         } catch (err) {
             statusDiv.style.color = '#EF4444';
@@ -597,7 +1026,10 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', updateCartUI);
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartUI();
+        loadCartFromSupabaseIfLocalEmpty();
+    });
 </script>
 </body>
 </html>
