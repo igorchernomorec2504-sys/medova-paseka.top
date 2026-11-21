@@ -35,8 +35,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bg: #FDFBF7; --card: #FFFFFF; --primary: #D97706; --primary-dark: #92400E; --accent: #F59E0B; --text: #2B1D0E; --muted: #7A6A52; --border: #E8DCC8; --radius: 16px; --shadow: 0 4px 20px rgba(43,29,14,.05); }
+        :root {
+            --bg: #FDFBF7;
+            --card: #FFFFFF;
+            --primary: #D97706;
+            --primary-dark: #92400E;
+            --accent: #F59E0B;
+            --promo-red: #DC2626;
+            --promo-red-bg: #FEF2F2;
+            --promo-red-border: #FECACA;
+            --text: #2B1D0E;
+            --muted: #7A6A52;
+            --border: #E8DCC8;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(43,29,14,.05);
+        }
         * { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior:smooth; }
         body { background:var(--bg); color:var(--text); line-height:1.6; font-family:'Plus Jakarta Sans',sans-serif; padding-bottom:90px; }
@@ -44,6 +59,7 @@
         a { color:inherit; text-decoration:none; }
         button { font-family:inherit; cursor:pointer; }
         img { max-width:100%; display:block; }
+
         header { position:fixed; top:0; left:0; width:100%; z-index:100; background:rgba(253,251,247,.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(232,220,200,.6); padding:14px 0; }
         .navc { max-width:1140px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
         .logoarea { display:flex; align-items:center; gap:12px; min-width:0; }
@@ -54,10 +70,12 @@
         .cart-pill { background:var(--text); color:#fff; border:none; padding:9px 16px; border-radius:30px; font-size:14px; font-weight:600; display:inline-flex; align-items:center; gap:8px; transition:.25s; flex-shrink:0; }
         .cart-pill:hover { background:var(--primary); }
         .cart-pill .cnt { min-width:20px; height:20px; padding:0 5px; border-radius:99px; background:var(--accent); color:var(--primary-dark); font-size:11px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; }
+
         .wrap { max-width:1140px; margin:0 auto; padding:100px 24px 40px; }
         .crumbs { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin-bottom:22px; flex-wrap:wrap; }
         .crumbs a:hover { color:var(--primary); }
         .crumbs b { color:var(--text); font-weight:700; }
+
         .pdp { display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start; }
         .galcol { position:sticky; top:96px; }
         .galmain { position:relative; aspect-ratio:1/1; min-height:280px; border-radius:var(--radius); overflow:hidden; border:1px solid var(--border); box-shadow:var(--shadow); background:linear-gradient(140deg,#FEF3C7 0%,#FDE68A 55%,#F5C56B 100%); }
@@ -68,16 +86,19 @@
         .thumbs { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
         .thumb { width:72px; height:72px; border-radius:12px; border:2px solid var(--border); object-fit:cover; cursor:pointer; transition:.2s; background:linear-gradient(140deg,#FEF3C7,#FDE68A); }
         .thumb:hover, .thumb.on { border-color:var(--primary); transform:translateY(-2px); }
+
         .chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
         .chip { padding:6px 14px; border-radius:99px; font-size:12px; font-weight:700; border:1px solid var(--border); background:var(--card); color:var(--muted); }
         .chip.cat { background:#FFFBEB; border-color:#FDE68A; color:var(--primary-dark); }
         .chip.stock { background:#ECFDF5; border-color:#A7F3D0; color:#047857; }
         .p-title { font-size:42px; margin-bottom:12px; }
         .p-short { font-size:16px; color:var(--muted); line-height:1.7; margin-bottom:24px; }
+
         .pricebox { display:flex; align-items:baseline; gap:14px; padding:18px 20px; border-radius:var(--radius); background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1px solid #FDE68A; margin-bottom:24px; }
         .price-now { font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--primary-dark); line-height:1; }
         .price-now small { font-size:20px; font-weight:600; }
         .price-unit { font-size:14px; color:var(--muted); font-weight:600; margin-left:auto; }
+
         .fieldlabel { font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:block; }
         .sizebox { display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:10px; margin-bottom:24px; }
         .size { padding:12px 8px; border-radius:12px; border:1.5px solid var(--border); background:var(--card); font-weight:700; font-size:14px; text-align:center; cursor:pointer; transition:.2s; }
@@ -85,18 +106,21 @@
         .size.on { border-color:var(--primary); background:#FFFBEB; color:var(--primary-dark); box-shadow:0 4px 12px rgba(217,119,6,.15); }
         .size span { display:block; font-size:12px; font-weight:600; color:var(--muted); margin-top:2px; }
         .size.on span { color:var(--primary-dark); }
+
         .qtyrow { display:flex; align-items:center; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
         .stepper { display:inline-flex; align-items:center; border:1.5px solid var(--border); border-radius:12px; background:var(--card); overflow:hidden; }
         .stepper button { width:42px; height:44px; font-size:18px; font-weight:700; color:var(--text); background:transparent; transition:.18s; }
         .stepper button:hover { background:#FFFBEB; color:var(--primary); }
         .stepper input { width:50px; height:44px; text-align:center; border:none; border-left:1px solid var(--border); border-right:1px solid var(--border); font-weight:800; font-size:15px; outline:none; -moz-appearance:textfield; background:transparent; }
         .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+
         .buyrow { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px; }
         .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:15px 20px; border-radius:12px; font-weight:800; font-size:15px; transition:.26s; border:1.5px solid transparent; white-space:nowrap; }
         .btn-honey { background:linear-gradient(135deg,var(--accent),var(--primary)); color:#fff; box-shadow:0 10px 25px rgba(217,119,6,.3); }
         .btn-honey:hover { transform:translateY(-2px); box-shadow:0 14px 30px rgba(217,119,6,.4); }
         .btn-dark { background:var(--text); color:#fff; }
         .btn-dark:hover { background:var(--primary-dark); transform:translateY(-2px); }
+
         .trust { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
         .tr { display:flex; gap:10px; align-items:flex-start; padding:14px; border-radius:12px; background:var(--card); border:1px solid var(--border); }
         .tr .i { font-size:20px; line-height:1.1; }
@@ -105,36 +129,62 @@
         .desc-section { margin-top:44px; padding-top:30px; border-top:1px solid var(--border); }
         .desc-section h3 { font-size:28px; margin-bottom:14px; }
         .desc-text { font-size:15px; color:#4A3A26; line-height:1.8; background:var(--card); padding:24px; border-radius:var(--radius); border:1px solid var(--border); }
+
         .sticky-bar { position:fixed; bottom:0; left:0; right:0; z-index:90; background:rgba(253,251,247,.96); backdrop-filter:blur(12px); border-top:1px solid var(--border); padding:12px 20px; display:none; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 -8px 24px rgba(43,29,14,.08); }
         .sticky-bar .sp { display:flex; flex-direction:column; line-height:1.15; }
         .sticky-bar .sp b { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--primary-dark); }
         .sticky-bar .sp span { font-size:12px; color:var(--muted); font-weight:600; }
         .sticky-bar .btn { padding:13px 20px; font-size:14px; }
+
         .modal { display:none; position:fixed; inset:0; z-index:1000; background:rgba(43,29,14,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:16px; }
         .modal.open { display:flex; animation:fadeUp .3s ease; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
         .mbox { background:var(--card); border-radius:20px; width:min(480px,100%); max-height:90vh; overflow-y:auto; padding:28px; position:relative; box-shadow:0 25px 50px rgba(0,0,0,.25); }
         .mclose { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:18px; transition:.2s; }
         .mclose:hover { background:#FEE2E2; color:#DC2626; border-color:#FECACA; }
-        .mbox h3 { font-size:24px; margin-bottom:18px; padding-right:34px; }
+        .mbox h3 { font-size:24px; margin-bottom:14px; padding-right:34px; }
+
+        /* ===== ДВОХЕТАПНИЙ КОШИК ===== */
+        .cart-steps { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+        .cart-step-pill { padding:8px 10px; border-radius:12px; font-size:12px; font-weight:700; text-align:center; border:1px solid var(--border); background:var(--bg); color:var(--muted); transition:.2s; }
+        .cart-step-pill.active { background:#FFFBEB; border-color:var(--primary); color:var(--primary-dark); }
+        .cart-step-pill.done { background:#ECFDF5; border-color:#10B981; color:#047857; }
+
         .citems { display:flex; flex-direction:column; gap:10px; max-height:240px; overflow-y:auto; margin-bottom:16px; padding-right:4px; }
-        .citem { display:flex; align-items:center; gap:12px; padding:12px; border-radius:12px; background:var(--bg); border:1px solid var(--border); }
+        .citem { display:flex; align-items:center; gap:10px; padding:12px; border-radius:12px; background:var(--bg); border:1px solid var(--border); }
         .citem .cn { flex:1; min-width:0; }
         .citem .cn b { display:block; font-size:14px; font-weight:700; line-height:1.3; }
         .citem .cn span { font-size:12px; color:var(--muted); }
-        .citem .csub { font-size:15px; font-weight:800; white-space:nowrap; }
+        .qty-mini { display:inline-flex; align-items:center; gap:4px; flex-shrink:0; }
+        .qty-btn { width:26px; height:26px; border-radius:7px; border:1px solid var(--border); background:#fff; color:var(--text); font-weight:700; font-size:14px; display:inline-flex; align-items:center; justify-content:center; transition:.15s; }
+        .qty-btn:hover { border-color:var(--primary); color:var(--primary); background:#FFFBEB; }
+        .citem .csub { font-size:14px; font-weight:800; white-space:nowrap; min-width:58px; text-align:right; }
         .cdel { width:30px; height:30px; border-radius:8px; color:#DC2626; font-size:14px; background:transparent; border:1px solid #FECACA; display:flex; align-items:center; justify-content:center; transition:.18s; flex-shrink:0; }
         .cdel:hover { background:#FEE2E2; }
-        .mprog { padding:12px; border-radius:12px; background:#FFFBEB; border:1px dashed var(--primary); margin-bottom:16px; font-size:13px; font-weight:700; color:var(--primary-dark); text-align:center; }
-        .mprog.done { background:#ECFDF5; border-color:#059669; color:#047857; }
+
+        .promo-red-txt { color:var(--promo-red); font-weight:800; }
+        .mprog { padding:12px; border-radius:12px; background:var(--promo-red-bg); border:1px solid var(--promo-red-border); margin-bottom:16px; font-size:13px; font-weight:700; color:var(--promo-red); text-align:center; }
+        .mprog.done { background:#ECFDF5; border-color:#A7F3D0; color:#047857; }
         .ctotal { display:flex; align-items:center; justify-content:space-between; padding:16px; border-radius:12px; background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1px solid #FDE68A; margin-bottom:20px; }
         .ctotal span { font-size:14px; font-weight:700; color:var(--muted); }
         .ctotal b { font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--primary-dark); }
-        .fg { margin-bottom:16px; }
+
+        .fg { margin-bottom:16px; position:relative; }
         .fg label { display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
         .fg input,.fg select,.fg textarea { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:12px; font-size:14px; outline:none; background:var(--bg); transition:.2s; font-family:inherit; color:var(--text); }
         .fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--primary); background:#fff; box-shadow:0 0 0 3px rgba(217,119,6,.12); }
-        .fg textarea { resize:vertical; min-height:80px; }
+        .fg textarea { resize:vertical; min-height:74px; }
+
+        .np-box { background:#FFFBEB; border:1px solid #FDE68A; border-radius:14px; padding:14px; margin-bottom:16px; }
+        .np-hint { font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4; }
+        .np-dd { position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1.5px solid var(--primary); border-radius:12px; box-shadow:0 12px 28px rgba(43,29,14,.16); max-height:200px; overflow-y:auto; z-index:40; display:none; }
+        .np-dd.open { display:block; }
+        .np-opt { padding:10px 12px; font-size:13px; border-bottom:1px solid #F5EFE6; cursor:pointer; transition:.15s; }
+        .np-opt:last-child { border-bottom:none; }
+        .np-opt:hover { background:#FFFBEB; color:var(--primary-dark); }
+        .np-opt b { display:block; font-weight:700; }
+        .np-opt span { font-size:11px; color:var(--muted); }
+
         .empty-cart { text-align:center; padding:30px 20px; color:var(--muted); }
         .empty-cart .e { font-size:40px; display:block; margin-bottom:10px; }
         .toasts { position:fixed; top:90px; right:20px; z-index:1100; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
@@ -142,6 +192,7 @@
         .toast.ok { border-color:#A7F3D0; background:#ECFDF5; color:#065F46; }
         .toast.warn { border-color:#FDE68A; background:#FFFBEB; color:#92400E; }
         @keyframes tin { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:none} }
+
         @media (max-width:900px){ .galcol{position:static} }
         @media (max-width:768px){
             .wrap { padding:84px 14px 30px; } .navc { padding:0 14px; } .logo { font-size:17px; }
@@ -160,9 +211,10 @@
             <a href="/" class="back-btn" aria-label="На головну">←</a>
             <a href="/" class="logo">🍯 <b>Медова Пасіка</b></a>
         </div>
-        <button class="cart-pill" onclick="openCartModal()">🛒 <span class="cnt" id="cartCount">0</span></button>
+        <button class="cart-pill" onclick="openCartModal(1)">🛒 <span class="cnt" id="cartCount">0</span></button>
     </div>
 </header>
+
 <div class="wrap">
     <nav class="crumbs"><a href="/">Головна</a> <span>/</span> <a href="/#catalog">Каталог</a> <span>/</span> <b id="crumbTitle">Товар</b></nav>
     <div class="pdp">
@@ -177,7 +229,7 @@
             <div class="pricebox"><div class="price-now" id="displayPrice">0 <small>грн</small></div><div class="price-unit" id="priceUnit">за 1 шт</div></div>
             <div id="volumeSection"><span class="fieldlabel">Оберіть об'єм / фасування</span><div class="sizebox" id="sizebox"></div></div>
             <div class="qtyrow"><span class="fieldlabel" style="margin-bottom:0;">Кількість</span><div class="stepper"><button type="button" onclick="changeQty(-1)">−</button><input type="number" id="prodQty" value="1" min="1" max="99"><button type="button" onclick="changeQty(1)">+</button></div></div>
-            <div class="buyrow"><button class="btn btn-honey" onclick="addToCartFromPage()">🛒 Додати в кошик</button><button class="btn btn-dark" onclick="addToCartFromPage(); setTimeout(openCartModal,150);">⚡ Купити зараз</button></div>
+            <div class="buyrow"><button class="btn btn-honey" onclick="addToCartFromPage(false)">🛒 Додати в кошик</button><button class="btn btn-dark" onclick="addToCartFromPage(true)">⚡ Купити зараз</button></div>
             <div class="trust">
                 <div class="tr"><div class="i">🌿</div><div><b>Без домішок</b><span>Жодного цукру чи сиропів</span></div></div>
                 <div class="tr"><div class="i">👨‍🌾</div><div><b>З власної пасіки</b><span>с. Захарівка, Одещина</span></div></div>
@@ -188,33 +240,111 @@
         </div>
     </div>
 </div>
-<div class="sticky-bar"><div class="sp"><span id="stickySize">—</span><b id="stickyPrice">0 грн</b></div><button class="btn btn-honey" onclick="addToCartFromPage()">🛒 В кошик</button></div>
+
+<div class="sticky-bar">
+    <div class="sp"><span id="stickySize">—</span><b id="stickyPrice">0 грн</b></div>
+    <button class="btn btn-honey" onclick="addToCartFromPage(false)">🛒 В кошик</button>
+</div>
+
 <div class="modal" id="cartModal">
     <div class="mbox">
         <button class="mclose" onclick="closeCartModal()">✕</button>
         <h3>📋 Ваш Кошик</h3>
-        <div id="cartEmpty" class="empty-cart" style="display:none;"><span class="e">🧺</span><p>Кошик порожній. Оберіть щось смачненьке з пасіки!</p><a class="btn btn-dark" style="margin-top:16px; width:100%;" href="/#catalog" onclick="closeCartModal()">До каталогу</a></div>
+
+        <div class="cart-steps" id="cartStepsBar" style="display:none;">
+            <div class="cart-step-pill active" id="stepPill1">1. Товари</div>
+            <div class="cart-step-pill" id="stepPill2">2. Оформлення</div>
+        </div>
+
+        <div id="cartEmpty" class="empty-cart" style="display:none;">
+            <span class="e">🧺</span>
+            <p>Кошик порожній. Оберіть щось смачненьке з пасіки!</p>
+            <a class="btn btn-dark" style="margin-top:16px; width:100%;" href="/#catalog" onclick="closeCartModal()">До каталогу</a>
+        </div>
+
         <div id="cartContent">
-            <div class="citems" id="cartItemsList"></div>
-            <div class="mprog" id="deliveryProgressBox"></div>
-            <div class="ctotal"><span>Загальна сума:</span><b><span id="cartTotalSum">0</span> грн</b></div>
-            <div id="cartInitialActions"><button class="btn btn-honey" style="width:100%; margin-bottom:10px;" onclick="showCheckoutForm()">Оформити замовлення</button><button class="btn" style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);" onclick="closeCartModal()">Продовжити покупки</button></div>
+            <!-- ЕТАП 1 -->
+            <div id="cartStep1">
+                <div class="citems" id="cartItemsList"></div>
+                <div class="mprog" id="deliveryProgressBox"></div>
+                <div class="ctotal"><span>Загальна сума:</span><b><span id="cartTotalSum">0</span> грн</b></div>
+                <div id="cartInitialActions">
+                    <button class="btn btn-honey" style="width:100%; margin-bottom:10px;" onclick="goToCheckoutStep(2)">Далі до оформлення →</button>
+                    <button class="btn" style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);" onclick="closeCartModal()">Продовжити покупки</button>
+                </div>
+            </div>
+
+            <!-- ЕТАП 2 -->
             <form id="orderForm" style="display:none;" onsubmit="submitOrder(event)">
+                <div class="ctotal" style="padding:12px 16px; margin-bottom:16px;">
+                    <span>До сплати за товари:</span>
+                    <b style="font-size:22px;"><span id="step2TotalSum">0</span> грн</b>
+                </div>
                 <div class="fg"><label>ПІБ *</label><input type="text" name="ПІБ" required placeholder="Іванов Іван"></div>
                 <div class="fg"><label>Номер телефону *</label><input type="tel" name="Телефон" required placeholder="+380XXXXXXXXX"></div>
-                <div class="fg"><label>Спосіб доставки *</label><select name="Доставка" required><option value="" disabled selected>Оберіть спосіб доставки</option><option value="Нова пошта">Нова пошта</option><option value="Укрпошта">Укрпошта</option><option value="Самовивіз">Самовивіз</option></select></div>
-                <div class="fg"><label>Коментар (необов'язково)</label><textarea name="Коментар" placeholder="Ваші побажання або зручний час для дзвінка..."></textarea></div>
-                <div style="display:flex; gap:10px; margin-top:18px;"><button type="button" class="btn" style="flex:1; background:var(--bg); border:1px solid var(--border);" onclick="closeCartModal()">Скасувати</button><button type="submit" class="btn btn-honey" style="flex:2;" id="submitBtn">📤 Надіслати</button></div>
+                <div class="fg">
+                    <label>Спосіб доставки *</label>
+                    <select name="Доставка" id="deliveryMethodSelect" required onchange="onDeliveryMethodChange()">
+                        <option value="" disabled selected>Оберіть спосіб доставки</option>
+                        <option value="Нова пошта">Нова пошта</option>
+                        <option value="Укрпошта">Укрпошта</option>
+                        <option value="Самовивіз">Самовивіз</option>
+                    </select>
+                </div>
+
+                <!-- БЛОК НОВОЇ ПОШТИ (СЕЛО / МІСТО + ВІДДІЛЕННЯ / АДРЕСА) -->
+                <div id="npDeliveryBlock" class="np-box" style="display:none;">
+                    <div class="fg" style="margin-bottom:12px;">
+                        <label>Населений пункт (село або місто) *</label>
+                        <input type="text" id="npSettlementInput" placeholder="Почніть вводити село або місто..." autocomplete="off" oninput="onNpSettlementInput(this.value)">
+                        <div class="np-dd" id="npSettlementDropdown"></div>
+                        <div class="np-hint" id="npSettlementStatus">Введіть мінімум 2 літери для пошуку по базі Нової Пошти</div>
+                    </div>
+
+                    <div class="fg" style="margin-bottom:10px;">
+                        <label>Відділення / поштомат Нової Пошти</label>
+                        <select id="npWarehouseSelect" onchange="onNpWarehouseSelect()">
+                            <option value="">Оберіть населений пункт або вкажіть адресу нижче</option>
+                        </select>
+                    </div>
+
+                    <div class="fg" style="margin-bottom:0;">
+                        <label>Або точна адреса / номер відділення (якщо не знайдено у списку)</label>
+                        <input type="text" id="npCustomAddressInput" placeholder="Напр.: Відділення №1 або вул. Центральна, 10">
+                    </div>
+                </div>
+
+                <!-- БЛОК УКРПОШТИ / САМОВИВОЗУ -->
+                <div id="otherDeliveryBlock" class="np-box" style="display:none;">
+                    <div class="fg" style="margin-bottom:0;">
+                        <label id="otherAddressLabel">Населений пункт, індекс / відділення або адреса *</label>
+                        <input type="text" id="otherAddressInput" placeholder="Напр.: с. Захарівка, Роздільнянський р-н">
+                    </div>
+                </div>
+
+                <div class="fg"><label>Коментар (необов'язково)</label><textarea name="Коментар" placeholder="Побажання або зручний час для дзвінка..."></textarea></div>
+                <div style="display:flex; gap:10px; margin-top:18px;">
+                    <button type="button" class="btn" style="flex:1; background:var(--bg); border:1px solid var(--border);" onclick="goToCheckoutStep(1)">← Назад</button>
+                    <button type="submit" class="btn btn-honey" style="flex:2;" id="submitBtn">📤 Надіслати</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
+
 <div class="toasts" id="toasts"></div>
+
 <script>
     const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
     const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
     const BOT_TOKEN = '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
     const CHAT_ID = '1763769244';
+    const NP_API_KEY = 'Eb79541df8160123e2632d92e46171f1';
+    const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
+
+    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+        : null;
 
     const productsData = {
         'may': {
@@ -230,9 +360,233 @@
     const itemKey = 'may';
     const product = productsData[itemKey];
     let baseSelectedPrice = product.volumes[0].price, selectedPrice = baseSelectedPrice, selectedVariantName = product.volumes[0].name, cart = [];
+    let npSearchTimer = null;
+    let selectedNpSettlement = null;
+
     try { cart = JSON.parse(localStorage.getItem('medova_cart')) || []; } catch(e){ cart = []; }
 
-    document.addEventListener('DOMContentLoaded', () => { renderProductPage(); updateCartUI(); });
+    function escapeHtml(str){
+        return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function getCartSessionId(){
+        let sid = localStorage.getItem('medova_cart_session_id');
+        if (!sid){
+            sid = 'cart_' + Date.now() + '_' + Math.random().toString(36).slice(2,9);
+            localStorage.setItem('medova_cart_session_id', sid);
+        }
+        return sid;
+    }
+
+    async function syncCartToSupabase(cartItems){
+        if (!supabaseClient) return;
+        try {
+            const sessionId = getCartSessionId();
+            const totalQty = cartItems.reduce((s,i)=>s+i.qty,0);
+            const totalSum = cartItems.reduce((s,i)=>s+i.price*i.qty,0);
+            const { error } = await supabaseClient
+                .from('cart_items')
+                .upsert([{
+                    session_id: sessionId,
+                    items: cartItems,
+                    total_qty: totalQty,
+                    total_price: totalSum,
+                    updated_at: new Date().toISOString()
+                }], { onConflict: 'session_id' });
+            if (error) console.warn('Supabase cart_items sync notice:', error.message || error);
+        } catch(err){
+            console.warn('Supabase cart_items sync error:', err);
+        }
+    }
+
+    async function loadCartFromSupabaseIfLocalEmpty(){
+        if (!supabaseClient || cart.length > 0) return;
+        const sessionId = localStorage.getItem('medova_cart_session_id');
+        if (!sessionId) return;
+        try {
+            const { data, error } = await supabaseClient
+                .from('cart_items')
+                .select('items')
+                .eq('session_id', sessionId)
+                .maybeSingle();
+            if (!error && data && Array.isArray(data.items) && data.items.length > 0){
+                cart = data.items;
+                try { localStorage.setItem('medova_cart', JSON.stringify(cart)); } catch(e){}
+                updateCartUI();
+            }
+        } catch(err){
+            console.warn('Supabase cart load notice:', err);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProductPage();
+        updateCartUI();
+        loadCartFromSupabaseIfLocalEmpty();
+    });
+
+    function onDeliveryMethodChange(){
+        const method = document.getElementById('deliveryMethodSelect').value;
+        const npBlock = document.getElementById('npDeliveryBlock');
+        const otherBlock = document.getElementById('otherDeliveryBlock');
+        const otherInput = document.getElementById('otherAddressInput');
+        const otherLabel = document.getElementById('otherAddressLabel');
+
+        npBlock.style.display = 'none';
+        otherBlock.style.display = 'none';
+        otherInput.required = false;
+
+        if (method === 'Нова пошта'){
+            npBlock.style.display = 'block';
+        } else if (method === 'Укрпошта'){
+            otherBlock.style.display = 'block';
+            otherInput.required = true;
+            otherLabel.textContent = 'Населений пункт (село/місто), індекс та відділення Укрпошти *';
+            otherInput.placeholder = 'Напр.: с. Захарівка, 66700, відділення №1';
+        } else if (method === 'Самовивіз'){
+            otherBlock.style.display = 'block';
+            otherInput.required = false;
+            otherLabel.textContent = 'Бажаний населений пункт / уточнення самовивозу';
+            otherInput.placeholder = 'с. Захарівка, Роздільнянський р-н (за домовленістю)';
+        }
+    }
+
+    async function callNovaPoshta(modelName, calledMethod, methodProperties){
+        const res = await fetch(NP_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                apiKey: NP_API_KEY,
+                modelName,
+                calledMethod,
+                methodProperties
+            })
+        });
+        if (!res.ok) throw new Error('np_http');
+        const data = await res.json();
+        if (!data.success) throw new Error((data.errors && data.errors.join(', ')) || 'np_api');
+        return data.data || [];
+    }
+
+    function onNpSettlementInput(val){
+        selectedNpSettlement = null;
+        clearTimeout(npSearchTimer);
+        const dd = document.getElementById('npSettlementDropdown');
+        const status = document.getElementById('npSettlementStatus');
+        const query = String(val || '').trim();
+
+        if (query.length < 2){
+            dd.classList.remove('open');
+            dd.innerHTML = '';
+            status.textContent = 'Введіть мінімум 2 літери для пошуку по базі Нової Пошти';
+            return;
+        }
+
+        status.textContent = 'Пошук населеного пункту...';
+        npSearchTimer = setTimeout(async () => {
+            try {
+                const items = await callNovaPoshta('Address', 'getSettlements', {
+                    FindByString: query,
+                    Limit: 12,
+                    Page: 1
+                });
+                if (!items.length){
+                    dd.classList.remove('open');
+                    dd.innerHTML = '';
+                    status.textContent = 'У списку не знайдено — можете вписати село/місто та адресу вручну нижче';
+                    return;
+                }
+                dd.innerHTML = items.map(item => {
+                    const desc = item.Description || '';
+                    const area = item.AreaDescription ? `${item.AreaDescription} обл.` : '';
+                    const region = item.RegionsDescription ? `${item.RegionsDescription} р-н` : '';
+                    const sub = [area, region].filter(Boolean).join(', ');
+                    const fullLabel = sub ? `${desc} (${sub})` : desc;
+                    return `<div class="np-opt" onclick="selectNpSettlement('${escapeHtml(item.Ref)}','${escapeHtml(fullLabel)}')">
+                        <b>${escapeHtml(desc)}</b>
+                        <span>${escapeHtml(sub)}</span>
+                    </div>`;
+                }).join('');
+                dd.classList.add('open');
+                status.textContent = 'Оберіть село або місто зі списку';
+            } catch(err){
+                dd.classList.remove('open');
+                status.textContent = 'Не вдалося завантажити список — введіть село/місто та відділення вручну нижче';
+            }
+        }, 280);
+    }
+
+    async function selectNpSettlement(ref, label){
+        selectedNpSettlement = { ref, label };
+        const input = document.getElementById('npSettlementInput');
+        const dd = document.getElementById('npSettlementDropdown');
+        const status = document.getElementById('npSettlementStatus');
+        const whSelect = document.getElementById('npWarehouseSelect');
+
+        input.value = label;
+        dd.classList.remove('open');
+        status.textContent = `Обрано: ${label}`;
+        whSelect.innerHTML = '<option value="">Завантаження відділень / поштоматів...</option>';
+
+        try {
+            const warehouses = await callNovaPoshta('Address', 'getWarehouses', {
+                SettlementRef: ref,
+                Limit: 200,
+                Page: 1
+            });
+            if (!warehouses.length){
+                whSelect.innerHTML = '<option value="">Відділень у базі не знайдено — вкажіть адресу нижче</option>';
+                return;
+            }
+            whSelect.innerHTML = '<option value="">Оберіть відділення або поштомат</option>' +
+                warehouses.map(w => `<option value="${escapeHtml(w.Description)}">${escapeHtml(w.Description)}</option>`).join('');
+        } catch(err){
+            whSelect.innerHTML = '<option value="">Не вдалося завантажити відділення — вкажіть нижче</option>';
+        }
+    }
+
+    function onNpWarehouseSelect(){
+        const wh = document.getElementById('npWarehouseSelect').value;
+        const customInput = document.getElementById('npCustomAddressInput');
+        if (wh && !customInput.value.trim()){
+            customInput.placeholder = `Обрано: ${wh}`;
+        }
+    }
+
+    function getFormattedDeliveryDetails(){
+        const method = document.getElementById('deliveryMethodSelect').value;
+        if (method === 'Нова пошта'){
+            const settlement = (selectedNpSettlement && selectedNpSettlement.label) || document.getElementById('npSettlementInput').value.trim();
+            const wh = document.getElementById('npWarehouseSelect').value.trim();
+            const custom = document.getElementById('npCustomAddressInput').value.trim();
+            const point = custom || wh;
+            const parts = ['Нова пошта'];
+            if (settlement) parts.push(settlement);
+            if (point) parts.push(point);
+            return {
+                summary: parts.join(', '),
+                valid: Boolean(settlement && point),
+                errorMsg: 'Оберіть населений пункт і відділення або вкажіть адресу Нової Пошти'
+            };
+        }
+        if (method === 'Укрпошта'){
+            const addr = document.getElementById('otherAddressInput').value.trim();
+            return {
+                summary: addr ? `Укрпошта — ${addr}` : 'Укрпошта',
+                valid: Boolean(addr),
+                errorMsg: 'Вкажіть населений пункт, індекс/відділення або адресу Укрпошти'
+            };
+        }
+        if (method === 'Самовивіз'){
+            const note = document.getElementById('otherAddressInput').value.trim();
+            return {
+                summary: note ? `Самовивіз (${note})` : 'Самовивіз',
+                valid: true,
+                errorMsg: ''
+            };
+        }
+        return { summary: '', valid: false, errorMsg: 'Оберіть спосіб доставки' };
+    }
 
     function renderProductPage(){
         document.getElementById('crumbTitle').textContent = product.title;
@@ -258,54 +612,263 @@
         updateTotalPrice();
     }
 
-    function changeImage(src, thumb){ const main = document.getElementById('mainImage'); main.style.display='block'; main.src = src; document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('on')); thumb.classList.add('on'); }
-    function selectVolume(price,name,el){ baseSelectedPrice = price; selectedVariantName = name; document.querySelectorAll('#sizebox .size').forEach(s=>s.classList.remove('on')); el.classList.add('on'); updateTotalPrice(); }
-    function updateTotalPrice(){ selectedPrice = baseSelectedPrice; document.getElementById('displayPrice').innerHTML = selectedPrice + ' <small>грн</small>'; document.getElementById('priceUnit').textContent = 'за ' + (selectedVariantName || '1 шт'); document.getElementById('stickyPrice').textContent = selectedPrice + ' грн'; document.getElementById('stickySize').textContent = selectedVariantName || product.title; }
-    function changeQty(delta){ const input = document.getElementById('prodQty'); input.value = Math.max(1, Math.min(99, (parseInt(input.value) || 1) + delta)); }
-    function saveCart(){ try{ localStorage.setItem('medova_cart', JSON.stringify(cart)); }catch(e){} updateCartUI(); }
-    function updateCartUI(){ document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0); }
-
-    function addToCartFromPage(){
-        const qty = parseInt(document.getElementById('prodQty').value) || 1;
-        const fullName = `${product.title} (${selectedVariantName})`;
-        const ex = cart.find(i=>i.name===fullName);
-        if (ex) ex.qty += qty; else cart.push({name:fullName, price:selectedPrice, qty:qty});
-        saveCart(); showToast('Додано в кошик: ' + fullName, 'ok'); document.getElementById('prodQty').value = 1;
+    function changeImage(src, thumb){
+        const main = document.getElementById('mainImage');
+        main.style.display='block';
+        main.src = src;
+        document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('on'));
+        thumb.classList.add('on');
     }
 
-    function removeFromCart(index){ cart.splice(index,1); saveCart(); renderCartModal(); showToast('Товар видалено','warn'); }
-    function openCartModal(){ renderCartModal(); document.getElementById('cartModal').classList.add('open'); document.body.style.overflow='hidden'; }
-    function closeCartModal(){ document.getElementById('cartModal').classList.remove('open'); document.body.style.overflow=''; }
-    function showCheckoutForm(){ document.getElementById('cartInitialActions').style.display='none'; document.getElementById('orderForm').style.display='block'; }
+    function selectVolume(price,name,el){
+        baseSelectedPrice = price;
+        selectedVariantName = name;
+        document.querySelectorAll('#sizebox .size').forEach(s=>s.classList.remove('on'));
+        el.classList.add('on');
+        updateTotalPrice();
+    }
 
-    function renderCartModal(){
-        const list = document.getElementById('cartItemsList'), empty = document.getElementById('cartEmpty'), content = document.getElementById('cartContent'), totalEl = document.getElementById('cartTotalSum'), prog = document.getElementById('deliveryProgressBox');
-        if (!cart.length){ empty.style.display='block'; content.style.display='none'; return; }
-        empty.style.display='none'; content.style.display='block'; document.getElementById('orderForm').style.display='none'; document.getElementById('cartInitialActions').style.display='block';
+    function updateTotalPrice(){
+        selectedPrice = baseSelectedPrice;
+        document.getElementById('displayPrice').innerHTML = selectedPrice + ' <small>грн</small>';
+        document.getElementById('priceUnit').textContent = 'за ' + (selectedVariantName || '1 шт');
+        document.getElementById('stickyPrice').textContent = selectedPrice + ' грн';
+        document.getElementById('stickySize').textContent = selectedVariantName || product.title;
+    }
+
+    function changeQty(delta){
+        const input = document.getElementById('prodQty');
+        input.value = Math.max(1, Math.min(99, (parseInt(input.value) || 1) + delta));
+    }
+
+    function saveCart(){
+        try{ localStorage.setItem('medova_cart', JSON.stringify(cart)); }catch(e){}
+        updateCartUI();
+        syncCartToSupabase(cart);
+    }
+
+    function updateCartUI(){
+        document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+    }
+
+    function addToCartFromPage(goCheckout = false){
+        const qty = parseInt(document.getElementById('prodQty').value) || 1;
+        const fullName = `${product.title} (${selectedVariantName})`;
+        const nextCart = [...cart];
+        const ex = nextCart.find(i=>i.name===fullName);
+        if (ex) ex.qty += qty; else nextCart.push({name:fullName, price:selectedPrice, qty:qty});
+        cart = nextCart;
+        saveCart();
+        showToast('Додано в кошик: ' + fullName, 'ok');
+        document.getElementById('prodQty').value = 1;
+        if (goCheckout){
+            openCartModal(2);
+        }
+    }
+
+    function changeCartItemQty(index, delta){
+        if (!cart[index]) return;
+        const nextCart = [...cart];
+        const nextQty = nextCart[index].qty + delta;
+        if (nextQty <= 0) nextCart.splice(index,1);
+        else nextCart[index] = { ...nextCart[index], qty:nextQty };
+        cart = nextCart;
+        saveCart();
+        renderCartModal(1);
+    }
+
+    function removeFromCart(index){
+        const nextCart = [...cart];
+        nextCart.splice(index,1);
+        cart = nextCart;
+        saveCart();
+        renderCartModal(1);
+        showToast('Товар видалено','warn');
+    }
+
+    function goToCheckoutStep(step){
+        if (step === 2 && !cart.length) return;
+        const step1 = document.getElementById('cartStep1');
+        const form = document.getElementById('orderForm');
+        const pill1 = document.getElementById('stepPill1');
+        const pill2 = document.getElementById('stepPill2');
+        const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+
+        if (step === 2){
+            document.getElementById('step2TotalSum').textContent = total;
+            step1.style.display = 'none';
+            form.style.display = 'block';
+            pill1.classList.remove('active');
+            pill1.classList.add('done');
+            pill2.classList.add('active');
+        } else {
+            step1.style.display = 'block';
+            form.style.display = 'none';
+            pill1.classList.add('active');
+            pill1.classList.remove('done');
+            pill2.classList.remove('active');
+            renderCartModal(1);
+        }
+    }
+
+    function openCartModal(startStep = 1){
+        renderCartModal(startStep);
+        document.getElementById('cartModal').classList.add('open');
+        document.body.style.overflow='hidden';
+    }
+
+    function closeCartModal(){
+        document.getElementById('cartModal').classList.remove('open');
+        document.body.style.overflow='';
+    }
+
+    function renderCartModal(targetStep = 1){
+        const list = document.getElementById('cartItemsList'),
+              empty = document.getElementById('cartEmpty'),
+              content = document.getElementById('cartContent'),
+              stepsBar = document.getElementById('cartStepsBar'),
+              totalEl = document.getElementById('cartTotalSum'),
+              prog = document.getElementById('deliveryProgressBox');
+
+        if (!cart.length){
+            empty.style.display='block';
+            content.style.display='none';
+            stepsBar.style.display='none';
+            return;
+        }
+        empty.style.display='none';
+        content.style.display='block';
+        stepsBar.style.display='grid';
+
         let html='', total=0;
-        cart.forEach((item,i)=>{ const sum = item.price*item.qty; total += sum; html += `<div class="citem"><div class="cn"><b>${item.name}</b><span>${item.qty} шт × ${item.price} грн</span></div><div class="csub">${sum} грн</div><button class="cdel" onclick="removeFromCart(${i})">✕</button></div>`; });
-        list.innerHTML = html; totalEl.textContent = total;
+        cart.forEach((item,i)=>{
+            const sum = item.price*item.qty;
+            total += sum;
+            html += `<div class="citem">
+                <div class="cn"><b>${escapeHtml(item.name)}</b><span>${item.price} грн / шт.</span></div>
+                <div class="qty-mini">
+                    <button type="button" class="qty-btn" onclick="changeCartItemQty(${i},-1)">−</button>
+                    <span style="min-width:18px;text-align:center;font-weight:700;font-size:13px;">${item.qty}</span>
+                    <button type="button" class="qty-btn" onclick="changeCartItemQty(${i},1)">+</button>
+                </div>
+                <div class="csub">${sum} грн</div>
+                <button type="button" class="cdel" onclick="removeFromCart(${i})">✕</button>
+            </div>`;
+        });
+        list.innerHTML = html;
+        totalEl.textContent = total;
+
         const threshold = 1000;
-        if (total >= threshold){ prog.className='mprog done'; prog.innerHTML='🎉 Ура! У вас безкоштовна доставка!'; } else { prog.className='mprog'; prog.innerHTML=`🚚 До безкоштовної доставки ще <b>${threshold-total} грн</b>`; }
+        if (total >= threshold){
+            prog.className='mprog done';
+            prog.innerHTML='🎉 <span class="promo-red-txt" style="color:#047857;">Акція:</span> у вас безкоштовна доставка (від 1000 грн)!';
+        } else {
+            prog.className='mprog';
+            prog.innerHTML=`🚚 <span class="promo-red-txt">Акція (від 1000 грн):</span> до безкоштовної доставки ще <b>${threshold-total} грн</b>`;
+        }
+
+        if (targetStep === 2){
+            goToCheckoutStep(2);
+        } else {
+            document.getElementById('cartStep1').style.display = 'block';
+            document.getElementById('orderForm').style.display = 'none';
+            document.getElementById('stepPill1').classList.add('active');
+            document.getElementById('stepPill1').classList.remove('done');
+            document.getElementById('stepPill2').classList.remove('active');
+        }
     }
 
     async function submitOrder(e){
         e.preventDefault();
-        const form = e.target, pib = form.querySelector('[name="ПІБ"]').value.trim(), phone = form.querySelector('[name="Телефон"]').value.trim(), delivery = form.querySelector('[name="Доставка"]').value, comment = form.querySelector('[name="Коментар"]').value.trim();
-        if (!pib || !phone || !delivery){ showToast("Заповніть обов'язкові поля","warn"); return; }
-        const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.textContent = 'Відправка...';
+        const form = e.target,
+              pib = form.querySelector('[name="ПІБ"]').value.trim(),
+              phone = form.querySelector('[name="Телефон"]').value.trim(),
+              deliveryMethod = form.querySelector('[name="Доставка"]').value,
+              comment = form.querySelector('[name="Коментар"]').value.trim();
+
+        const deliveryInfo = getFormattedDeliveryDetails();
+        if (!pib || !phone || !deliveryMethod || !cart.length){
+            showToast("Заповніть обов'язкові поля","warn");
+            return;
+        }
+        if (!deliveryInfo.valid){
+            showToast(deliveryInfo.errorMsg,"warn");
+            return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Відправка...';
+
         let total = 0;
-        const itemsList = cart.map(i=>{ const s=i.price*i.qty; total+=s; return `• ${i.name} — ${i.qty} шт. (${s} грн)`; }).join('\n');
+        const itemsList = cart.map(i=>{
+            const s=i.price*i.qty;
+            total+=s;
+            return `• ${escapeHtml(i.name)} — ${i.qty} шт. (${s} грн)`;
+        }).join('\n');
         const itemsStr = cart.map(i=>i.name+' ('+i.qty+' шт.)').join(', ');
-        const text = `🛒 <b>НОВЕ ЗАМОВЛЕННЯ (з товару)!</b>\n\n👤 <b>ПІБ:</b> ${pib}\n📞 <b>Телефон:</b> ${phone}\n🚚 <b>Доставка:</b> ${delivery}\n💬 <b>Коментар:</b> ${comment||'немає'}\n\n📦 <b>Товари:</b>\n${itemsList}\n\n💰 <b>Загальна сума:</b> ${total} грн`;
+        const freeShipLine = total >= 1000 ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 грн)' : '';
+
+        const text = `🛒 <b>НОВЕ ЗАМОВЛЕННЯ (з товару)!</b>\n\n👤 <b>ПІБ:</b> ${escapeHtml(pib)}\n📞 <b>Телефон:</b> ${escapeHtml(phone)}\n🚚 <b>Доставка:</b> ${escapeHtml(deliveryInfo.summary)}\n💬 <b>Коментар:</b> ${escapeHtml(comment||'немає')}\n\n📦 <b>Товари:</b>\n${itemsList}\n\n💰 <b>Загальна сума:</b> ${total} грн${freeShipLine}`;
+
         try {
-            await fetch(`${SUPABASE_URL}/rest/v1/orders`, { method:'POST', headers:{ 'Content-Type':'application/json', 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${SUPABASE_KEY}`, 'Prefer':'return=representation' }, body:JSON.stringify({ id:'ord_'+Date.now(), customer_name:pib, phone, city_post:delivery, items:itemsStr, total_price:total, comment:comment||'' }) });
-            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ chat_id:CHAT_ID, text, parse_mode:'HTML' }) });
-            if (res.ok){ showToast('✅ Замовлення успішно надіслано та збережено!','ok'); cart = []; saveCart(); form.reset(); closeCartModal(); } else throw new Error('tg');
-        } catch(err){ showToast('❌ Помилка відправки. Зателефонуйте нам!','warn'); } finally { btn.disabled = false; btn.textContent = '📤 Надіслати'; }
+            const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'apikey':SUPABASE_KEY,
+                    'Authorization':`Bearer ${SUPABASE_KEY}`,
+                    'Prefer':'return=representation'
+                },
+                body:JSON.stringify({
+                    id:'ord_'+Date.now(),
+                    customer_name:pib,
+                    phone,
+                    delivery_method:deliveryInfo.summary,
+                    items:itemsStr,
+                    total_price:total,
+                    comment:comment||''
+                })
+            });
+            if (!dbRes.ok) throw new Error('supabase');
+
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({ chat_id:CHAT_ID, text, parse_mode:'HTML' })
+            });
+            if (res.ok){
+                showToast('✅ Замовлення успішно надіслано та збережено!','ok');
+                cart = [];
+                selectedNpSettlement = null;
+                saveCart();
+                form.reset();
+                onDeliveryMethodChange();
+                closeCartModal();
+            } else {
+                throw new Error('tg');
+            }
+        } catch(err){
+            showToast('❌ Помилка відправки або збереження. Зателефонуйте нам!','warn');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '📤 Надіслати';
+        }
     }
 
-    function showToast(msg,type){ const box = document.getElementById('toasts'), el = document.createElement('div'); el.className = 'toast ' + (type||'ok'); el.innerHTML = `<span>${type==='ok'?'✅':'⚠️'}</span><span>${msg}</span>`; box.appendChild(el); setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(30px)'; setTimeout(()=>el.remove(),300); },3000); }
+    function showToast(msg,type){
+        const box = document.getElementById('toasts'), el = document.createElement('div');
+        el.className = 'toast ' + (type||'ok');
+        el.innerHTML = `<span>${type==='ok'?'✅':'⚠️'}</span><span>${escapeHtml(msg)}</span>`;
+        box.appendChild(el);
+        setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(30px)'; setTimeout(()=>el.remove(),300); },3000);
+    }
+
+    document.addEventListener('click', e=>{
+        if (!e.target.closest('#npSettlementInput') && !e.target.closest('#npSettlementDropdown')){
+            document.getElementById('npSettlementDropdown').classList.remove('open');
+        }
+    });
     document.getElementById('cartModal').addEventListener('click', e=>{ if(e.target.id==='cartModal') closeCartModal(); });
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCartModal(); });
 </script>
