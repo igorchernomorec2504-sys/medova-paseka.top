@@ -174,17 +174,14 @@
         .fg label { display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
         .fg input,.fg select,.fg textarea { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:12px; font-size:14px; outline:none; background:var(--bg); transition:.2s; font-family:inherit; color:var(--text); }
         .fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--primary); background:#fff; box-shadow:0 0 0 3px rgba(217,119,6,.12); }
+        .fg select { cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A6A52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; padding-right:40px; }
         .fg textarea { resize:vertical; min-height:74px; }
 
-        .np-box { background:#FFFBEB; border:1px solid #FDE68A; border-radius:14px; padding:14px; margin-bottom:16px; }
-        .np-hint { font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4; }
-        .np-dd { position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1.5px solid var(--primary); border-radius:12px; box-shadow:0 12px 28px rgba(43,29,14,.16); max-height:200px; overflow-y:auto; z-index:40; display:none; }
-        .np-dd.open { display:block; }
-        .np-opt { padding:10px 12px; font-size:13px; border-bottom:1px solid #F5EFE6; cursor:pointer; transition:.15s; }
-        .np-opt:last-child { border-bottom:none; }
-        .np-opt:hover { background:#FFFBEB; color:var(--primary-dark); }
-        .np-opt b { display:block; font-weight:700; }
-        .np-opt span { font-size:11px; color:var(--muted); }
+        .np-dropdown { position:absolute; top:100%; left:0; right:0; background:#FFFFFF; border:1px solid var(--border); border-radius:12px; margin-top:4px; max-height:210px; overflow-y:auto; z-index:1200; box-shadow:0 10px 25px rgba(43,29,14,.14); display:none; }
+        .np-dropdown.open { display:block; }
+        .np-option { padding:10px 14px; font-size:14px; cursor:pointer; border-bottom:1px solid rgba(232,220,200,.45); color:var(--text); transition:background .15s; }
+        .np-option:last-child { border-bottom:none; }
+        .np-option:hover { background:#FFFBEB; color:var(--primary-dark); }
 
         .empty-cart { text-align:center; padding:30px 20px; color:var(--muted); }
         .empty-cart .e { font-size:40px; display:block; margin-bottom:10px; }
@@ -286,41 +283,32 @@
                 <div class="fg"><label>Номер телефону *</label><input type="tel" name="Телефон" required placeholder="+380XXXXXXXXX"></div>
                 <div class="fg">
                     <label>Спосіб доставки *</label>
-                    <select name="Доставка" id="deliveryMethodSelect" required onchange="onDeliveryMethodChange()">
+                    <select name="Доставка" id="orderDelivery" required onchange="onDeliveryMethodChange()">
                         <option value="" disabled selected>Оберіть спосіб доставки</option>
-                        <option value="Нова пошта">Нова пошта</option>
-                        <option value="Укрпошта">Укрпошта</option>
-                        <option value="Самовивіз">Самовивіз</option>
+                        <option value="nova_poshta">Нова Пошта</option>
+                        <option value="ukr_poshta">Укрпошта</option>
+                        <option value="pickup">Самовивіз</option>
                     </select>
                 </div>
 
-                <!-- БЛОК НОВОЇ ПОШТИ (СЕЛО / МІСТО + ВІДДІЛЕННЯ / АДРЕСА) -->
-                <div id="npDeliveryBlock" class="np-box" style="display:none;">
-                    <div class="fg" style="margin-bottom:12px;">
-                        <label>Населений пункт (село або місто) *</label>
-                        <input type="text" id="npSettlementInput" placeholder="Почніть вводити село або місто..." autocomplete="off" oninput="onNpSettlementInput(this.value)">
-                        <div class="np-dd" id="npSettlementDropdown"></div>
-                        <div class="np-hint" id="npSettlementStatus">Введіть мінімум 2 літери для пошуку по базі Нової Пошти</div>
+                <div id="npAddressFields" style="display: none;">
+                    <div class="fg" style="position: relative;">
+                        <label for="orderCityInput">Місто / село *</label>
+                        <input type="text" id="orderCityInput" autocomplete="off" placeholder="Почніть вводити назву (напр. Захарівка)...">
+                        <input type="hidden" id="orderCityRef">
+                        <div class="np-dropdown" id="npCityDropdown"></div>
                     </div>
 
-                    <div class="fg" style="margin-bottom:10px;">
-                        <label>Відділення / поштомат Нової Пошти</label>
-                        <select id="npWarehouseSelect" onchange="onNpWarehouseSelect()">
-                            <option value="">Оберіть населений пункт або вкажіть адресу нижче</option>
+                    <div class="fg" id="npWarehouseGroup">
+                        <label for="orderWarehouseSelect">Відділення / поштомат Нової пошти *</label>
+                        <select id="orderWarehouseSelect" disabled>
+                            <option value="">Спочатку оберіть місто або село</option>
                         </select>
                     </div>
 
-                    <div class="fg" style="margin-bottom:0;">
-                        <label>Або точна адреса / номер відділення (якщо не знайдено у списку)</label>
-                        <input type="text" id="npCustomAddressInput" placeholder="Напр.: Відділення №1 або вул. Центральна, 10">
-                    </div>
-                </div>
-
-                <!-- БЛОК УКРПОШТИ / САМОВИВОЗУ -->
-                <div id="otherDeliveryBlock" class="np-box" style="display:none;">
-                    <div class="fg" style="margin-bottom:0;">
-                        <label id="otherAddressLabel">Населений пункт, індекс / відділення або адреса *</label>
-                        <input type="text" id="otherAddressInput" placeholder="Напр.: с. Захарівка, Роздільнянський р-н">
+                    <div class="fg" id="altAddressGroup" style="display: none;">
+                        <label for="orderAltAddress">Індекс та адреса отримувача *</label>
+                        <input type="text" id="orderAltAddress" placeholder="Напр.: 66700, смт Захарівка, вул. Центральна, 10">
                     </div>
                 </div>
 
@@ -341,7 +329,7 @@
     const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
     const BOT_TOKEN = '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
     const CHAT_ID = '1763769244';
-    const NP_API_KEY = 'Eb79541df8160123e2632d92e46171f1';
+    const NP_API_KEY = 'eb79541df8160123e2632d92e46171f1';
     const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
 
     const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
@@ -364,7 +352,6 @@
     let baseSelectedPrice = product.volumes[0].price, selectedPrice = baseSelectedPrice, selectedVariantName = product.volumes[0].name;
     let colorOptionName = "Натуральна", colorPriceExtra = 0, cart = [];
     let npSearchTimer = null;
-    let selectedNpSettlement = null;
 
     try { cart = JSON.parse(localStorage.getItem('medova_cart')) || []; } catch(e){ cart = []; }
 
@@ -428,168 +415,169 @@
         loadCartFromSupabaseIfLocalEmpty();
     });
 
-    function onDeliveryMethodChange(){
-        const method = document.getElementById('deliveryMethodSelect').value;
-        const npBlock = document.getElementById('npDeliveryBlock');
-        const otherBlock = document.getElementById('otherDeliveryBlock');
-        const otherInput = document.getElementById('otherAddressInput');
-        const otherLabel = document.getElementById('otherAddressLabel');
+    /* ===== ПОШУК МІСТ / СІЛ ТА ВІДДІЛЕНЬ НОВОЇ ПОШТИ (ЯК В INDEX.HTML) ===== */
+    function onDeliveryMethodChange() {
+        const method = document.getElementById('orderDelivery').value;
+        const npBox = document.getElementById('npAddressFields');
+        const whGroup = document.getElementById('npWarehouseGroup');
+        const altGroup = document.getElementById('altAddressGroup');
+        const cityInput = document.getElementById('orderCityInput');
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        const altInput = document.getElementById('orderAltAddress');
 
-        npBlock.style.display = 'none';
-        otherBlock.style.display = 'none';
-        otherInput.required = false;
-
-        if (method === 'Нова пошта'){
-            npBlock.style.display = 'block';
-        } else if (method === 'Укрпошта'){
-            otherBlock.style.display = 'block';
-            otherInput.required = true;
-            otherLabel.textContent = 'Населений пункт (село/місто), індекс та відділення Укрпошти *';
-            otherInput.placeholder = 'Напр.: с. Захарівка, 66700, відділення №1';
-        } else if (method === 'Самовивіз'){
-            otherBlock.style.display = 'block';
-            otherInput.required = false;
-            otherLabel.textContent = 'Бажаний населений пункт / уточнення самовивозу';
-            otherInput.placeholder = 'с. Захарівка, Роздільнянський р-н (за домовленістю)';
-        }
-    }
-
-    async function callNovaPoshta(modelName, calledMethod, methodProperties){
-        const res = await fetch(NP_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                apiKey: NP_API_KEY,
-                modelName,
-                calledMethod,
-                methodProperties
-            })
-        });
-        if (!res.ok) throw new Error('np_http');
-        const data = await res.json();
-        if (!data.success) throw new Error((data.errors && data.errors.join(', ')) || 'np_api');
-        return data.data || [];
-    }
-
-    function onNpSettlementInput(val){
-        selectedNpSettlement = null;
-        clearTimeout(npSearchTimer);
-        const dd = document.getElementById('npSettlementDropdown');
-        const status = document.getElementById('npSettlementStatus');
-        const query = String(val || '').trim();
-
-        if (query.length < 2){
-            dd.classList.remove('open');
-            dd.innerHTML = '';
-            status.textContent = 'Введіть мінімум 2 літери для пошуку по базі Нової Пошти';
+        if (!method) {
+            npBox.style.display = 'none';
+            cityInput.required = false;
+            whSelect.required = false;
+            altInput.required = false;
             return;
         }
 
-        status.textContent = 'Пошук населеного пункту...';
-        npSearchTimer = setTimeout(async () => {
-            try {
-                const items = await callNovaPoshta('Address', 'getSettlements', {
-                    FindByString: query,
-                    Limit: 12,
-                    Page: 1
-                });
-                if (!items.length){
-                    dd.classList.remove('open');
-                    dd.innerHTML = '';
-                    status.textContent = 'У списку не знайдено — можете вписати село/місто та адресу вручну нижче';
-                    return;
-                }
-                dd.innerHTML = items.map(item => {
-                    const desc = item.Description || '';
-                    const area = item.AreaDescription ? `${item.AreaDescription} обл.` : '';
-                    const region = item.RegionsDescription ? `${item.RegionsDescription} р-н` : '';
-                    const sub = [area, region].filter(Boolean).join(', ');
-                    const fullLabel = sub ? `${desc} (${sub})` : desc;
-                    return `<div class="np-opt" onclick="selectNpSettlement('${escapeHtml(item.Ref)}','${escapeHtml(fullLabel)}')">
-                        <b>${escapeHtml(desc)}</b>
-                        <span>${escapeHtml(sub)}</span>
-                    </div>`;
-                }).join('');
-                dd.classList.add('open');
-                status.textContent = 'Оберіть село або місто зі списку';
-            } catch(err){
-                dd.classList.remove('open');
-                status.textContent = 'Не вдалося завантажити список — введіть село/місто та відділення вручну нижче';
+        npBox.style.display = 'block';
+
+        if (method === 'nova_poshta') {
+            whGroup.style.display = 'block';
+            altGroup.style.display = 'none';
+            cityInput.required = true;
+            whSelect.required = true;
+            altInput.required = false;
+            if (cityInput.value === 'с. Захарівка, Одеська обл.') {
+                cityInput.value = '';
             }
-        }, 280);
+        } else if (method === 'ukr_poshta') {
+            whGroup.style.display = 'none';
+            altGroup.style.display = 'block';
+            cityInput.required = true;
+            whSelect.required = false;
+            altInput.required = true;
+            if (cityInput.value === 'с. Захарівка, Одеська обл.') {
+                cityInput.value = '';
+            }
+        } else if (method === 'pickup') {
+            whGroup.style.display = 'none';
+            altGroup.style.display = 'none';
+            cityInput.required = false;
+            whSelect.required = false;
+            altInput.required = false;
+            if (!cityInput.value.trim()) {
+                cityInput.value = 'с. Захарівка, Одеська обл.';
+            }
+        }
     }
 
-    async function selectNpSettlement(ref, label){
-        selectedNpSettlement = { ref, label };
-        const input = document.getElementById('npSettlementInput');
-        const dd = document.getElementById('npSettlementDropdown');
-        const status = document.getElementById('npSettlementStatus');
-        const whSelect = document.getElementById('npWarehouseSelect');
-
-        input.value = label;
-        dd.classList.remove('open');
-        status.textContent = `Обрано: ${label}`;
-        whSelect.innerHTML = '<option value="">Завантаження відділень / поштоматів...</option>';
+    async function searchNpSettlements(query) {
+        const dropdown = document.getElementById('npCityDropdown');
+        if (query.trim().length < 2) {
+            dropdown.classList.remove('open');
+            dropdown.innerHTML = '';
+            return;
+        }
 
         try {
-            const warehouses = await callNovaPoshta('Address', 'getWarehouses', {
-                SettlementRef: ref,
-                Limit: 200,
-                Page: 1
+            const res = await fetch(NP_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    apiKey: NP_API_KEY,
+                    modelName: 'Address',
+                    calledMethod: 'searchSettlements',
+                    methodProperties: {
+                        CityName: query.trim(),
+                        Limit: 15,
+                        Page: 1
+                    }
+                })
             });
-            if (!warehouses.length){
-                whSelect.innerHTML = '<option value="">Відділень у базі не знайдено — вкажіть адресу нижче</option>';
+            const data = await res.json();
+            const addresses = (data.success && data.data && data.data[0] && data.data[0].Addresses) ? data.data[0].Addresses : [];
+
+            if (!addresses.length) {
+                dropdown.innerHTML = '<div class="np-option" style="color:var(--muted);cursor:default;">Нічого не знайдено</div>';
+                dropdown.classList.add('open');
                 return;
             }
+
+            dropdown.innerHTML = addresses.map(addr => {
+                const safePresent = (addr.Present || '').replace(/"/g, '&quot;');
+                const ref = addr.Ref || '';
+                return `<div class="np-option" data-ref="${escapeHtml(ref)}" data-present="${safePresent}">${escapeHtml(addr.Present)}</div>`;
+            }).join('');
+
+            dropdown.querySelectorAll('.np-option[data-ref]').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const chosenName = opt.dataset.present;
+                    const chosenRef = opt.dataset.ref;
+                    document.getElementById('orderCityInput').value = chosenName;
+                    document.getElementById('orderCityRef').value = chosenRef;
+                    dropdown.classList.remove('open');
+                    if (document.getElementById('orderDelivery').value === 'nova_poshta') {
+                        loadNpWarehouses(chosenRef);
+                    }
+                });
+            });
+
+            dropdown.classList.add('open');
+        } catch (err) {
+            console.error('NP settlement search error:', err);
+        }
+    }
+
+    async function loadNpWarehouses(settlementRef) {
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        whSelect.disabled = true;
+        whSelect.innerHTML = '<option value="">Завантаження відділень...</option>';
+
+        try {
+            const res = await fetch(NP_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    apiKey: NP_API_KEY,
+                    modelName: 'Address',
+                    calledMethod: 'getWarehouses',
+                    methodProperties: {
+                        SettlementRef: settlementRef,
+                        Limit: 200,
+                        Page: 1
+                    }
+                })
+            });
+            const data = await res.json();
+            const warehouses = (data.success && Array.isArray(data.data)) ? data.data : [];
+
+            if (!warehouses.length) {
+                whSelect.innerHTML = '<option value="">Відділень не знайдено</option>';
+                whSelect.disabled = false;
+                return;
+            }
+
             whSelect.innerHTML = '<option value="">Оберіть відділення або поштомат</option>' +
-                warehouses.map(w => `<option value="${escapeHtml(w.Description)}">${escapeHtml(w.Description)}</option>`).join('');
-        } catch(err){
-            whSelect.innerHTML = '<option value="">Не вдалося завантажити відділення — вкажіть нижче</option>';
+                warehouses.map(w => {
+                    const desc = (w.Description || '').replace(/"/g, '&quot;');
+                    return `<option value="${desc}">${escapeHtml(w.Description)}</option>`;
+                }).join('');
+            whSelect.disabled = false;
+        } catch (err) {
+            console.error('NP warehouses error:', err);
+            whSelect.innerHTML = '<option value="">Помилка завантаження відділень</option>';
+            whSelect.disabled = false;
         }
     }
 
-    function onNpWarehouseSelect(){
-        const wh = document.getElementById('npWarehouseSelect').value;
-        const customInput = document.getElementById('npCustomAddressInput');
-        if (wh && !customInput.value.trim()){
-            customInput.placeholder = `Обрано: ${wh}`;
-        }
-    }
+    document.getElementById('orderCityInput').addEventListener('input', function() {
+        document.getElementById('orderCityRef').value = '';
+        clearTimeout(npSearchTimer);
+        const val = this.value;
+        npSearchTimer = setTimeout(() => searchNpSettlements(val), 250);
+    });
 
-    function getFormattedDeliveryDetails(){
-        const method = document.getElementById('deliveryMethodSelect').value;
-        if (method === 'Нова пошта'){
-            const settlement = (selectedNpSettlement && selectedNpSettlement.label) || document.getElementById('npSettlementInput').value.trim();
-            const wh = document.getElementById('npWarehouseSelect').value.trim();
-            const custom = document.getElementById('npCustomAddressInput').value.trim();
-            const point = custom || wh;
-            const parts = ['Нова пошта'];
-            if (settlement) parts.push(settlement);
-            if (point) parts.push(point);
-            return {
-                summary: parts.join(', '),
-                valid: Boolean(settlement && point),
-                errorMsg: 'Оберіть населений пункт і відділення або вкажіть адресу Нової Пошти'
-            };
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('npCityDropdown');
+        const input = document.getElementById('orderCityInput');
+        if (dropdown && input && !dropdown.contains(e.target) && e.target !== input) {
+            dropdown.classList.remove('open');
         }
-        if (method === 'Укрпошта'){
-            const addr = document.getElementById('otherAddressInput').value.trim();
-            return {
-                summary: addr ? `Укрпошта — ${addr}` : 'Укрпошта',
-                valid: Boolean(addr),
-                errorMsg: 'Вкажіть населений пункт, індекс/відділення або адресу Укрпошти'
-            };
-        }
-        if (method === 'Самовивіз'){
-            const note = document.getElementById('otherAddressInput').value.trim();
-            return {
-                summary: note ? `Самовивіз (${note})` : 'Самовивіз',
-                valid: true,
-                errorMsg: ''
-            };
-        }
-        return { summary: '', valid: false, errorMsg: 'Оберіть спосіб доставки' };
-    }
+    });
 
     function renderProductPage(){
         document.getElementById('crumbTitle').textContent = product.title;
@@ -797,18 +785,36 @@
         const form = e.target,
               pib = form.querySelector('[name="ПІБ"]').value.trim(),
               phone = form.querySelector('[name="Телефон"]').value.trim(),
-              deliveryMethod = form.querySelector('[name="Доставка"]').value,
+              deliverySelect = document.getElementById('orderDelivery'),
+              deliveryCode = deliverySelect.value,
+              deliveryText = deliverySelect.options[deliverySelect.selectedIndex].text,
+              cityText = document.getElementById('orderCityInput').value.trim(),
+              warehouseText = document.getElementById('orderWarehouseSelect').value.trim(),
+              altAddressText = document.getElementById('orderAltAddress').value.trim(),
               comment = form.querySelector('[name="Коментар"]').value.trim();
 
-        const deliveryInfo = getFormattedDeliveryDetails();
-        if (!pib || !phone || !deliveryMethod || !cart.length){
+        if (!pib || !phone || !deliveryCode || !cart.length){
             showToast("Заповніть обов'язкові поля","warn");
             return;
         }
-        if (!deliveryInfo.valid){
-            showToast(deliveryInfo.errorMsg,"warn");
+        if (deliveryCode === 'nova_poshta' && (!cityText || !warehouseText)){
+            showToast("Оберіть місто/село та відділення Нової пошти","warn");
             return;
         }
+        if (deliveryCode === 'ukr_poshta' && (!cityText || !altAddressText)){
+            showToast("Вкажіть місто/село та індекс/адресу для Укрпошти","warn");
+            return;
+        }
+
+        let addressSummary = '';
+        if (deliveryCode === 'nova_poshta') {
+            addressSummary = `${cityText}${warehouseText ? ' — ' + warehouseText : ''}`;
+        } else if (deliveryCode === 'ukr_poshta') {
+            addressSummary = `${cityText}${altAddressText ? ', ' + altAddressText : ''}`;
+        } else if (deliveryCode === 'pickup') {
+            addressSummary = cityText || 'Самовивіз (с. Захарівка)';
+        }
+        const combinedComment = [addressSummary ? `Адреса: ${addressSummary}` : '', comment].filter(Boolean).join(' | ');
 
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
@@ -823,7 +829,16 @@
         const itemsStr = cart.map(i=>i.name+' ('+i.qty+' шт.)').join(', ');
         const freeShipLine = total >= 1000 ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 грн)' : '';
 
-        const text = `🛒 <b>НОВЕ ЗАМОВЛЕННЯ (з товару)!</b>\n\n👤 <b>ПІБ:</b> ${escapeHtml(pib)}\n📞 <b>Телефон:</b> ${escapeHtml(phone)}\n🚚 <b>Доставка:</b> ${escapeHtml(deliveryInfo.summary)}\n💬 <b>Коментар:</b> ${escapeHtml(comment||'немає')}\n\n📦 <b>Товари:</b>\n${itemsList}\n\n💰 <b>Загальна сума:</b> ${total} грн${freeShipLine}`;
+        const text = `🛒 <b>НОВЕ ЗАМОВЛЕННЯ (з товару)!</b>\n\n` +
+                     `👤 <b>ПІБ:</b> ${escapeHtml(pib)}\n` +
+                     `📞 <b>Телефон:</b> ${escapeHtml(phone)}\n` +
+                     `🚚 <b>Доставка:</b> ${escapeHtml(deliveryText)}\n` +
+                     (cityText ? `📍 <b>Місто / село:</b> ${escapeHtml(cityText)}\n` : '') +
+                     (deliveryCode === 'nova_poshta' && warehouseText ? `🏢 <b>Відділення НП:</b> ${escapeHtml(warehouseText)}\n` : '') +
+                     (deliveryCode === 'ukr_poshta' && altAddressText ? `✉️ <b>Адреса Укрпошти:</b> ${escapeHtml(altAddressText)}\n` : '') +
+                     `💬 <b>Коментар:</b> ${escapeHtml(comment||'немає')}\n\n` +
+                     `📦 <b>Товари:</b>\n${itemsList}\n\n` +
+                     `💰 <b>Загальна сума:</b> ${total} грн${freeShipLine}`;
 
         try {
             const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
@@ -838,10 +853,10 @@
                     id:'ord_'+Date.now(),
                     customer_name:pib,
                     phone,
-                    delivery_method:deliveryInfo.summary,
+                    delivery_method:deliveryText,
                     items:itemsStr,
                     total_price:total,
-                    comment:comment||''
+                    comment:combinedComment
                 })
             });
             if (!dbRes.ok) throw new Error('supabase');
@@ -854,10 +869,9 @@
             if (res.ok){
                 showToast('✅ Замовлення успішно надіслано та збережено!','ok');
                 cart = [];
-                selectedNpSettlement = null;
                 saveCart();
                 form.reset();
-                onDeliveryMethodChange();
+                document.getElementById('npAddressFields').style.display = 'none';
                 closeCartModal();
             } else {
                 throw new Error('tg');
@@ -878,11 +892,6 @@
         setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(30px)'; setTimeout(()=>el.remove(),300); },3000);
     }
 
-    document.addEventListener('click', e=>{
-        if (!e.target.closest('#npSettlementInput') && !e.target.closest('#npSettlementDropdown')){
-            document.getElementById('npSettlementDropdown').classList.remove('open');
-        }
-    });
     document.getElementById('cartModal').addEventListener('click', e=>{ if(e.target.id==='cartModal') closeCartModal(); });
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCartModal(); });
 </script>
