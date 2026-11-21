@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мед з волоським горіхом | Медова Пасіка</title>
+    <meta name="description" content="Натуральний мед з добірним волоським горіхом напряму з пасіки в с. Захарівка. Поживні десерти для імунітету та енергії.">
+    <link rel="canonical" href="https://medova-paseka.top/pages/walnut.html">
+
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="Медова Пасіка">
+    <meta property="og:url" content="https://medova-paseka.top/pages/walnut.html">
+    <meta property="og:title" content="Мед з волоським горіхом | Медова Пасіка">
+    <meta property="og:description" content="Відбірний мед з добірним волоським горіхом з власної пасіки.">
+    <meta property="og:image" content="https://medova-paseka.top/images/med-voloskyi.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg: #FDFBF7;
+            --card-bg: #FFFFFF;
+            --primary: #D97706;
+            --primary-dark: #92400E;
+            --accent: #F59E0B;
+            --text: #2B1D0E;
+            --text-muted: #7A6A52;
+            --border: #E8DCC8;
+            --radius: 16px;
+            --shadow-soft: 0 4px 20px rgba(43, 29, 14, 0.04);
+            --shadow-hover: 0 12px 32px rgba(217, 119, 6, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; padding-top: 80px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        h1, h2, h3, h4, .logo, .brand { font-family: 'Cormorant Garamond', serif; }
+
+        /* ===== ШАПКА ===== */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            background: rgba(253, 251, 247, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(232, 220, 200, 0.5); padding: 14px 0;
+        }
+        .nav-container { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .logo span { color: var(--primary); }
+        .menu-burger-btn {
+            background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%;
+            font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s ease; color: var(--text); flex-shrink: 0;
+        }
+        .menu-burger-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 15px; font-weight: 600; transition: color 0.25s; white-space: nowrap; }
+        .nav-links a:hover { color: var(--primary); }
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .btn-auth, .lang-btn {
+            background: var(--card-bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px;
+            font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.25s ease;
+            text-decoration: none; display: inline-flex; align-items: center; white-space: nowrap;
+        }
+        .btn-auth:hover, .lang-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
+        .lang-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
+
+        .btn-cart-header {
+            position: relative; background: var(--card-bg); border: 1px solid var(--border);
+            width: 40px; height: 40px; border-radius: 50%; font-size: 17px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; color: var(--text);
+            transition: all 0.25s ease; flex-shrink: 0;
+        }
+        .btn-cart-header:hover { border-color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
+        .btn-cart-header .count {
+            position: absolute; top: -5px; right: -5px; background: #EF4444; color: #fff;
+            min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; font-size: 11px; font-weight: 700;
+            display: none; align-items: center; justify-content: center; border: 2px solid var(--bg);
+        }
+
+        /* ===== ШТОРКА ===== */
+        .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.4); backdrop-filter: blur(4px); z-index: 998; opacity: 0; transition: opacity 0.3s ease; }
+        .drawer-overlay.open { display: block; opacity: 1; }
+        .side-drawer {
+            position: fixed; top: 0; left: -360px; width: 340px; max-width: 88vw; height: 100%;
+            background: var(--card-bg); z-index: 999; box-shadow: 10px 0 40px rgba(0,0,0,0.12);
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .side-drawer.open { left: 0; }
+        .drawer-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+        .drawer-header .brand { font-weight: 700; font-size: 22px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .drawer-close { background: var(--card-bg); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; }
+        .drawer-section { border-bottom: 1px solid var(--border); padding: 8px 0; }
+        .drawer-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; text-decoration: none; color: var(--text); font-size: 15px; font-weight: 600; transition: all 0.2s; }
+        .drawer-item:hover { background: #FFFBEB; color: var(--primary-dark); padding-left: 28px; }
+        .drawer-item .arrow { color: var(--text-muted); font-size: 18px; }
+
+        /* ===== КОНТЕНТ ТОВАРА ===== */
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+        .breadcrumbs { padding: 20px 0; font-size: 14px; color: var(--text-muted); display: flex; gap: 8px; flex-wrap: wrap; }
+        .breadcrumbs a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumbs a:hover { color: var(--primary); }
+
+        .product-hero {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px;
+            padding: 40px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 44px;
+            box-shadow: var(--shadow-soft); margin-bottom: 50px;
+        }
+        .product-gallery {
+            border-radius: 20px; min-height: 380px; background-size: cover; background-position: center;
+            background-color: #FEF3C7; position: relative; border: 1px solid var(--border);
+        }
+        .product-badge {
+            position: absolute; top: 16px; left: 16px; background: var(--primary); color: #fff;
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+        .product-info h1 { font-size: 42px; font-weight: 700; line-height: 1.15; margin-bottom: 14px; }
+        .product-lead { font-size: 16px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.65; }
+
+        .size-label { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: block; color: var(--text); }
+        .sizes { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+        .size-btn {
+            background: var(--bg); border: 1px solid var(--border); padding: 10px 18px; border-radius: 12px;
+            font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: all 0.2s;
+        }
+        .size-btn:hover { border-color: var(--accent); }
+        .size-btn.active { border-color: var(--primary); background: #FFFBEB; color: var(--primary-dark); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.12); }
+
+        .price-box { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+        .price-current { font-size: 36px; font-weight: 800; color: var(--text); font-family: 'Cormorant Garamond', serif; }
+        .btn-buy-main {
+            background: var(--primary); color: #fff; border: none; padding: 15px 32px; border-radius: 14px;
+            font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+            box-shadow: 0 8px 24px rgba(217, 119, 6, 0.28);
+        }
+        .btn-buy-main:hover { background: #B45309; transform: translateY(-2px); }
+
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 50px; }
+        .benefit-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+        .benefit-card h3 { font-size: 22px; margin-bottom: 8px; }
+        .benefit-card p { font-size: 14px; color: var(--text-muted); }
+
+        /* ===== СТАТЬЯ О ГРЕЦКОМ ОРЕХЕ ===== */
+        .article-box {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #FDE68A; border-radius: 24px; padding: 40px;
+            box-shadow: var(--shadow-soft); margin-bottom: 50px;
+        }
+        .article-box h2 { font-size: 34px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+        .article-box p { color: var(--text-muted); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
+        .article-box p:last-child { margin-bottom: 0; }
+
+        /* ===== МОДАЛКА ===== */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+        .modal.active { display: flex; }
+        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 32px; max-width: 480px; width: 92%; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 18px; right: 18px; background: var(--bg); border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 12px;
+            font-size: 14px; background: var(--bg); outline: none; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: #fff; }
+        .btn-submit { width: 100%; background: #059669; color: #fff; border: none; padding: 13px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; }
+        .btn-continue { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; }
+
+        footer { background: var(--text); color: #A8A29E; padding: 36px 0; text-align: center; font-size: 14px; margin-top: 20px; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .footer-rights { color: #E7E5E4; font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+        .footer-bottom-mark { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #A8A29E; font-size: 14px; }
+        .footer-circle-s {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 22px; height: 22px; border-radius: 50%; border: 1px solid currentColor;
+            font-size: 12px; font-weight: 700; line-height: 1;
+        }
+
+        @media (max-width: 900px) {
+            .product-hero { grid-template-columns: 1fr; padding: 24px; gap: 24px; }
+            .article-box { padding: 26px 20px; }
+            .product-gallery { min-height: 260px; }
+            .product-info h1 { font-size: 32px; }
+            .benefits-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            body { padding-top: 64px; }
+            .nav-links { display: none; }
+            .logo { font-size: 18px; }
+            .btn-auth .auth-text { display: none; }
+            .btn-auth { padding: 8px 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <div class="logo-area">
+            <button class="menu-burger-btn" onclick="openDrawer()">☰</button>
+            <a href="/" class="logo"><span id="l-logo">Медова Пасіка</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="/#catalog" id="m-cat">Каталог</a>
+            <a href="/#about" id="m-about">Про нас</a>
+            <a href="/#delivery" id="m-del">Доставка</a>
+            <a href="/#contacts" id="m-cont">Контакти</a>
+        </div>
+        <div class="header-actions">
+            <a href="/pages/account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
+            <div style="display: flex; gap: 4px;">
+                <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
+                <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
+            </div>
+            <button class="btn-cart-header" onclick="openCartModal()" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
+        </div>
+    </div>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+        <div class="brand">🍯 <span>Медова Пасіка</span></div>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-section">
+        <a href="/" class="drawer-item" id="dr-home">🏠 Головна <span class="arrow">›</span></a>
+        <a href="/pages/sunflower.html" class="drawer-item" id="dr-sun">🌻 Мед соняшниковий <span class="arrow">›</span></a>
+        <a href="/pages/may.html" class="drawer-item" id="dr-may">🌿 Мед травневий <span class="arrow">›</span></a>
+        <a href="/pages/walnut.html" class="drawer-item" id="dr-wal">🥜 Мед з волоським горіхом <span class="arrow">›</span></a>
+        <a href="/pages/candles.html" class="drawer-item" id="dr-cand">🕯️ Свічки з вощини <span class="arrow">›</span></a>
+        <a href="/pages/propolis.html" class="drawer-item" id="dr-prop">🛡️ Прополіс <span class="arrow">›</span></a>
+        <a href="/pages/pollen.html" class="drawer-item" id="dr-poll">⚡ Бджолиний пилок <span class="arrow">›</span></a>
+    </div>
+</aside>
+
+<div class="container">
+    <div class="breadcrumbs">
+        <a href="/" id="bc-home">Головна</a>
+        <span>/</span>
+        <a href="/#catalog" id="bc-cat">Каталог</a>
+        <span>/</span>
+        <span id="bc-cur">Мед з волоським горіхом</span>
+    </div>
+
+    <div class="product-hero">
+        <div class="product-gallery" style="background-image: url('/images/med-voloskyi.jpg');" onerror="this.style.background='linear-gradient(135deg,#FDE68A,#F59E0B)'">
+            <div class="product-badge" id="p-badge">Вітаміни</div>
+        </div>
+
+        <div class="product-info">
+            <h1 id="p-title">Мед з волоським горіхом</h1>
+            <p class="product-lead" id="p-lead">
+                Натуральний мед у поєднанні з добірним волоським горіхом з власної пасіки та саду в с. Захарівка. Смачний та поживний десерт для щоденної енергії та підтримки організму.
+            </p>
+
+            <span class="size-label" id="size-label">Оберіть об'єм:</span>
+            <div class="sizes" id="sizeGroup">
+                <button type="button" class="size-btn active" data-price="150" data-size="0.25 л">0.25 л — 150 ₴</button>
+                <button type="button" class="size-btn" data-price="280" data-size="0.5 л">0.5 л — 280 ₴</button>
+                <button type="button" class="size-btn" data-price="500" data-size="1 л">1 л — 500 ₴</button>
+            </div>
+
+            <div class="price-box">
+                <div class="price-current"><span id="selectedPrice">150</span> <small style="font-size:20px;">₴</small></div>
+                <button type="button" class="btn-buy-main" id="btnAddMain" onclick="addSelectedToCart()">🛒 Додати в кошик</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="benefits-grid">
+        <div class="benefit-card">
+            <h3 id="b1-t">🥜 Добірний горіх</h3>
+            <p id="b1-d">Використовуємо відбірні ядра волоського горіха без гіркоти та зайвої вологи.</p>
+        </div>
+        <div class="benefit-card">
+            <h3 id="b2-t">🍯 Натуральний мед</h3>
+            <p id="b2-d">Без цукру, ароматизаторів та термічної обробки — зберігає корисні властивості.</p>
+        </div>
+        <div class="benefit-card">
+            <h3 id="b3-t">⚡ Користь щодня</h3>
+            <p id="b3-d">Чудово підходить до чаю, каші, сирників або як корисний перекус для всієї родини.</p>
+        </div>
+    </div>
+
+    <section id="article" style="padding:0;">
+        <div class="article-box">
+            <h2 id="art-title">🥜 Чому волоський горіх у меді — такий смачний і корисний?</h2>
+            <p id="art-p1">
+                Волоський горіх у поєднанні з натуральним медом — це приємний, м'який і водночас ситний смак без нудотної солодкості. Хрумкі горіхові ядра гармонійно доповнюють густу медову текстуру, тож ложка такого десерту легко замінює солодощі до чаю чи кави.
+            </p>
+            <p id="art-p2">
+                Окрім чудового смаку, волоський горіх цінують за природний набір вітамінів і поживних речовин: у ньому містяться вітаміни групи B, вітамін E, корисні ненасичені жирні кислоти, антиоксиданти та мінерали. Разом із натуральним медом він допомагає підтримувати бадьорість, працездатність і тонус протягом дня.
+            </p>
+        </div>
+    </section>
+</div>
+
+<div class="modal" id="orderModal">
+    <div class="modal-box">
+        <button class="close-modal" onclick="closeModal('orderModal')">✕</button>
+        <h3 id="m-title" style="margin-bottom: 18px; font-size: 26px;">📋 Кошик замовлення</h3>
+        <div id="cartItemsList" style="margin-bottom: 18px; max-height: 180px; overflow-y: auto;"></div>
+        <div style="background: var(--bg); padding: 12px 14px; border-radius: 12px; margin-bottom: 18px; text-align: right; font-weight: 700; font-size: 18px;">
+            <span id="m-tot" style="font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-muted);">Загальна сума:</span> <span id="cartTotalSum" style="color: var(--primary);">0</span> ₴
+        </div>
+        <form onsubmit="sendOrderToTelegram(event)">
+            <div class="form-group">
+                <label id="m-l-name">ПІБ *</label>
+                <input type="text" id="orderName" required placeholder="Іванов Іван">
+            </div>
+            <div class="form-group">
+                <label id="m-l-phone">Номер телефону *</label>
+                <input type="tel" id="orderContact" required placeholder="+380XXXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label id="m-l-delivery">Спосіб доставки *</label>
+                <select id="orderDelivery" required>
+                    <option value="" disabled selected id="del-opt-default">Оберіть спосіб доставки</option>
+                    <option value="nova_poshta" id="del-opt-np">Нова Пошта</option>
+                    <option value="ukr_poshta" id="del-opt-up">Укрпошта</option>
+                    <option value="pickup" id="del-opt-pickup">Самовивіз</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label id="m-l-comm">Коментар</label>
+                <textarea id="orderComment" rows="2" placeholder="Номер відділення або побажання..."></textarea>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-continue" style="flex:1;" onclick="closeModal('orderModal')" id="m-btn-close">Закрити</button>
+                <button type="submit" class="btn-submit" style="flex:2;" id="m-btn-send">📤 Надіслати замовлення</button>
+            </div>
+            <div id="orderStatus" style="margin-top:12px; text-align:center; font-weight:700; font-size:13px;"></div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p class="footer-rights" id="ft-rights">Медова пасіка / всі права захищені</p>
+        <div class="footer-bottom-mark">
+            <span class="footer-circle-s" aria-hidden="true">©</span>
+            <span>2026</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const BOT_TOKEN = '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
+    const CHAT_ID = '1763769244';
+    const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
+    const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
+
+    let currentLang = 'uk';
+    let cart = JSON.parse(localStorage.getItem('medova_cart')) || [];
+
+    const dict = {
+        uk: {
+            lLogo: "Медова Пасіка", mCat: "Каталог", mAbout: "Про нас", mDel: "Доставка", mCont: "Контакти",
+            drHome: "🏠 Головна", drSun: "🌻 Мед соняшниковий", drMay: "🌿 Мед травневий", drWal: "🥜 Мед з волоським горіхом",
+            drCand: "🕯️ Свічки з вощини", drProp: "🛡️ Прополіс", drPoll: "⚡ Бджолиний пилок",
+            bcHome: "Головна", bcCat: "Каталог", bcCur: "Мед з волоським горіхом",
+            pBadge: "Вітаміни",
+            pTitle: "Мед з волоським горіхом",
+            pLead: "Натуральний мед у поєднанні з добірним волоським горіхом з власної пасіки та саду в с. Захарівка. Смачний та поживний десерт для щоденної енергії та підтримки організму.",
+            sizeLabel: "Оберіть об'єм:",
+            btnAdd: "🛒 Додати в кошик",
+            b1t: "🥜 Добірний горіх", b1d: "Використовуємо відбірні ядра волоського горіха без гіркоти та зайвої вологи.",
+            b2t: "🍯 Натуральний мед", b2d: "Без цукру, ароматизаторів та термічної обробки — зберігає корисні властивості.",
+            b3t: "⚡ Користь щодня", b3d: "Чудово підходить до чаю, каші, сирників або як корисний перекус для всієї родини.",
+            artTitle: "🥜 Чому волоський горіх у меді — такий смачний і корисний?",
+            artP1: "Волоський горіх у поєднанні з натуральним медом — це приємний, м'який і водночас ситний смак без нудотної солодкості. Хрумкі горіхові ядра гармонійно доповнюють густу медову текстуру, тож ложка такого десерту легко замінює солодощі до чаю чи кави.",
+            artP2: "Окрім чудового смаку, волоський горіх цінують за природний набір вітамінів і поживних речовин: у ньому містяться вітаміни групи B, вітамін E, корисні ненасичені жирні кислоти, антиоксиданти та мінерали. Разом із натуральним медом він допомагає підтримувати бадьорість, працездатність і тонус протягом дня.",
+            ftRights: "Медова пасіка / всі права захищені",
+            mTitle: "📋 Кошик замовлення", mTot: "Загальна сума:", mLName: "ПІБ *", mLPhone: "Номер телефону *",
+            mLDelivery: "Спосіб доставки *", mDelOptDefault: "Оберіть спосіб доставки",
+            mDelOptNP: "Нова Пошта", mDelOptUP: "Укрпошта", mDelOptPickup: "Самовивіз",
+            mLComm: "Коментар", mBtnClose: "Закрити", mBtnSend: "📤 Надіслати замовлення",
+            cartName: "Мед з волоським горіхом"
+        },
+        ru: {
+            lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mCont: "Контакты",
+            drHome: "🏠 Главная", drSun: "🌻 Мед подсолнечный", drMay: "🌿 Мед майский", drWal: "🥜 Мед с грецким орехом",
+            drCand: "🕯️ Свечи из вощины", drProp: "🛡️ Прополис", drPoll: "⚡ Пчелиная пыльца",
+            bcHome: "Главная", bcCat: "Каталог", bcCur: "Мед с грецким орехом",
+            pBadge: "Витамины",
+            pTitle: "Мед с грецким орехом",
+            pLead: "Натуральный мед в сочетании с отборным грецким орехом с собственной пасеки и сада в с. Захаровка. Вкусный и питательный десерт для энергии и поддержки организма.",
+            sizeLabel: "Выберите объем:",
+            btnAdd: "🛒 Добавить в корзину",
+            b1t: "🥜 Отборный орех", b1d: "Используем отборные ядра грецкого ореха без горечи и лишней влаги.",
+            b2t: "🍯 Натуральный мед", b2d: "Без сахара, ароматизаторов и термической обработки — сохраняет природную пользу.",
+            b3t: "⚡ Польза каждый день", b3d: "Отлично подходит к чаю, каше, сырникам или как полезный перекус для всей семьи.",
+            artTitle: "🥜 Почему грецкий орех в меде — такой вкусный и полезный?",
+            artP1: "Грецкий орех в сочетании с натуральным медом — это приятный, мягкий и при этом сытный вкус без приторной сладости. Хрустящие ядра ореха гармонично дополняют густую медовую текстуру, поэтому ложка такого десерта легко заменяет сладости к чаю или кофе.",
+            artP2: "Помимо отличного вкуса, грецкий орех ценят за природный набор витаминов и питательных веществ: в нем содержатся витамины группы B, витамин E, полезные ненасыщенные жирные кислоты, антиоксиданты и минералы. Вместе с натуральным медом он помогает поддерживать бодрость, работоспособность и тонус в течение дня.",
+            ftRights: "Медовая пасека / все права защищены",
+            mTitle: "📋 Корзина заказа", mTot: "Общая сумма:", mLName: "ФИО *", mLPhone: "Номер телефона *",
+            mLDelivery: "Способ доставки *", mDelOptDefault: "Выберите способ доставки",
+            mDelOptNP: "Новая Почта", mDelOptUP: "Укрпочта", mDelOptPickup: "Самовывоз",
+            mLComm: "Комментарий", mBtnClose: "Закрыть", mBtnSend: "📤 Отправить заказ",
+            cartName: "Мед с грецким орехом"
+        }
+    };
+
+    function setLang(lang) {
+        currentLang = lang;
+        const t = dict[lang];
+        document.getElementById('l-logo').textContent = t.lLogo;
+        document.getElementById('m-cat').textContent = t.mCat;
+        document.getElementById('m-about').textContent = t.mAbout;
+        document.getElementById('m-del').textContent = t.mDel;
+        document.getElementById('m-cont').textContent = t.mCont;
+        document.getElementById('dr-home').firstChild.textContent = t.drHome + " ";
+        document.getElementById('dr-sun').firstChild.textContent = t.drSun + " ";
+        document.getElementById('dr-may').firstChild.textContent = t.drMay + " ";
+        document.getElementById('dr-wal').firstChild.textContent = t.drWal + " ";
+        document.getElementById('dr-cand').firstChild.textContent = t.drCand + " ";
+        document.getElementById('dr-prop').firstChild.textContent = t.drProp + " ";
+        document.getElementById('dr-poll').firstChild.textContent = t.drPoll + " ";
+        document.getElementById('bc-home').textContent = t.bcHome;
+        document.getElementById('bc-cat').textContent = t.bcCat;
+        document.getElementById('bc-cur').textContent = t.bcCur;
+        document.getElementById('p-badge').textContent = t.pBadge;
+        document.getElementById('p-title').textContent = t.pTitle;
+        document.getElementById('p-lead').textContent = t.pLead;
+        document.getElementById('size-label').textContent = t.sizeLabel;
+        document.getElementById('btnAddMain').textContent = t.btnAdd;
+        document.getElementById('b1-t').textContent = t.b1t;
+        document.getElementById('b1-d').textContent = t.b1d;
+        document.getElementById('b2-t').textContent = t.b2t;
+        document.getElementById('b2-d').textContent = t.b2d;
+        document.getElementById('b3-t').textContent = t.b3t;
+        document.getElementById('b3-d').textContent = t.b3d;
+        document.getElementById('art-title').textContent = t.artTitle;
+        document.getElementById('art-p1').textContent = t.artP1;
+        document.getElementById('art-p2').textContent = t.artP2;
+        document.getElementById('ft-rights').textContent = t.ftRights;
+        document.getElementById('m-title').textContent = t.mTitle;
+        document.getElementById('m-tot').textContent = t.mTot;
+        document.getElementById('m-l-name').textContent = t.mLName;
+        document.getElementById('m-l-phone').textContent = t.mLPhone;
+        document.getElementById('m-l-delivery').textContent = t.mLDelivery;
+        document.getElementById('del-opt-default').textContent = t.mDelOptDefault;
+        document.getElementById('del-opt-np').textContent = t.mDelOptNP;
+        document.getElementById('del-opt-up').textContent = t.mDelOptUP;
+        document.getElementById('del-opt-pickup').textContent = t.mDelOptPickup;
+        document.getElementById('m-l-comm').textContent = t.mLComm;
+        document.getElementById('m-btn-close').textContent = t.mBtnClose;
+        document.getElementById('m-btn-send').textContent = t.mBtnSend;
+        document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
+        document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
+    }
+
+    function openDrawer() {
+        document.getElementById('sideDrawer').classList.add('open');
+        document.getElementById('drawerOverlay').classList.add('open');
+    }
+    function closeDrawer() {
+        document.getElementById('sideDrawer').classList.remove('open');
+        document.getElementById('drawerOverlay').classList.remove('open');
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    document.querySelectorAll('#sizeGroup .size-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#sizeGroup .size-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('selectedPrice').textContent = this.dataset.price;
+        });
+    });
+
+    function addSelectedToCart() {
+        const active = document.querySelector('#sizeGroup .size-btn.active');
+        const price = parseInt(active.dataset.price);
+        const size = active.dataset.size;
+        const fullName = `${dict[currentLang].cartName} (${size})`;
+
+        const existing = cart.find(i => i.name === fullName);
+        if (existing) existing.qty += 1;
+        else cart.push({ name: fullName, price: price, qty: 1 });
+
+        localStorage.setItem('medova_cart', JSON.stringify(cart));
+        updateCartUI();
+        openCartModal();
+    }
+
+    function updateCartUI() {
+        const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+        const badge = document.getElementById('cartCountHeader');
+        if (badge) {
+            badge.textContent = totalQty;
+            badge.style.display = totalQty > 0 ? 'flex' : 'none';
+        }
+    }
+
+    function openCartModal() {
+        const list = document.getElementById('cartItemsList');
+        const sumEl = document.getElementById('cartTotalSum');
+        if (cart.length === 0) {
+            list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
+            sumEl.textContent = '0';
+        } else {
+            let html = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                const sub = item.price * item.qty;
+                total += sub;
+                html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;">
+                    <div><strong>${item.name}</strong><br><span style="color:var(--text-muted); font-size:12px;">${item.qty} шт. × ${item.price} ₴</span></div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <strong>${sub} ₴</strong>
+                        <button onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold;">✕</button>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+            sumEl.textContent = total;
+        }
+        document.getElementById('orderModal').classList.add('active');
+    }
+
+    function removeFromCart(idx) {
+        cart.splice(idx, 1);
+        localStorage.setItem('medova_cart', JSON.stringify(cart));
+        updateCartUI();
+        openCartModal();
+    }
+
+    async function sendOrderToTelegram(e) {
+        e.preventDefault();
+        if (cart.length === 0) return;
+        const name = document.getElementById('orderName').value.trim();
+        const contact = document.getElementById('orderContact').value.trim();
+        const delSelect = document.getElementById('orderDelivery');
+        const deliveryText = delSelect.options[delSelect.selectedIndex].text;
+        const comm = document.getElementById('orderComment').value.trim();
+        const statusDiv = document.getElementById('orderStatus');
+
+        let total = 0;
+        const itemsList = cart.map(i => {
+            const sub = i.price * i.qty;
+            total += sub;
+            return `• ${i.name} — ${i.qty} шт. (${sub} ₴)`;
+        }).join('\n');
+
+        statusDiv.style.color = 'var(--primary)';
+        statusDiv.textContent = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
+
+        try {
+            await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify({
+                    id: 'ord_' + Date.now(),
+                    customer_name: name,
+                    phone: contact,
+                    delivery_method: deliveryText,
+                    items: cart.map(i => `${i.name} (${i.qty} шт.)`).join(', '),
+                    total_price: total,
+                    comment: comm || ''
+                })
+            });
+
+            const text = `<b>🛒 Нове замовлення з сайту!</b>\n\n` +
+                         `<b>👤 ПІБ:</b> ${name}\n` +
+                         `<b>📞 Телефон:</b> ${contact}\n` +
+                         `<b>🚚 Доставка:</b> ${deliveryText}\n` +
+                         `<b>💬 Коментар:</b> ${comm || 'Відсутній'}\n\n` +
+                         `<b>📦 Товари:</b>\n${itemsList}\n\n` +
+                         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>`;
+
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'HTML' })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error('TG error');
+
+            statusDiv.style.color = '#059669';
+            statusDiv.textContent = currentLang === 'uk' ? '✅ Замовлення відправлено!' : '✅ Заказ отправлен!';
+            cart = [];
+            localStorage.setItem('medova_cart', JSON.stringify(cart));
+            updateCartUI();
+            setTimeout(() => { closeModal('orderModal'); statusDiv.textContent = ''; }, 2000);
+        } catch (err) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? '❌ Помилка відправки!' : '❌ Ошибка отправки!';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateCartUI);
+</script>
+</body>
+</html>
