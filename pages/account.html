@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -14,6 +13,7 @@
             --light: #fff8e1;
             --text: #3e2723;
             --muted: #6d4c41;
+            --site-max: 1050px;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
         body {
@@ -35,12 +35,16 @@
         #toast.ok { background: #2e7d32; }
         #toast.err { background: #c62828; }
 
-        /* Верхняя строка возврата */
+        /* Верхняя строка возврата строго по ширине сайта */
         .topbar {
             display: none; background: #fff; border-bottom: 2px solid #ffe082;
-            padding: 12px 18px; position: sticky; top: 0; z-index: 50;
+            padding: 12px 16px; position: sticky; top: 0; z-index: 50;
         }
-        .topbar.show { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .topbar.show { display: block; }
+        .topbar-inner {
+            max-width: var(--site-max); margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
         .topbar a {
             text-decoration: none; font-weight: 700; font-size: 0.88rem;
             padding: 8px 14px; border-radius: 10px;
@@ -97,7 +101,7 @@
         .switch a { color: var(--dark); font-weight: 700; cursor: pointer; text-decoration: underline; }
 
         /* Кабинет */
-        .dash { display: none; max-width: 1050px; margin: 0 auto; padding: 20px 16px 40px; gap: 20px; }
+        .dash { display: none; max-width: var(--site-max); margin: 0 auto; padding: 20px 16px 40px; gap: 20px; }
         .dash.show { display: grid; grid-template-columns: 240px 1fr; }
         @media (max-width: 760px) {
             .dash.show { grid-template-columns: 1fr; }
@@ -121,6 +125,18 @@
             padding: 14px; border-radius: 10px; margin-bottom: 18px; font-size: 0.88rem; line-height: 1.5;
         }
 
+        .wish-item {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            padding: 12px 14px; border: 1px solid #ffe0b2; background: var(--light);
+            border-radius: 12px; margin-bottom: 10px;
+        }
+        .wish-meta { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+        .wish-remove {
+            background: #fff; color: #c62828; border: 1px solid #ffcdd2;
+            border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 700;
+        }
+        .wish-remove:hover { background: #ffebee; }
+
         .order {
             background: var(--light); border: 1px solid #ffe082; border-radius: 12px;
             padding: 14px; margin-bottom: 12px;
@@ -142,8 +158,10 @@
 <div id="toast"></div>
 
 <header id="topBar" class="topbar">
-    <a href="/" class="btn-back">← Повернутися на сайт</a>
-    <a href="/#catalog" class="btn-shop">🍯 До каталогу</a>
+    <div class="topbar-inner">
+        <a href="/" class="btn-back">← Повернутися на сайт</a>
+        <a href="/#catalog" class="btn-shop">🍯 До каталогу</a>
+    </div>
 </header>
 
 <!-- Вхід / Реєстрація -->
@@ -279,6 +297,7 @@
 <script>
 const SB_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
 const SB_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
+const FAV_STORAGE_KEY = "medova_favorites";
 const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
 let user = null;
@@ -350,6 +369,7 @@ function openTab(name, btn) {
     document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     if (btn) btn.classList.add('active');
+    if (name === 'wish') renderWish();
 }
 
 async function checkGoogle() {
@@ -502,11 +522,94 @@ async function logout() {
     init();
 }
 
+function getWishlistItems() {
+    try {
+        const rawFav = localStorage.getItem(FAV_STORAGE_KEY);
+        if (rawFav !== null) {
+            const parsed = JSON.parse(rawFav);
+            if (Array.isArray(parsed)) {
+                return parsed.map(x => typeof x === 'string'
+                    ? { title: x }
+                    : {
+                        id: x.id || '',
+                        title: x.title || x.name || x.id || 'Товар',
+                        price: x.price || '',
+                        variant: x.variant || x.weight || ''
+                    }
+                );
+            }
+        }
+    } catch (e) {}
+
+    const fallback = Array.isArray(user?.data?.wishlist) ? user.data.wishlist : [];
+    return fallback.map(x => typeof x === 'string'
+        ? { title: x }
+        : {
+            id: x.id || '',
+            title: x.title || x.name || x.id || 'Товар',
+            price: x.price || '',
+            variant: x.variant || x.weight || ''
+        }
+    );
+}
+
+async function syncWishlist(items) {
+    try {
+        localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {}
+
+    if (user) {
+        user.data = user.data || {};
+        user.data.wishlist = items;
+        try {
+            localStorage.setItem('medova_current_user', JSON.stringify(user));
+        } catch (e) {}
+        if (user.id) {
+            try {
+                await fetch(`${SB_URL}/rest/v1/users?id=eq.${encodeURIComponent(user.id)}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
+                    body: JSON.stringify({ data: user.data })
+                });
+            } catch (e) {}
+        }
+    }
+}
+
 function renderWish() {
-    const list = user?.data?.wishlist || [];
-    document.getElementById('wishBox').innerHTML = list.length
-        ? list.map(x => `<div style="padding:10px;border:1px solid #ffe0b2;border-radius:10px;margin-bottom:8px;">🍯 ${esc(x)}</div>`).join('')
-        : '<p style="color:#6d4c41;">Список бажань порожній</p>';
+    const box = document.getElementById('wishBox');
+    if (!box) return;
+    const list = getWishlistItems();
+
+    if (!list.length) {
+        box.innerHTML = '<p style="color:#6d4c41;">Список бажань порожній</p>';
+        return;
+    }
+
+    box.innerHTML = list.map((item, idx) => {
+        const metaParts = [];
+        if (item.variant) metaParts.push(esc(item.variant));
+        if (item.price) metaParts.push(`${esc(item.price)} грн`);
+        const metaHtml = metaParts.length ? `<div class="wish-meta">${metaParts.join(' • ')}</div>` : '';
+        return `
+            <div class="wish-item">
+                <div>
+                    <div><strong>🍯 ${esc(item.title)}</strong></div>
+                    ${metaHtml}
+                </div>
+                <button type="button" class="wish-remove" title="Видалити" onclick="removeWishItem(${idx})">✕</button>
+            </div>
+        `;
+    }).join('');
+}
+
+async function removeWishItem(index) {
+    const list = getWishlistItems();
+    if (index < 0 || index >= list.length) return;
+    list.splice(index, 1);
+    await syncWishlist(list);
+    renderWish();
+    toast('Видалено зі списку бажань');
 }
 
 function formatItems(raw) {
@@ -566,6 +669,11 @@ async function renderOrders() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+window.addEventListener('storage', (e) => {
+    if (e.key === FAV_STORAGE_KEY || e.key === 'medova_current_user') {
+        renderWish();
+    }
+});
 </script>
 </body>
 </html>
