@@ -75,8 +75,8 @@
         /* ===== ШАПКА ===== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
-            background: rgba(253, 251, 247, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(232, 220, 200, 0.5); padding: 14px 0; transition: all 0.3s ease;
+            background: rgba(253, 251, 247, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(232, 220, 200, 0.6); padding: 14px 0; transition: all 0.3s ease;
         }
         .nav-container { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 12px; }
         .logo-area { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -88,32 +88,73 @@
             transition: all 0.25s ease; color: var(--text); flex-shrink: 0;
         }
         .menu-burger-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
-        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
         .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 15px; font-weight: 600; transition: color 0.25s; position: relative; white-space: nowrap; }
         .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s ease; }
         .nav-links a:hover { color: var(--primary); }
         .nav-links a:hover::after { width: 100%; }
-        .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .btn-auth, .lang-btn {
-            background: var(--card-bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px;
-            font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.25s ease;
+            background: var(--card-bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 30px;
+            font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.25s ease;
             text-decoration: none; display: inline-flex; align-items: center; white-space: nowrap;
         }
         .btn-auth:hover, .lang-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
         .lang-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
 
-        /* ===== КОРЗИНА В ШАПКЕ ===== */
-        .btn-cart-header {
+        /* ===== ИЗБРАННОЕ (СЕРДЕЧКО) В ШАПКЕ И НА КАРТОЧКАХ ===== */
+        .btn-fav-header {
             position: relative; background: var(--card-bg); border: 1px solid var(--border);
-            width: 40px; height: 40px; border-radius: 50%; font-size: 17px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; color: var(--text);
-            transition: all 0.25s ease; flex-shrink: 0;
+            width: 40px; height: 40px; border-radius: 50%; font-size: 16px; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; color: #E11D48;
+            text-decoration: none; transition: all 0.25s ease; flex-shrink: 0;
         }
-        .btn-cart-header:hover { border-color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
-        .btn-cart-header .count {
-            position: absolute; top: -5px; right: -5px; background: #EF4444; color: #fff;
-            min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; font-size: 11px; font-weight: 700;
+        .btn-fav-header:hover { border-color: #FDA4AF; background: #FFF1F2; transform: scale(1.05); }
+        .btn-fav-header .fav-count {
+            position: absolute; top: -5px; right: -5px; background: #E11D48; color: #fff;
+            min-width: 19px; height: 19px; padding: 0 4px; border-radius: 10px; font-size: 11px; font-weight: 700;
             display: none; align-items: center; justify-content: center; border: 2px solid var(--bg);
+        }
+
+        .fav-card-btn {
+            position: absolute; top: 14px; right: 14px; z-index: 3;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.94); border: 1px solid var(--border);
+            color: #9CA3AF; font-size: 17px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(43, 29, 14, 0.1);
+            transition: all 0.2s ease;
+        }
+        .fav-card-btn:hover { transform: scale(1.08); border-color: #FDA4AF; color: #E11D48; }
+        .fav-card-btn.active { background: #FFF1F2; border-color: #FDA4AF; color: #E11D48; }
+
+        /* ===== КРАСИВАЯ КОРЗИНА В ШАПКЕ С КОЛИЧЕСТВОМ И СУММОЙ ===== */
+        .btn-cart-header {
+            position: relative;
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #F59E0B;
+            height: 40px; padding: 0 14px; border-radius: 999px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 7px; color: var(--text);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.14);
+            transition: all 0.25s ease; flex-shrink: 0; white-space: nowrap;
+        }
+        .btn-cart-header:hover {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(217, 119, 6, 0.22);
+        }
+        .cart-qty-pill {
+            background: var(--primary); color: #fff;
+            min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+            font-size: 11px; font-weight: 800;
+            display: inline-flex; align-items: center; justify-content: center;
+            line-height: 1;
+        }
+        .cart-sum-text {
+            font-size: 13px; font-weight: 800; color: var(--primary-dark);
+            font-variant-numeric: tabular-nums;
         }
 
         /* ===== ШТОРКА — СЛЕВА ===== */
@@ -421,16 +462,21 @@
         @media (max-width: 768px) {
             body { padding-top: 62px; }
             header { padding: 10px 0; }
-            .nav-container { padding: 0 12px; gap: 8px; }
+            .nav-container { padding: 0 12px; gap: 6px; }
             .logo-area { gap: 8px; }
             .logo { font-size: 16px; gap: 5px; }
             .menu-burger-btn { width: 34px; height: 34px; font-size: 15px; }
-            .header-actions { gap: 6px; }
-            .btn-auth { padding: 8px 11px; font-size: 15px; }
+            .header-actions { gap: 5px; }
+            .btn-auth { padding: 7px 10px; font-size: 14px; }
             .btn-auth .auth-text { display: none; }
-            .lang-btn { padding: 7px 11px; font-size: 12px; }
-            .btn-cart-header { width: 34px; height: 34px; font-size: 15px; }
+            .lang-btn { padding: 6px 9px; font-size: 11px; }
+            .btn-fav-header { width: 34px; height: 34px; font-size: 14px; }
+            .btn-cart-header { height: 34px; padding: 0 10px; font-size: 13px; gap: 5px; }
+            .cart-sum-text { font-size: 11px; }
+            .cart-qty-pill { min-width: 18px; height: 18px; font-size: 10px; padding: 0 4px; }
             .nav-links { display: none; }
+
+            .fav-card-btn { width: 32px; height: 32px; font-size: 15px; top: 10px; right: 10px; }
 
             .hero { padding: 44px 16px 48px; }
             .hero-deco { display: none; }
@@ -494,12 +540,13 @@
 
         /* ===== ОЧЕНЬ УЗКИЕ ЭКРАНЫ (до 380px) ===== */
         @media (max-width: 380px) {
-            .nav-container { padding: 0 10px; gap: 6px; }
+            .nav-container { padding: 0 8px; gap: 4px; }
             .logo { font-size: 14px; }
-            .header-actions { gap: 4px; }
-            .btn-auth { padding: 7px 9px; }
-            .lang-btn { padding: 6px 8px; font-size: 11px; }
-            .menu-burger-btn, .btn-cart-header { width: 32px; height: 32px; font-size: 14px; }
+            .header-actions { gap: 3px; }
+            .btn-auth { padding: 6px 8px; }
+            .lang-btn { padding: 5px 7px; font-size: 10px; }
+            .menu-burger-btn, .btn-fav-header { width: 30px; height: 30px; font-size: 13px; }
+            .btn-cart-header { height: 30px; padding: 0 8px; font-size: 12px; }
         }
     </style>
 </head>
@@ -528,7 +575,14 @@
                 <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
                 <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
             </div>
-            <button class="btn-cart-header" onclick="openCartModal()" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
+            <a href="/pages/account.html#favorites" class="btn-fav-header" id="favHeaderBtn" title="Бажане / Обране" aria-label="Бажане">
+                ♥<span class="fav-count" id="favCountHeader">0</span>
+            </a>
+            <button class="btn-cart-header" onclick="openCartModal()" aria-label="Кошик">
+                🛒
+                <span class="cart-qty-pill" id="cartCountHeader">0</span>
+                <span class="cart-sum-text" id="cartSumHeader">0 ₴</span>
+            </button>
         </div>
     </div>
 </header>
@@ -609,7 +663,8 @@
 
     <div class="products-grid">
         <!-- 1. Соняшниковий мед -->
-        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/images/med.jpg">
+        <div class="product-card" data-cat="honey" data-fav-id="prod-sunflower" data-fav-title="Мед соняшниковий" data-share-img="https://medova-paseka.top/images/med.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-sunflower', 'Мед соняшниковий', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/sunflower.html" class="product-img" style="background-image: url('/images/med.jpg');"><div class="badge">Хіт</div></a>
             <div class="product-body">
                 <div>
@@ -629,7 +684,8 @@
         </div>
 
         <!-- 2. Травневий мед -->
-        <div class="product-card" data-cat="honey" data-share-img="https://medova-paseka.top/images/may1.jpg">
+        <div class="product-card" data-cat="honey" data-fav-id="prod-may" data-fav-title="Мед Травневий" data-share-img="https://medova-paseka.top/images/may1.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-may', 'Мед Травневий', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/may.html" class="product-img" style="background-image: url('/images/may1.jpg');"><div class="badge">Весна</div></a>
             <div class="product-body">
                 <div>
@@ -647,7 +703,8 @@
         </div>
 
         <!-- 3. Мед з горіхом -->
-        <div class="product-card" data-cat="honey">
+        <div class="product-card" data-cat="honey" data-fav-id="prod-walnut" data-fav-title="Мед з волоським горіхом">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-walnut', 'Мед з волоським горіхом', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/walnut.html" class="product-img" style="background-image: url('/images/med-voloskyi.jpg');"><div class="badge">Вітаміни</div></a>
             <div class="product-body">
                 <div>
@@ -667,7 +724,8 @@
         </div>
 
         <!-- 4. Стільниковий Мед -->
-        <div class="product-card" data-cat="honey">
+        <div class="product-card" data-cat="honey" data-fav-id="prod-comb" data-fav-title="Стільниковий Мед">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-comb', 'Стільниковий Мед', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/sotu.jpg');"><div class="badge">100% Еко</div></div>
             <div class="product-body">
                 <div>
@@ -685,7 +743,8 @@
         </div>
 
         <!-- 5. Свічка з вощини -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <div class="product-card" data-cat="candles" data-fav-id="prod-candle" data-fav-title="Свічка з вощини" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-candle', 'Свічка з вощини', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/candles.html" class="product-img" style="background-image: url('/images/svecha.jpg');"><div class="badge">Ручна робота</div></a>
             <div class="product-body">
                 <div>
@@ -703,7 +762,8 @@
         </div>
 
         <!-- 6. Прополіс -->
-        <div class="product-card" data-cat="other">
+        <div class="product-card" data-cat="other" data-fav-id="prod-propolis" data-fav-title="Прополіс">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-propolis', 'Прополіс', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/propolis.html" class="product-img" style="background-image: url('/images/propolis1.jpg');"></a>
             <div class="product-body">
                 <div>
@@ -721,7 +781,8 @@
         </div>
 
         <!-- 7. Бджолиний пилок -->
-        <div class="product-card" data-cat="other" data-share-img="https://medova-paseka.top/images/pollen-title.jpg">
+        <div class="product-card" data-cat="other" data-fav-id="prod-pollen" data-fav-title="Бджолиний пилок" data-share-img="https://medova-paseka.top/images/pollen-title.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-pollen', 'Бджолиний пилок', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/pollen.html" class="product-img" style="background-image: url('/images/pollen-title.jpg');"></a>
             <div class="product-body">
                 <div>
@@ -740,7 +801,8 @@
         </div>
 
         <!-- 8. Патріотичний набір свічок -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <div class="product-card" data-cat="candles" data-fav-id="prod-set-patriot" data-fav-title="Патріотичний набір свічок" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-set-patriot', 'Патріотичний набір свічок', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/nabor3.jpg');"><div class="badge promo-red-badge" data-promo-badge>Акція -15%</div></div>
             <div class="product-body">
                 <div>
@@ -759,7 +821,8 @@
         </div>
 
         <!-- 9. Набір «Медовий затишок» -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <div class="product-card" data-cat="candles" data-fav-id="prod-set-comfort" data-fav-title="Набір «Медовий затишок»" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-set-comfort', 'Набір «Медовий затишок»', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/svechi-podarok.jpg');"><div class="badge promo-red-badge" data-promo-badge>Акція</div></div>
             <div class="product-body">
                 <div>
@@ -778,7 +841,8 @@
         </div>
 
         <!-- 10. Набір з натуральної вощини -->
-        <div class="product-card" data-cat="candles" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <div class="product-card" data-cat="candles" data-fav-id="prod-set-wax" data-fav-title="Набір з натуральної вощини" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-set-wax', 'Набір з натуральної вощини', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/svecha3.jpg');"><div class="badge promo-red-badge" data-promo-badge>Акція -15%</div></div>
             <div class="product-body">
                 <div>
@@ -1024,6 +1088,7 @@
                 <a href="#delivery" id="ft-d">Доставка</a>
                 <a href="#reviews" id="ft-rev">Відгуки</a>
                 <a href="#faq" id="ft-f">FAQ</a>
+                <a href="/pages/return.html" id="ft-return">↩️ Повернення та обмін</a>
                 <button type="button" class="footer-link-btn" onclick="openPrivacyModal()" id="ft-privacy">🔒 Конфіденційність та права</button>
             </div>
             <div>
@@ -1170,6 +1235,57 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let npSearchTimer = null;
     let currentCartStep = 1;
+
+    /* ===== ИЗБРАННОЕ (СЕРДЕЧКО НА КАРТОЧКАХ И СЧЁТЧИК В ШАПКЕ) ===== */
+    const FAVORITES_STORAGE_KEY = 'medova_favorites';
+
+    function getFavorites() {
+        try {
+            const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+            const parsed = raw ? JSON.parse(raw) : [];
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (err) {
+            return [];
+        }
+    }
+
+    function toggleFavorite(prodId, prodTitle, btnEl) {
+        const list = getFavorites();
+        const idx = list.findIndex(item => item.id === prodId);
+        if (idx >= 0) {
+            list.splice(idx, 1);
+        } else {
+            list.push({ id: prodId, title: prodTitle });
+        }
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(list));
+        updateFavoritesUI();
+        if (btnEl) {
+            btnEl.blur();
+        }
+    }
+
+    function updateFavoritesUI() {
+        const list = getFavorites();
+        const favIds = new Set(list.map(i => i.id));
+
+        document.querySelectorAll('.product-card[data-fav-id]').forEach(card => {
+            const id = card.dataset.favId;
+            const heartBtn = card.querySelector('.fav-card-btn');
+            if (heartBtn) {
+                const isFav = favIds.has(id);
+                heartBtn.classList.toggle('active', isFav);
+                heartBtn.title = isFav
+                    ? (currentLang === 'uk' ? 'Прибрати з бажаного' : 'Убрать из желаемого')
+                    : (currentLang === 'uk' ? 'Додати в бажане' : 'Добавить в желаемое');
+            }
+        });
+
+        const favBadge = document.getElementById('favCountHeader');
+        if (favBadge) {
+            favBadge.textContent = String(list.length);
+            favBadge.style.display = list.length > 0 ? 'flex' : 'none';
+        }
+    }
 
     /* ===== ИДЕНТИФИКАТОР КОРЗИНЫ ДЛЯ СИНХРОНИЗАЦИИ С SUPABASE ===== */
     function getCartSessionId() {
@@ -1440,6 +1556,7 @@
             ftDesc: "Натуральний мед та вироби з воску напряму з пасіки в с. Захарівка — без домішок і зайвого.",
             ftPhone: "📞 Тел.: +380 96 898 0543",
             ftCon: "Контакти", ftInf: "Навігація", ftC: "Каталог", ftA: "Про нас", ftDel: "Доставка", ftRev: "Відгуки", ftF: "FAQ",
+            ftReturn: "↩️ Повернення та обмін",
             ftPrivacy: "🔒 Конфіденційність та права",
             ftAdr: "Адреса", ftAdrT: "с. Захарівка, Роздільнянський р-н, Одеська обл.",
             ftCopy: "© 2026 Медова Пасіка. Всі права захищені.",
@@ -1544,6 +1661,7 @@
             ftDesc: "Натуральный мед и изделия из воска напрямую с пасеки в с. Захаровка — без примесей и лишнего.",
             ftPhone: "📞 Тел.: +380 96 898 0543",
             ftCon: "Контакты", ftInf: "Навигация", ftC: "Каталог", ftA: "О нас", ftDel: "Доставка", ftRev: "Отзывы", ftF: "FAQ",
+            ftReturn: "↩️ Возврат и обмен",
             ftPrivacy: "🔒 Конфиденциальность и права",
             ftAdr: "Адрес", ftAdrT: "с. Захаровка, Раздельнянский р-н, Одесская обл.",
             ftCopy: "© 2026 Медовая Пасека. Все права защищены.",
@@ -1711,6 +1829,7 @@
         document.getElementById('ft-d').textContent = t.ftDel;
         document.getElementById('ft-rev').textContent = t.ftRev;
         document.getElementById('ft-f').textContent = t.ftF;
+        document.getElementById('ft-return').textContent = t.ftReturn;
         document.getElementById('ft-privacy').textContent = t.ftPrivacy;
         document.getElementById('ft-adr').textContent = t.ftAdr;
         document.getElementById('ft-adr-t').textContent = t.ftAdrT;
@@ -1756,6 +1875,7 @@
         document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
         document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
         updateCandleTimers();
+        updateFavoritesUI();
         updateCartUI();
         if (document.getElementById('orderModal').classList.contains('active') && currentCartStep === 1) {
             renderCartStep1();
@@ -1821,10 +1941,15 @@
 
     function updateCartUI() {
         const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+        const totalSum = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
         const headerCount = document.getElementById('cartCountHeader');
-        if(headerCount) {
-            headerCount.textContent = totalQty;
-            headerCount.style.display = totalQty > 0 ? 'flex' : 'none';
+        const headerSum = document.getElementById('cartSumHeader');
+
+        if (headerCount) {
+            headerCount.textContent = String(totalQty);
+        }
+        if (headerSum) {
+            headerSum.textContent = `${totalSum} ₴`;
         }
     }
 
@@ -2417,6 +2542,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        updateFavoritesUI();
         updateCartUI();
         renderPrivacyText(currentLang);
         loadReviewsFromSupabase();
