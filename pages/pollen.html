@@ -23,11 +23,35 @@
       "name": "Бджолиний пилок",
       "image": ["https://medova-paseka.top/images/pollen-title.jpg"],
       "description": "Мікс вітамінів та амінокислот для енергії та імунітету.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Медова Пасіка"
+      },
       "offers": {
         "@type": "Offer",
         "priceCurrency": "UAH",
         "price": "70",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "UA",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnShippingFees"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "UAH"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "UA"
+          }
+        }
       }
     }
     </script>
