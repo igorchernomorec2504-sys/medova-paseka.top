@@ -14,6 +14,46 @@
     <meta property="og:description" content="Відбірний мед з добірним волоським горіхом з власної пасіки.">
     <meta property="og:image" content="https://medova-paseka.top/images/med-voloskyi.jpg">
 
+    <script type="application/ld+json" id="productSchema">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Мед з волоським горіхом",
+      "image": ["https://medova-paseka.top/images/med-voloskyi.jpg"],
+      "description": "Натуральний мед у поєднанні з добірним волоським горіхом з власної пасіки та саду в с. Захарівка.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Медова Пасіка"
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "UAH",
+        "price": "150",
+        "availability": "https://schema.org/InStock",
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "UA",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnShippingFees"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "UAH"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "UA"
+          }
+        }
+      }
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1050,6 +1090,13 @@
             statusDiv.textContent = currentLang === 'uk' ? '❌ Помилка відправки!' : '❌ Ошибка отправки!';
         }
     }
+
+    document.getElementById('orderModal').addEventListener('click', e => {
+        if (e.target.id === 'orderModal') closeModal('orderModal');
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal('orderModal');
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         updateCartUI();
