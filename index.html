@@ -94,6 +94,7 @@
         .nav-links a:hover { color: var(--primary); }
         .nav-links a:hover::after { width: 100%; }
         .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .lang-switcher { display: inline-flex; gap: 4px; align-items: center; }
         .btn-auth, .lang-btn {
             background: var(--card-bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 30px;
             font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.25s ease;
@@ -101,6 +102,9 @@
         }
         .btn-auth:hover, .lang-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
         .lang-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
+
+        /* Мобильный блок UA / RU над копирайтом — скрыт на ПК */
+        .mobile-bottom-lang { display: none; }
 
         /* ===== ИЗБРАННОЕ (СЕРДЕЧКО) В ШАПКЕ И НА КАРТОЧКАХ ===== */
         .btn-fav-header {
@@ -469,12 +473,25 @@
             .header-actions { gap: 5px; }
             .btn-auth { padding: 7px 10px; font-size: 14px; }
             .btn-auth .auth-text { display: none; }
+            .header-actions .lang-switcher { display: none; }
             .lang-btn { padding: 6px 9px; font-size: 11px; }
             .btn-fav-header { width: 34px; height: 34px; font-size: 14px; }
             .btn-cart-header { height: 34px; padding: 0 10px; font-size: 13px; gap: 5px; }
             .cart-sum-text { font-size: 11px; }
             .cart-qty-pill { min-width: 18px; height: 18px; font-size: 10px; padding: 0 4px; }
             .nav-links { display: none; }
+
+            .mobile-bottom-lang {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 18px;
+            }
+            .mobile-bottom-lang .lang-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
 
             .fav-card-btn { width: 32px; height: 32px; font-size: 15px; top: 10px; right: 10px; }
 
@@ -571,7 +588,7 @@
 
         <div class="header-actions">
             <a href="/pages/account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
-            <div style="display: flex; gap: 4px;">
+            <div class="lang-switcher">
                 <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
                 <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
             </div>
@@ -1095,6 +1112,10 @@
                 <h4 id="ft-adr">Адреса</h4>
                 <p style="font-size: 14px; line-height: 1.6;" id="ft-adr-t">с. Захарівка, Роздільнянський р-н, Одеська обл.</p>
             </div>
+        </div>
+        <div class="mobile-bottom-lang" aria-label="Выбор языка">
+            <button type="button" class="lang-btn active" id="m-b-uk" onclick="setLang('uk')">UA</button>
+            <button type="button" class="lang-btn" id="m-b-ru" onclick="setLang('ru')">RU</button>
         </div>
         <div class="footer-copy">
             <p id="ft-copy">© 2026 Медова Пасіка. Всі права захищені.</p>
@@ -1874,6 +1895,10 @@
 
         document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
         document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
+        const mUk = document.getElementById('m-b-uk');
+        const mRu = document.getElementById('m-b-ru');
+        if (mUk) mUk.classList.toggle('active', lang === 'uk');
+        if (mRu) mRu.classList.toggle('active', lang === 'ru');
         updateCandleTimers();
         updateFavoritesUI();
         updateCartUI();
