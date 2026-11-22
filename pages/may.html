@@ -23,11 +23,35 @@
       "name": "Мед Травневий",
       "image": ["https://medova-paseka.top/images/may1.jpg"],
       "description": "Ароматний, духмяний та ніжний травневий мед зібраний під час першого весняного медозбору.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Медова Пасіка"
+      },
       "offers": {
         "@type": "Offer",
         "priceCurrency": "UAH",
         "price": "350",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "UA",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnShippingFees"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "UAH"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "UA"
+          }
+        }
       }
     }
     </script>
