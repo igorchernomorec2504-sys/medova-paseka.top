@@ -4,7 +4,147 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Возврат и обмен — Медова Пасіка (medova-paseka.top)</title>
-  <link rel="stylesheet" href="../style.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #faf6ee;
+      color: #2b2118;
+      line-height: 1.55;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .site-header {
+      background: #fffdf9;
+      border-bottom: 1px solid #e7dcc8;
+      padding: 14px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #5c3808;
+      text-decoration: none;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 16px;
+    }
+
+    .header-nav a,
+    .footer-nav a {
+      color: #4a3519;
+      text-decoration: none;
+    }
+
+    .header-nav a.active,
+    .footer-nav a.active {
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .cart-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f59e0b;
+      color: #1f1404;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .page-content {
+      padding: 28px 0 48px;
+    }
+
+    .breadcrumb {
+      margin-bottom: 16px;
+    }
+
+    .breadcrumb a {
+      color: #7c4a08;
+      text-decoration: none;
+    }
+
+    .policy-card {
+      background: #ffffff;
+      border: 1px solid #eadec9;
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+
+    .policy-card h1 {
+      margin: 0 0 8px;
+      font-size: 1.8rem;
+      color: #3b2408;
+    }
+
+    .policy-lead {
+      margin: 0 0 24px;
+      color: #635340;
+    }
+
+    .policy-section {
+      margin-top: 24px;
+    }
+
+    .policy-section h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: #4a2d0a;
+    }
+
+    .sub-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sub-list li {
+      margin-bottom: 8px;
+    }
+
+    .site-footer {
+      background: #fffdf9;
+      border-top: 1px solid #e7dcc8;
+      padding: 18px 0;
+      margin-top: 32px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 16px;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -96,6 +236,28 @@
     </div>
   </footer>
 
-  <script src="../script.js"></script>
+  <script>
+    (function () {
+      const CART_STORAGE_KEY = "medova_paseka_cart_v1";
+      try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        const items = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(items)) return;
+
+        const totalQty = items.reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
+        const totalSum = items.reduce(
+          (sum, item) => sum + (Number(item.qty) || 0) * (Number(item.price) || 0),
+          0
+        );
+
+        const countEl = document.getElementById("cartCount");
+        const totalEl = document.getElementById("cartTotal");
+        if (countEl) countEl.textContent = String(totalQty);
+        if (totalEl) totalEl.textContent = `${totalSum.toFixed(2)} ₴`;
+      } catch (e) {
+        // Игнорируем ошибки чтения хранилища
+      }
+    })();
+  </script>
 </body>
 </html>
