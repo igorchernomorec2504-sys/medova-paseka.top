@@ -23,11 +23,35 @@
       "name": "Натуральний бджолиний прополіс",
       "image": ["https://medova-paseka.top/images/propolis1.jpg"],
       "description": "Унікальний природний антибіотик та потужний антисептик напряму з пасіки.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Медова Пасіка"
+      },
       "offers": {
         "@type": "Offer",
         "priceCurrency": "UAH",
         "price": "300",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "UA",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnShippingFees"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "UAH"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "UA"
+          }
+        }
       }
     }
     </script>
