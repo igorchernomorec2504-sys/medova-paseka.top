@@ -29,20 +29,421 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
-      "name": "Медова Пасіка",
-      "description": "Натуральний мед, воскові свічки та продукти бджільництва з сімейної пасіки в с. Захарівка. Відправка Новою Поштою по Україні.",
-      "url": "https://medova-paseka.top/",
-      "image": "https://medova-paseka.top/images/med-tityl.jpg",
-      "telephone": "+380968980543",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Захарівка",
-        "addressRegion": "Одеська область",
-        "addressCountry": "UA"
-      },
-      "areaServed": "UA",
-      "paymentAccepted": "Visa, Mastercard, Передоплата, Накладений платіж"
+      "@graph": [
+        {
+          "@type": "Store",
+          "@id": "https://medova-paseka.top/#store",
+          "name": "Медова Пасіка",
+          "description": "Натуральний мед, воскові свічки та продукти бджільництва з сімейної пасіки в с. Захарівка. Відправка Новою Поштою та Укрпоштою по Україні.",
+          "url": "https://medova-paseka.top/",
+          "image": "https://medova-paseka.top/images/med-tityl.jpg",
+          "telephone": "+380968980543",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Захарівка",
+            "addressRegion": "Одеська область",
+            "addressCountry": "UA"
+          },
+          "areaServed": "UA",
+          "paymentAccepted": "Visa, Mastercard, Передоплата, Накладений платіж"
+        },
+        {
+          "@type": "ItemList",
+          "name": "Каталог продукції Медова Пасіка",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "Product",
+                "sku": "MR01",
+                "name": "Мед соняшниковий",
+                "image": "https://medova-paseka.top/images/med.jpg",
+                "description": "Густий, сонячний та найсолодший мед з власним ароматом.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/sunflower.html",
+                  "priceCurrency": "UAH",
+                  "price": "250",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "Product",
+                "sku": "MR02",
+                "name": "Мед Травневий",
+                "image": "https://medova-paseka.top/images/may1.jpg",
+                "description": "Ароматний і ніжний мед із перших весняних квітів.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/may.html",
+                  "priceCurrency": "UAH",
+                  "price": "350",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "item": {
+                "@type": "Product",
+                "sku": "MR03",
+                "name": "Мед з волоським горіхом",
+                "image": "https://medova-paseka.top/images/med-voloskyi.jpg",
+                "description": "Відбірний мед з додаванням добірного волоського горіха.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/walnut.html",
+                  "priceCurrency": "UAH",
+                  "price": "150",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "item": {
+                "@type": "Product",
+                "sku": "MR04",
+                "name": "Стільниковий Мед",
+                "image": "https://medova-paseka.top/images/sotu.jpg",
+                "description": "Найчистіший делікатес у запечатаних воскових сотах.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/#catalog",
+                  "priceCurrency": "UAH",
+                  "price": "150",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "item": {
+                "@type": "Product",
+                "sku": "MR05",
+                "name": "Свічка з вощини",
+                "image": "https://medova-paseka.top/images/svecha.jpg",
+                "description": "100% чистий віск, дарують затишок та аромат.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/candles.html",
+                  "priceCurrency": "UAH",
+                  "price": "40",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "item": {
+                "@type": "Product",
+                "sku": "MR06",
+                "name": "Прополіс",
+                "image": "https://medova-paseka.top/images/propolis1.jpg",
+                "description": "Природний антисептик та захисник здоров'я.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/propolis.html",
+                  "priceCurrency": "UAH",
+                  "price": "300",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 7,
+              "item": {
+                "@type": "Product",
+                "sku": "MR07",
+                "name": "Бджолиний пилок",
+                "image": "https://medova-paseka.top/images/pollen-title.jpg",
+                "description": "Мікс вітамінів та амінокислот для енергії.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/pollen.html",
+                  "priceCurrency": "UAH",
+                  "price": "70",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 8,
+              "item": {
+                "@type": "Product",
+                "sku": "MR08",
+                "name": "Патріотичний набір свічок",
+                "image": "https://medova-paseka.top/images/nabor3.jpg",
+                "description": "Синьо-жовті свічки з вощини з ніжним ароматом.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/#catalog",
+                  "priceCurrency": "UAH",
+                  "price": "200",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 9,
+              "item": {
+                "@type": "Product",
+                "sku": "MR09",
+                "name": "Набір «Медовий затишок»",
+                "image": "https://medova-paseka.top/images/svechi-podarok.jpg",
+                "description": "Чудовий комплект свічок ручної роботи. Розміри свічок: 20×3 см.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/#catalog",
+                  "priceCurrency": "UAH",
+                  "price": "250",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 10,
+              "item": {
+                "@type": "Product",
+                "sku": "MR10",
+                "name": "Набір з натуральної вощини",
+                "image": "https://medova-paseka.top/images/svecha3.jpg",
+                "description": "З медовим запахом та ніжним природним ароматом.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/#catalog",
+                  "priceCurrency": "UAH",
+                  "price": "170",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
 
@@ -231,6 +632,11 @@
         .product-card:hover .product-img { transform: scale(1.03); }
         .badge { position: absolute; top: 16px; left: 16px; background: var(--primary); color: #fff; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3); z-index: 2; }
         .badge.promo-red-badge { background: var(--promo-red); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35); }
+        .product-sku {
+            display: inline-block; font-size: 11px; font-weight: 700; color: var(--text-muted);
+            background: var(--bg); border: 1px solid var(--border); padding: 2px 8px;
+            border-radius: 6px; margin-bottom: 6px; letter-spacing: 0.04em;
+        }
         .product-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
         .product-body h3 a { color: var(--text); text-decoration: none; transition: color 0.2s; }
         .product-body h3 a:hover { color: var(--primary); }
@@ -679,12 +1085,13 @@
     </div>
 
     <div class="products-grid">
-        <!-- 1. Соняшниковий мед -->
-        <div class="product-card" data-cat="honey" data-fav-id="prod-sunflower" data-fav-title="Мед соняшниковий" data-share-img="https://medova-paseka.top/images/med.jpg">
+        <!-- 1. Соняшниковий мед (MR01) -->
+        <div class="product-card" data-cat="honey" data-prod-id="MR01" data-fav-id="prod-sunflower" data-fav-title="Мед соняшниковий" data-share-img="https://medova-paseka.top/images/med.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-sunflower', 'Мед соняшниковий', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/sunflower.html" class="product-img" style="background-image: url('/images/med.jpg');"><div class="badge">Хіт</div></a>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR01</span>
                     <h3><a href="/pages/sunflower.html" id="p1-t">Мед соняшниковий</a></h3>
                     <p class="product-desc" id="p1-d">Густий, сонячний та найсолодший мед з власним ароматом.</p>
                     <div class="sizes">
@@ -700,12 +1107,13 @@
             </div>
         </div>
 
-        <!-- 2. Травневий мед -->
-        <div class="product-card" data-cat="honey" data-fav-id="prod-may" data-fav-title="Мед Травневий" data-share-img="https://medova-paseka.top/images/may1.jpg">
+        <!-- 2. Травневий мед (MR02) -->
+        <div class="product-card" data-cat="honey" data-prod-id="MR02" data-fav-id="prod-may" data-fav-title="Мед Травневий" data-share-img="https://medova-paseka.top/images/may1.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-may', 'Мед Травневий', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/may.html" class="product-img" style="background-image: url('/images/may1.jpg');"><div class="badge">Весна</div></a>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR02</span>
                     <h3><a href="/pages/may.html" id="p2-t">Мед Травневий</a></h3>
                     <p class="product-desc" id="p2-d">Ароматний і ніжний мед із перших весняних квітів.</p>
                     <div class="sizes">
@@ -719,12 +1127,13 @@
             </div>
         </div>
 
-        <!-- 3. Мед з горіхом -->
-        <div class="product-card" data-cat="honey" data-fav-id="prod-walnut" data-fav-title="Мед з волоським горіхом">
+        <!-- 3. Мед з горіхом (MR03) -->
+        <div class="product-card" data-cat="honey" data-prod-id="MR03" data-fav-id="prod-walnut" data-fav-title="Мед з волоським горіхом">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-walnut', 'Мед з волоським горіхом', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/walnut.html" class="product-img" style="background-image: url('/images/med-voloskyi.jpg');"><div class="badge">Вітаміни</div></a>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR03</span>
                     <h3><a href="/pages/walnut.html" id="p3-t">Мед з волоським горіхом</a></h3>
                     <p class="product-desc" id="p3-d">Відбірний мед з додаванням добірного волоського горіха.</p>
                     <div class="sizes">
@@ -740,12 +1149,13 @@
             </div>
         </div>
 
-        <!-- 4. Стільниковий Мед -->
-        <div class="product-card" data-cat="honey" data-fav-id="prod-comb" data-fav-title="Стільниковий Мед">
+        <!-- 4. Стільниковий Мед (MR04) -->
+        <div class="product-card" data-cat="honey" data-prod-id="MR04" data-fav-id="prod-comb" data-fav-title="Стільниковий Мед">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-comb', 'Стільниковий Мед', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/sotu.jpg');"><div class="badge">100% Еко</div></div>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR04</span>
                     <h3 id="p4-t">Стільниковий Мед</h3>
                     <p class="product-desc" id="p4-d">Найчистіший делікатес у запечатаних воскових сотах.</p>
                     <div class="sizes">
@@ -754,17 +1164,18 @@
                 </div>
                 <div class="product-footer">
                     <div class="price">150 <small>₴</small></div>
-                    <button class="btn-buy" onclick="addToCart('Стільниковий Мед', 150, '1 кг', this)">В кошик</button>
+                    <button class="btn-buy" onclick="addToCart('MR04', 'Стільниковий Мед', 150, '1 кг', this)">В кошик</button>
                 </div>
             </div>
         </div>
 
-        <!-- 5. Свічка з вощини -->
-        <div class="product-card" data-cat="candles" data-fav-id="prod-candle" data-fav-title="Свічка з вощини" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <!-- 5. Свічка з вощини (MR05) -->
+        <div class="product-card" data-cat="candles" data-prod-id="MR05" data-fav-id="prod-candle" data-fav-title="Свічка з вощини" data-share-img="https://medova-paseka.top/images/svecha.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-candle', 'Свічка з вощини', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/candles.html" class="product-img" style="background-image: url('/images/svecha.jpg');"><div class="badge">Ручна робота</div></a>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR05</span>
                     <h3><a href="/pages/candles.html" id="p5-t">Свічка з вощини</a></h3>
                     <p class="product-desc" id="p5-d">100% чистий віск, дарують затишок та аромат.</p>
                     <div class="sizes">
@@ -778,12 +1189,13 @@
             </div>
         </div>
 
-        <!-- 6. Прополіс -->
-        <div class="product-card" data-cat="other" data-fav-id="prod-propolis" data-fav-title="Прополіс">
+        <!-- 6. Прополіс (MR06) -->
+        <div class="product-card" data-cat="other" data-prod-id="MR06" data-fav-id="prod-propolis" data-fav-title="Прополіс">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-propolis', 'Прополіс', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/propolis.html" class="product-img" style="background-image: url('/images/propolis1.jpg');"></a>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR06</span>
                     <h3><a href="/pages/propolis.html" id="p6-t">Прополіс</a></h3>
                     <p class="product-desc" id="p6-d">Природний антисептик та захисник здоров'я.</p>
                     <div class="sizes">
@@ -797,12 +1209,13 @@
             </div>
         </div>
 
-        <!-- 7. Бджолиний пилок -->
-        <div class="product-card" data-cat="other" data-fav-id="prod-pollen" data-fav-title="Бджолиний пилок" data-share-img="https://medova-paseka.top/images/pollen-title.jpg">
+        <!-- 7. Бджолиний пилок (MR07) -->
+        <div class="product-card" data-cat="other" data-prod-id="MR07" data-fav-id="prod-pollen" data-fav-title="Бджолиний пилок" data-share-img="https://medova-paseka.top/images/pollen-title.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-pollen', 'Бджолиний пилок', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <a href="/pages/pollen.html" class="product-img" style="background-image: url('/images/pollen-title.jpg');"></a>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR07</span>
                     <h3><a href="/pages/pollen.html" id="p7-t">Бджолиний пилок</a></h3>
                     <p class="product-desc" id="p7-d">Мікс вітамінів та амінокислот для енергії.</p>
                     <div class="sizes">
@@ -817,12 +1230,13 @@
             </div>
         </div>
 
-        <!-- 8. Патріотичний набір свічок -->
-        <div class="product-card" data-cat="candles" data-fav-id="prod-set-patriot" data-fav-title="Патріотичний набір свічок" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <!-- 8. Патріотичний набір свічок (MR08) -->
+        <div class="product-card" data-cat="candles" data-prod-id="MR08" data-fav-id="prod-set-patriot" data-fav-title="Патріотичний набір свічок" data-share-img="https://medova-paseka.top/images/svecha.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-set-patriot', 'Патріотичний набір свічок', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/nabor3.jpg');"><div class="badge promo-red-badge" data-promo-badge>Акція -15%</div></div>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR08</span>
                     <h3 id="p8-t">Патріотичний набір свічок</h3>
                     <p class="product-desc" id="p8-desc">Синьо-жовті свічки з вощини з ніжним ароматом.</p>
                     <div class="timer-box" data-candle-timer>⏳ Акція діє: 23:59:59</div>
@@ -832,17 +1246,18 @@
                 </div>
                 <div class="product-footer">
                     <div class="price"><span style="text-decoration:line-through;color:#9CA3AF;font-size:15px;font-weight:500;">220</span> 200 <small>₴</small></div>
-                    <button class="btn-buy" onclick="addToCart('Патріотичний набір свічок', 200, 'Набір', this)">В кошик</button>
+                    <button class="btn-buy" onclick="addToCart('MR08', 'Патріотичний набір свічок', 200, 'Набір', this)">В кошик</button>
                 </div>
             </div>
         </div>
 
-        <!-- 9. Набір «Медовий затишок» -->
-        <div class="product-card" data-cat="candles" data-fav-id="prod-set-comfort" data-fav-title="Набір «Медовий затишок»" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <!-- 9. Набір «Медовий затишок» (MR09) -->
+        <div class="product-card" data-cat="candles" data-prod-id="MR09" data-fav-id="prod-set-comfort" data-fav-title="Набір «Медовий затишок»" data-share-img="https://medova-paseka.top/images/svecha.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-set-comfort', 'Набір «Медовий затишок»', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/svechi-podarok.jpg');"><div class="badge promo-red-badge" data-promo-badge>Акція</div></div>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR09</span>
                     <h3 id="p9-t">Набір «Медовий затишок»</h3>
                     <p class="product-desc" id="p9-d">Чудовий комплект свічок ручної роботи. Розміри свічок: 20×3 см.</p>
                     <div class="timer-box" data-candle-timer>⏳ Акція діє: 23:59:59</div>
@@ -852,17 +1267,18 @@
                 </div>
                 <div class="product-footer">
                     <div class="price"><span style="text-decoration:line-through;color:#9CA3AF;font-size:15px;font-weight:500;">300</span> 250 <small>₴</small></div>
-                    <button class="btn-buy" onclick="addToCart('Набір «Медовий затишок»', 250, 'Набір', this)">В кошик</button>
+                    <button class="btn-buy" onclick="addToCart('MR09', 'Набір «Медовий затишок»', 250, 'Набір', this)">В кошик</button>
                 </div>
             </div>
         </div>
 
-        <!-- 10. Набір з натуральної вощини -->
-        <div class="product-card" data-cat="candles" data-fav-id="prod-set-wax" data-fav-title="Набір з натуральної вощини" data-share-img="https://medova-paseka.top/images/svecha.jpg">
+        <!-- 10. Набір з натуральної вощини (MR10) -->
+        <div class="product-card" data-cat="candles" data-prod-id="MR10" data-fav-id="prod-set-wax" data-fav-title="Набір з натуральної вощини" data-share-img="https://medova-paseka.top/images/svecha.jpg">
             <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-set-wax', 'Набір з натуральної вощини', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
             <div class="product-img" style="background-image: url('/images/svecha3.jpg');"><div class="badge promo-red-badge" data-promo-badge>Акція -15%</div></div>
             <div class="product-body">
                 <div>
+                    <span class="product-sku">ID: MR10</span>
                     <h3 id="p10-t">Набір з натуральної вощини</h3>
                     <p class="product-desc" id="p10-d">З медовим запахом та ніжним природним ароматом.</p>
                     <div class="timer-box" data-candle-timer>⏳ Акція діє: 23:59:59</div>
@@ -872,7 +1288,7 @@
                 </div>
                 <div class="product-footer">
                     <div class="price"><span style="text-decoration:line-through;color:#9CA3AF;font-size:15px;font-weight:500;">200</span> 170 <small>₴</small></div>
-                    <button class="btn-buy" onclick="addToCart('Набір з натуральної вощини', 170, 'Набір', this)">В кошик</button>
+                    <button class="btn-buy" onclick="addToCart('MR10', 'Набір з натуральної вощини', 170, 'Набір', this)">В кошик</button>
                 </div>
             </div>
         </div>
@@ -955,13 +1371,13 @@
     <section id="delivery">
         <div class="delivery-box">
             <h3 class="delivery-title" id="del-title">🚚 Доставка та оплата</h3>
-            <p class="delivery-sub" id="del-sub">Ми дбаємо про те, щоб ваше замовлення прибуло швидко та в ідеальному стані. Оберіть зручний для себе спосіб доставки та оплати:</p>
+            <p class="delivery-sub" id="del-sub">Обробка замовлення протягом доби (день у день при замовленні до вечора). Вартість доставки — 100 грн:</p>
             <div class="delivery-grid">
                 <div class="delivery-card">
                     <h4 id="del-d-title">📦 Способи доставки</h4>
                     <ul>
-                        <li id="del-d1"><b>Нова Пошта</b> (щоденна відправка за тарифами перевізника).</li>
-                        <li id="del-d2"><b>Укрпошта</b> (доставка 2–4 дні).</li>
+                        <li id="del-d1"><b>Нова Пошта</b> (доставка 1–3 дні, орієнтовна вартість 100 грн).</li>
+                        <li id="del-d2"><b>Укрпошта</b> (доставка 2–4 дні, орієнтовна вартість 100 грн).</li>
                         <li id="del-d3"><b>Самовивіз</b> (з нашої пасіки за попередньою домовленістю).</li>
                     </ul>
                     <p class="delivery-free" id="del-free"><span class="promo-tag-red">Акція:</span> безкоштовна доставка замовлень на суму від 1000 грн!</p>
@@ -997,13 +1413,13 @@
                         <div class="form-group">
                             <label id="rev-l-product">Товар *</label>
                             <select id="revProduct" required>
-                                <option value="Мед соняшниковий">🌻 Мед соняшниковий</option>
-                                <option value="Мед Травневий">🌿 Мед Травневий</option>
-                                <option value="Мед з волоським горіхом">🥜 Мед з волоським горіхом</option>
-                                <option value="Стільниковий Мед">🍯 Стільниковий Мед</option>
-                                <option value="Свічки з вощини">🕯️ Свічки з вощини</option>
-                                <option value="Прополіс">🛡️ Прополіс</option>
-                                <option value="Бджолиний пилок">⚡ Бджолиний пилок</option>
+                                <option value="Мед соняшниковий (MR01)">🌻 Мед соняшниковий (MR01)</option>
+                                <option value="Мед Травневий (MR02)">🌿 Мед Травневий (MR02)</option>
+                                <option value="Мед з волоським горіхом (MR03)">🥜 Мед з волоським горіхом (MR03)</option>
+                                <option value="Стільниковий Мед (MR04)">🍯 Стільниковий Мед (MR04)</option>
+                                <option value="Свічки з вощини (MR05)">🕯️ Свічки з вощини (MR05)</option>
+                                <option value="Прополіс (MR06)">🛡️ Прополіс (MR06)</option>
+                                <option value="Бджолиний пилок (MR07)">⚡ Бджолиний пилок (MR07)</option>
                             </select>
                         </div>
 
@@ -1076,8 +1492,8 @@
                 <div class="faq-a"><p id="a2">Це природний процес для якісного натурального меду, який свідчить про його зрілість.</p></div>
             </div>
             <div class="faq-item">
-                <div class="faq-q" onclick="toggleFaq(this)"><span id="q3">Які умови доставки?</span> <span>▼</span></div>
-                <div class="faq-a"><p id="a3">Відправка Новою Поштою по всій Україні за тарифами перевізника. Акція: безкоштовна доставка від 1000 грн.</p></div>
+                <div class="faq-q" onclick="toggleFaq(this)"><span id="q3">Які умови доставки та повернення?</span> <span>▼</span></div>
+                <div class="faq-a"><p id="a3">Обробка замовлення протягом доби. Відправка Новою Поштою (1–3 дні) та Укрпоштою (2–4 дні), доставка 100 грн або безкоштовно від 1000 грн. Повернення протягом 14 днів за наш рахунок.</p></div>
             </div>
         </div>
     </section>
@@ -1256,6 +1672,16 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let npSearchTimer = null;
     let currentCartStep = 1;
+
+    /* ===== ГЕНЕРАЦИЯ ЧИТАЕМОГО НОМЕРА ЗАКАЗА (MR-YYMMDD-XXXX) ===== */
+    function generateOrderNumber() {
+        const now = new Date();
+        const yy = String(now.getFullYear()).slice(-2);
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const rand = String(Math.floor(1000 + Math.random() * 9000));
+        return `MR-${yy}${mm}${dd}-${rand}`;
+    }
 
     /* ===== ИЗБРАННОЕ (СЕРДЕЧКО НА КАРТОЧКАХ И СЧЁТЧИК В ШАПКЕ) ===== */
     const FAVORITES_STORAGE_KEY = 'medova_favorites';
@@ -1545,10 +1971,10 @@
             cPhName: "Іван Іванов", cPhPhone: "+380XXXXXXXXX",
             cPhQ: "Який мед краще обрати для дитини? / питання по доставці...",
             delTitle: "🚚 Доставка та оплата",
-            delSub: "Ми дбаємо про те, щоб ваше замовлення прибуло швидко та в ідеальному стані. Оберіть зручний для себе спосіб доставки та оплати:",
+            delSub: "Обробка замовлення протягом доби (день у день при замовленні до вечора). Вартість доставки — 100 грн:",
             delDTitle: "📦 Способи доставки",
-            delD1: "<b>Нова Пошта</b> (щоденна відправка за тарифами перевізника).",
-            delD2: "<b>Укрпошта</b> (доставка 2–4 дні).",
+            delD1: "<b>Нова Пошта</b> (доставка 1–3 дні, орієнтовна вартість 100 грн).",
+            delD2: "<b>Укрпошта</b> (доставка 2–4 дні, орієнтовна вартість 100 грн).",
             delD3: "<b>Самовивіз</b> (з нашої пасіки за попередньою домовленістю).",
             delFree: "<span class='promo-tag-red'>Акція:</span> безкоштовна доставка замовлень на суму від 1000 грн!",
             delPTitle: "💳 Варіанти оплати",
@@ -1573,7 +1999,7 @@
             faqTitle: "Часті запитання",
             q1: "Як правильно зберігати мед?", a1: "У скляній тарі з щільно закритою кришкою, в темному та сухому місці при кімнатній температурі.",
             q2: "Чому мед кристалізується?", a2: "Це природний процес для якісного натурального меду, який свідчить про його зрілість.",
-            q3: "Які умови доставки?", a3: "Відправка Новою Поштою по всій Україні за тарифами перевізника. Акція: безкоштовна доставка від 1000 грн.",
+            q3: "Які умови доставки та повернення?", a3: "Обробка замовлення протягом доби. Відправка Новою Поштою (1–3 дні) та Укрпоштою (2–4 дні), доставка 100 грн або безкоштовно від 1000 грн. Повернення протягом 14 днів за наш рахунок.",
             ftDesc: "Натуральний мед та вироби з воску напряму з пасіки в с. Захарівка — без домішок і зайвого.",
             ftPhone: "📞 Тел.: +380 96 898 0543",
             ftCon: "Контакти", ftInf: "Навігація", ftC: "Каталог", ftA: "Про нас", ftDel: "Доставка", ftRev: "Відгуки", ftF: "FAQ",
@@ -1650,10 +2076,10 @@
             cPhName: "Иван Иванов", cPhPhone: "+380XXXXXXXXX",
             cPhQ: "Какой мед лучше выбрать для ребенка? / вопрос по доставке...",
             delTitle: "🚚 Доставка и оплата",
-            delSub: "Мы заботимся о том, чтобы ваш заказ прибыл быстро и в идеальном состоянии. Выберите удобный для себя способ доставки и оплаты:",
+            delSub: "Обработка заказа в течение суток (день в день при заказе до вечера). Стоимость доставки — 100 грн:",
             delDTitle: "📦 Способы доставки",
-            delD1: "<b>Новая Почта</b> (ежедневная отправка по тарифам перевозчика).",
-            delD2: "<b>Укрпочта</b> (доставка 2–4 дня).",
+            delD1: "<b>Новая Почта</b> (доставка 1–3 дня, ориентировочная стоимость 100 грн).",
+            delD2: "<b>Укрпочта</b> (доставка 2–4 дня, ориентировочная стоимость 100 грн).",
             delD3: "<b>Самовывоз</b> (с нашей пасеки по предварительной договоренности).",
             delFree: "<span class='promo-tag-red'>Акция:</span> бесплатная доставка заказов на сумму от 1000 грн!",
             delPTitle: "💳 Варианты оплаты",
@@ -1678,7 +2104,7 @@
             faqTitle: "Частые вопросы",
             q1: "Как правильно хранить мед?", a1: "В стеклянной таре с плотно закрытой крышкой, в темном и сухом месте.",
             q2: "Почему мед кристаллизуется?", a2: "Это естественный процесс для качественного меда, подтверждающий его зрелость.",
-            q3: "Каковы условия доставки?", a3: "Отправка Новой Почтой по всей Украине по тарифам перевозчика. Акция: бесплатная доставка от 1000 грн.",
+            q3: "Каковы условия доставки и возврата?", a3: "Обработка заказа в течение суток. Отправка Новой Почтой (1–3 дня) и Укрпочтой (2–4 дня), доставка 100 грн или бесплатно от 1000 грн. Возврат в течение 14 дней за наш счёт.",
             ftDesc: "Натуральный мед и изделия из воска напрямую с пасеки в с. Захаровка — без примесей и лишнего.",
             ftPhone: "📞 Тел.: +380 96 898 0543",
             ftCon: "Контакты", ftInf: "Навигация", ftC: "Каталог", ftA: "О нас", ftDel: "Доставка", ftRev: "Отзывы", ftF: "FAQ",
@@ -1944,7 +2370,7 @@
         syncCartToSupabase(cart);
     }
 
-    function addToCart(nameKey, basePrice, defaultSize, btnEl) {
+    function addToCart(prodId, nameKey, basePrice, defaultSize, btnEl) {
         const card = btnEl.closest('.product-card');
         let price = basePrice;
         let size = defaultSize;
@@ -1954,11 +2380,11 @@
             size = activeSize.dataset.size;
         }
 
-        const fullName = `${nameKey} (${size})`;
+        const fullName = `[${prodId}] ${nameKey} (${size})`;
         const nextCart = [...cart];
         const existing = nextCart.find(i => i.name === fullName);
         if (existing) { existing.qty += 1; } 
-        else { nextCart.push({ name: fullName, price: price, qty: 1 }); }
+        else { nextCart.push({ prodId: prodId, name: fullName, price: price, qty: 1 }); }
 
         saveCartState(nextCart);
         openCartModal(1);
@@ -2394,6 +2820,8 @@
 
         if (cart.length === 0) return;
 
+        const orderNumber = generateOrderNumber();
+
         let addressSummary = '';
         if (deliveryCode === 'nova_poshta') {
             addressSummary = `${cityText}${warehouseText ? ' — ' + warehouseText : ''}`;
@@ -2420,7 +2848,7 @@
 
         try {
             const orderPayload = {
-                id: 'ord_' + Date.now(),
+                id: orderNumber,
                 customer_name: name,
                 phone: contact,
                 email: email || '',
@@ -2439,7 +2867,7 @@
                 throw new Error("Supabase error");
             }
 
-            const text = `<b>🛒 Нове замовлення з сайту!</b>\n\n` +
+            const text = `<b>🛒 Нове замовлення № ${escapeHtml(orderNumber)}!</b>\n\n` +
                          `<b>👤 ПІБ:</b> ${escapeHtml(name)}\n` +
                          `<b>📞 Телефон:</b> ${escapeHtml(contact)}\n` +
                          (email ? `<b>📧 Email:</b> ${escapeHtml(email)}\n` : '') +
@@ -2461,7 +2889,9 @@
             
             if (data.ok) {
                 statusDiv.style.color = '#059669';
-                statusDiv.innerText = currentLang === 'uk' ? '✅ Замовлення успішно відправлено та збережено!' : '✅ Заказ успешно отправлен и сохранен!';
+                statusDiv.innerText = currentLang === 'uk'
+                    ? `✅ Замовлення № ${orderNumber} успішно оформлено!`
+                    : `✅ Заказ № ${orderNumber} успешно оформлен!`;
                 saveCartState([]);
                 e.target.reset();
                 document.getElementById('npAddressFields').style.display = 'none';
@@ -2469,7 +2899,7 @@
                     closeModal('orderModal');
                     statusDiv.innerText = '';
                     goToCartStep(1);
-                }, 2500);
+                }, 3500);
             } else {
                 throw new Error("Telegram error");
             }
