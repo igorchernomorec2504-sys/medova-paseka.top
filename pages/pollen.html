@@ -20,6 +20,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Product",
+      "sku": "MP07",
       "name": "Бджолиний пилок",
       "image": ["https://medova-paseka.top/images/pollen-title.jpg"],
       "description": "Мікс вітамінів та амінокислот для енергії та імунітету.",
@@ -113,6 +114,7 @@
 
         .chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
         .chip { padding:6px 14px; border-radius:99px; font-size:12px; font-weight:700; border:1px solid var(--border); background:var(--card); color:var(--muted); }
+        .chip.sku { background:#F5F2EB; border-color:var(--border); color:var(--text); }
         .chip.cat { background:#FFFBEB; border-color:#FDE68A; color:var(--primary-dark); }
         .chip.stock { background:#ECFDF5; border-color:#A7F3D0; color:#047857; }
         .p-title { font-size:42px; margin-bottom:12px; }
@@ -169,7 +171,6 @@
         .mclose:hover { background:#FEE2E2; color:#DC2626; border-color:#FECACA; }
         .mbox h3 { font-size:24px; margin-bottom:14px; padding-right:34px; }
 
-        /* ===== ДВОХЕТАПНИЙ КОШИК ===== */
         .cart-steps { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
         .cart-step-pill { padding:8px 10px; border-radius:12px; font-size:12px; font-weight:700; text-align:center; border:1px solid var(--border); background:var(--bg); color:var(--muted); transition:.2s; }
         .cart-step-pill.active { background:#FFFBEB; border-color:var(--primary); color:var(--primary-dark); }
@@ -196,6 +197,7 @@
 
         .fg { margin-bottom:16px; position:relative; }
         .fg label { display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
+        .fg .hint { display:block; font-size:12px; color:var(--muted); margin-top:5px; }
         .fg input,.fg select,.fg textarea { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:12px; font-size:14px; outline:none; background:var(--bg); transition:.2s; font-family:inherit; color:var(--text); }
         .fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--primary); background:#fff; box-shadow:0 0 0 3px rgba(217,119,6,.12); }
         .fg select { cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A6A52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; padding-right:40px; }
@@ -245,13 +247,13 @@
             <div class="thumbs" id="thumbs"></div>
         </div>
         <div class="infocol">
-            <div class="chips"><span class="chip cat" id="chipCat">⚡ Пилок</span><span class="chip stock">✓ В наявності</span></div>
+            <div class="chips"><span class="chip sku" id="chipSku">ID: MP07</span><span class="chip cat" id="chipCat">⚡ Пилок</span><span class="chip stock">✓ В наявності</span></div>
             <h1 class="p-title" id="pTitle">Назва товару</h1>
             <p class="p-short" id="pShort">Опис товару...</p>
             <div class="pricebox"><div class="price-now" id="displayPrice">0 <small>грн</small></div><div class="price-unit" id="priceUnit">за 1 шт</div></div>
             <div id="volumeSection"><span class="fieldlabel">Оберіть об'єм / фасування</span><div class="sizebox" id="sizebox"></div></div>
             <div id="candleSection" class="candle-opt" style="display:none;"><span class="fieldlabel">Тип воску</span><div class="sizebox" id="colorbox"></div></div>
-            <div class="qtyrow"><span class="fieldlabel" style="margin-bottom:0;">Кількість</span><div class="stepper"><button type="button" onclick="changeQty(-1)">−</button><input type="number" id="prodQty" value="1" min="1" max="99"><button type="button" onclick="changeQty(1)">+</button></div></div>
+            <div class="qtyrow"><span class="fieldlabel" style="margin-bottom:0;">Кількість</span><div class="stepper"><button type="button" onclick="changeQty(-1)">−</button><input type="number" id="prodQty" value="1" min="1" max="99" onchange="updateTotalPrice()"><button type="button" onclick="changeQty(1)">+</button></div></div>
             <div class="buyrow"><button class="btn btn-honey" onclick="addToCartFromPage(false)">🛒 Додати в кошик</button><button class="btn btn-dark" onclick="addToCartFromPage(true)">⚡ Купити зараз</button></div>
             <div class="trust">
                 <div class="tr"><div class="i">🌿</div><div><b>Без домішок</b><span>Жодного цукру чи сиропів</span></div></div>
@@ -286,7 +288,6 @@
         </div>
 
         <div id="cartContent">
-            <!-- ЕТАП 1 -->
             <div id="cartStep1">
                 <div class="citems" id="cartItemsList"></div>
                 <div class="mprog" id="deliveryProgressBox"></div>
@@ -297,7 +298,6 @@
                 </div>
             </div>
 
-            <!-- ЕТАП 2 -->
             <form id="orderForm" style="display:none;" onsubmit="submitOrder(event)">
                 <div class="ctotal" style="padding:12px 16px; margin-bottom:16px;">
                     <span>До сплати за товари:</span>
@@ -321,6 +321,7 @@
                         <input type="text" id="orderCityInput" autocomplete="off" placeholder="Почніть вводити назву (напр. Захарівка)...">
                         <input type="hidden" id="orderCityRef">
                         <div class="np-dropdown" id="npCityDropdown"></div>
+                        <span class="hint" id="cityHint" style="display:none;">Оберіть населений пункт зі списку, щоб завантажились відділення.</span>
                     </div>
 
                     <div class="fg" id="npWarehouseGroup">
@@ -362,7 +363,7 @@
 
     const productsData = {
         'pollen': {
-            title:"Бджолиний пилок", emoji:"⚡", cat:"⚡ Пилок",
+            code:"MP07", title:"Бджолиний пилок", emoji:"⚡", cat:"⚡ Пилок",
             packaging:"Пластикова тара + паперова коробка 📦",
             description:"Мікс вітамінів та амінокислот для енергії та імунітету.",
             extendedDescription:"Бджолиний пилок (обніжжя) — це унікальний природний полівітамінний комплекс. Він підвищує життєвий тонус, покращує роботу серцево-судинної та нервової систем, допомагає швидко відновлювати сили.",
@@ -373,8 +374,11 @@
 
     const itemKey = 'pollen';
     const product = productsData[itemKey];
-    let baseSelectedPrice = product.volumes[0].price, selectedPrice = baseSelectedPrice, selectedVariantName = product.volumes[0].name;
-    let colorOptionName = "Натуральна", colorPriceExtra = 0, cart = [];
+    let baseSelectedPrice = product.volumes[0].price;
+    let selectedPrice = baseSelectedPrice;
+    let selectedVariantName = product.volumes[0].name;
+    let colorPriceExtra = 0;
+    let cart = [];
     let npSearchTimer = null;
 
     try { cart = JSON.parse(localStorage.getItem('medova_cart')) || []; } catch(e){ cart = []; }
@@ -439,7 +443,6 @@
         loadCartFromSupabaseIfLocalEmpty();
     });
 
-    /* ===== ПОШУК МІСТ / СІЛ ТА ВІДДІЛЕНЬ НОВОЇ ПОШТИ (ЯК В INDEX.HTML) ===== */
     function onDeliveryMethodChange() {
         const method = document.getElementById('orderDelivery').value;
         const npBox = document.getElementById('npAddressFields');
@@ -448,12 +451,14 @@
         const cityInput = document.getElementById('orderCityInput');
         const whSelect = document.getElementById('orderWarehouseSelect');
         const altInput = document.getElementById('orderAltAddress');
+        const cityHint = document.getElementById('cityHint');
 
         if (!method) {
             npBox.style.display = 'none';
             cityInput.required = false;
             whSelect.required = false;
             altInput.required = false;
+            cityHint.style.display = 'none';
             return;
         }
 
@@ -465,8 +470,10 @@
             cityInput.required = true;
             whSelect.required = true;
             altInput.required = false;
+            cityHint.style.display = 'block';
             if (cityInput.value === 'с. Захарівка, Одеська обл.') {
                 cityInput.value = '';
+                document.getElementById('orderCityRef').value = '';
             }
         } else if (method === 'ukr_poshta') {
             whGroup.style.display = 'none';
@@ -474,8 +481,10 @@
             cityInput.required = true;
             whSelect.required = false;
             altInput.required = true;
+            cityHint.style.display = 'none';
             if (cityInput.value === 'с. Захарівка, Одеська обл.') {
                 cityInput.value = '';
+                document.getElementById('orderCityRef').value = '';
             }
         } else if (method === 'pickup') {
             whGroup.style.display = 'none';
@@ -483,10 +492,20 @@
             cityInput.required = false;
             whSelect.required = false;
             altInput.required = false;
+            cityHint.style.display = 'none';
             if (!cityInput.value.trim()) {
                 cityInput.value = 'с. Захарівка, Одеська обл.';
             }
         }
+    }
+
+    function resetNpFields(){
+        document.getElementById('orderCityRef').value = '';
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        whSelect.innerHTML = '<option value="">Спочатку оберіть місто або село</option>';
+        whSelect.disabled = true;
+        document.getElementById('npAddressFields').style.display = 'none';
+        document.getElementById('cityHint').style.display = 'none';
     }
 
     async function searchNpSettlements(query) {
@@ -590,6 +609,11 @@
 
     document.getElementById('orderCityInput').addEventListener('input', function() {
         document.getElementById('orderCityRef').value = '';
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        if (document.getElementById('orderDelivery').value === 'nova_poshta') {
+            whSelect.disabled = true;
+            whSelect.innerHTML = '<option value="">Оберіть населений пункт зі списку</option>';
+        }
         clearTimeout(npSearchTimer);
         const val = this.value;
         npSearchTimer = setTimeout(() => searchNpSettlements(val), 250);
@@ -605,6 +629,7 @@
 
     function renderProductPage(){
         document.getElementById('crumbTitle').textContent = product.title;
+        document.getElementById('chipSku').textContent = 'ID: ' + product.code;
         document.getElementById('pTitle').textContent = product.title;
         document.getElementById('pShort').textContent = product.description;
         document.getElementById('extendedDesc').textContent = product.extendedDescription;
@@ -615,10 +640,11 @@
         const mainImg = document.getElementById('mainImage');
         mainImg.onerror = function(){ this.style.display='none'; };
         mainImg.onload = function(){ this.style.display='block'; };
-        mainImg.src = product.images[0]; mainImg.alt = product.title;
+        mainImg.src = product.images[0];
+        mainImg.alt = product.title;
 
         document.getElementById('thumbs').innerHTML = product.images.map((img,i)=>
-            `<img src="${img}" class="thumb ${i===0?'on':''}" onclick="changeImage('${img}',this)" onerror="this.style.display='none'">`
+            `<img src="${img}" alt="${escapeHtml(product.title)}" class="thumb ${i===0?'on':''}" onclick="changeImage('${img}',this)" onerror="this.style.display='none'">`
         ).join('');
 
         document.getElementById('sizebox').innerHTML = product.volumes.map((v,i)=>
@@ -644,16 +670,25 @@
     }
 
     function updateTotalPrice(){
+        const qtyInput = document.getElementById('prodQty');
+        const qty = Math.max(1, Math.min(99, parseInt(qtyInput.value) || 1));
+        qtyInput.value = qty;
         selectedPrice = baseSelectedPrice + colorPriceExtra;
-        document.getElementById('displayPrice').innerHTML = selectedPrice + ' <small>грн</small>';
-        document.getElementById('priceUnit').textContent = 'за ' + (selectedVariantName || '1 шт');
-        document.getElementById('stickyPrice').textContent = selectedPrice + ' грн';
-        document.getElementById('stickySize').textContent = selectedVariantName || product.title;
+        const lineTotal = selectedPrice * qty;
+        document.getElementById('displayPrice').innerHTML = lineTotal + ' <small>грн</small>';
+        document.getElementById('priceUnit').textContent = qty > 1
+            ? `${qty} × ${selectedPrice} грн (${selectedVariantName})`
+            : `за ${selectedVariantName || '1 шт'}`;
+        document.getElementById('stickyPrice').textContent = lineTotal + ' грн';
+        document.getElementById('stickySize').textContent = qty > 1
+            ? `${selectedVariantName} × ${qty}`
+            : (selectedVariantName || product.title);
     }
 
     function changeQty(delta){
         const input = document.getElementById('prodQty');
         input.value = Math.max(1, Math.min(99, (parseInt(input.value) || 1) + delta));
+        updateTotalPrice();
     }
 
     function saveCart(){
@@ -668,14 +703,15 @@
 
     function addToCartFromPage(goCheckout = false){
         const qty = parseInt(document.getElementById('prodQty').value) || 1;
-        const fullName = `${product.title} (${selectedVariantName})`;
+        const fullName = `[${product.code}] ${product.title} (${selectedVariantName})`;
         const nextCart = [...cart];
         const ex = nextCart.find(i=>i.name===fullName);
-        if (ex) ex.qty += qty; else nextCart.push({name:fullName, price:selectedPrice, qty:qty});
+        if (ex) ex.qty += qty; else nextCart.push({code:product.code, name:fullName, price:selectedPrice, qty:qty});
         cart = nextCart;
         saveCart();
         showToast('Додано в кошик: ' + fullName, 'ok');
         document.getElementById('prodQty').value = 1;
+        updateTotalPrice();
         if (goCheckout){
             openCartModal(2);
         }
@@ -802,6 +838,7 @@
               deliveryCode = deliverySelect.value,
               deliveryText = deliverySelect.options[deliverySelect.selectedIndex].text,
               cityText = document.getElementById('orderCityInput').value.trim(),
+              cityRef = document.getElementById('orderCityRef').value.trim(),
               warehouseText = document.getElementById('orderWarehouseSelect').value.trim(),
               altAddressText = document.getElementById('orderAltAddress').value.trim(),
               comment = form.querySelector('[name="Коментар"]').value.trim();
@@ -810,8 +847,12 @@
             showToast("Заповніть обов'язкові поля","warn");
             return;
         }
-        if (deliveryCode === 'nova_poshta' && (!cityText || !warehouseText)){
-            showToast("Оберіть місто/село та відділення Нової пошти","warn");
+        if (deliveryCode === 'nova_poshta' && (!cityText || !cityRef)){
+            showToast("Оберіть місто або село зі списку Нової пошти","warn");
+            return;
+        }
+        if (deliveryCode === 'nova_poshta' && !warehouseText){
+            showToast("Оберіть відділення або поштомат Нової пошти","warn");
             return;
         }
         if (deliveryCode === 'ukr_poshta' && (!cityText || !altAddressText)){
@@ -884,7 +925,7 @@
                 cart = [];
                 saveCart();
                 form.reset();
-                document.getElementById('npAddressFields').style.display = 'none';
+                resetNpFields();
                 closeCartModal();
             } else {
                 throw new Error('tg');
