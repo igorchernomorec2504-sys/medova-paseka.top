@@ -178,7 +178,7 @@ async function medovaSubmitOrder(orderData) {
 
     if (!dbRes.ok) {
         const errText = await dbRes.text().catch(() => '');
-        throw new Error(`Supabase insert failed: ${dbRes.status} ${errText}`);
+        throw new Error(`Supabase (${dbRes.status}): ${errText || 'insert failed'}`);
     }
 
     const freeShippingNote = total >= 1000
@@ -210,9 +210,9 @@ async function medovaSubmitOrder(orderData) {
         })
     });
 
-    const tgData = await tgRes.json();
-    if (!tgData.ok) {
-        throw new Error('Telegram sendMessage failed');
+    const tgData = await tgRes.json().catch(() => ({}));
+    if (!tgRes.ok || !tgData.ok) {
+        throw new Error(`Telegram: ${tgData.description || tgRes.status || 'sendMessage failed'}`);
     }
 
     medovaSaveCart([]);
