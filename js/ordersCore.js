@@ -1,6 +1,6 @@
 const MEDOVA_CONFIG = {
     botToken: '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA',
-    chatId: '1763769244',
+    chatId: '-1003239420013',
     supabaseUrl: 'https://qqfnbzfmjemknxivfktb.supabase.co',
     supabaseKey: 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1',
     prefix: 'ЧВД',
@@ -198,11 +198,13 @@ async function medovaSubmitOrder(orderData) {
         `<b>📦 Товари:</b>\n${itemsListHtml}\n\n` +
         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>${freeShippingNote}`;
 
+    const targetChatId = orderData.chatId || window.MEDOVA_GROUP_CHAT_ID || MEDOVA_CONFIG.chatId;
+
     const tgRes = await fetch(`https://api.telegram.org/bot${MEDOVA_CONFIG.botToken}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            chat_id: MEDOVA_CONFIG.chatId,
+            chat_id: targetChatId,
             text: tgText,
             parse_mode: 'HTML'
         })
@@ -232,4 +234,3 @@ window.medovaFormatNumber = medovaFormatNumber;
 window.medovaGenerateNextOrderNumber = medovaGenerateNextOrderNumber;
 window.medovaEscapeHtml = medovaEscapeHtml;
 window.medovaSubmitOrder = medovaSubmitOrder;
-
