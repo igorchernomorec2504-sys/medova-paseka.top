@@ -451,6 +451,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/ordersCore.js"></script>
     <style>
         :root {
             --bg: #FDFBF7;
@@ -1662,26 +1663,16 @@
 </div>
 
 <script>
-    const BOT_TOKEN = '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
-    const CHAT_ID = '1763769244';
-    const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
-    const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
+    const BOT_TOKEN = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.botToken : '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
+    const CHAT_ID = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.chatId : '1763769244';
+    const SUPABASE_URL = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseUrl : 'https://qqfnbzfmjemknxivfktb.supabase.co';
+    const SUPABASE_KEY = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseKey : 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1';
     const NP_API_KEY = 'eb79541df8160123e2632d92e46171f1';
     const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let npSearchTimer = null;
     let currentCartStep = 1;
-
-    /* ===== ГЕНЕРАЦИЯ ЧИТАЕМОГО НОМЕРА ЗАКАЗА (MR-YYMMDD-XXXX) ===== */
-    function generateOrderNumber() {
-        const now = new Date();
-        const yy = String(now.getFullYear()).slice(-2);
-        const mm = String(now.getMonth() + 1).padStart(2, '0');
-        const dd = String(now.getDate()).padStart(2, '0');
-        const rand = String(Math.floor(1000 + Math.random() * 9000));
-        return `MR-${yy}${mm}${dd}-${rand}`;
-    }
 
     /* ===== ИЗБРАННОЕ (СЕРДЕЧКО НА КАРТОЧКАХ И СЧЁТЧИК В ШАПКЕ) ===== */
     const FAVORITES_STORAGE_KEY = 'medova_favorites';
@@ -1770,8 +1761,9 @@
 
     async function loadCartFromSupabaseIfLocalEmpty() {
         try {
-            const localRaw = localStorage.getItem('medova_cart');
-            const localCart = localRaw ? JSON.parse(localRaw) : [];
+            const localCart = typeof window.medovaGetCart === 'function'
+                ? window.medovaGetCart()
+                : JSON.parse(localStorage.getItem('medova_cart') || '[]');
             if (Array.isArray(localCart) && localCart.length > 0) return;
 
             const sessionId = localStorage.getItem('medova_cart_session_id');
@@ -1785,7 +1777,11 @@
 
             if (!error && data && Array.isArray(data.items) && data.items.length > 0) {
                 cart = data.items;
-                localStorage.setItem('medova_cart', JSON.stringify(cart));
+                if (typeof window.medovaSaveCart === 'function') {
+                    window.medovaSaveCart(cart);
+                } else {
+                    localStorage.setItem('medova_cart', JSON.stringify(cart));
+                }
                 updateCartUI();
             }
         } catch (err) {
@@ -2361,38 +2357,50 @@
         });
     });
 
-    let cart = JSON.parse(localStorage.getItem('medova_cart')) || [];
+    let cart = typeof window.medovaGetCart === 'function'
+        ? window.medovaGetCart()
+        : (JSON.parse(localStorage.getItem('medova_cart')) || []);
 
     function saveCartState(nextCart) {
-        cart = nextCart;
-        localStorage.setItem('medova_cart', JSON.stringify(cart));
+        cart = Array.isArray(nextCart) ? nextCart : [];
+        if (typeof window.medovaSaveCart === 'function') {
+            window.medovaSaveCart(cart);
+        } else {
+            localStorage.setItem('medova_cart', JSON.stringify(cart));
+        }
         updateCartUI();
         syncCartToSupabase(cart);
     }
 
     function addToCart(prodId, nameKey, basePrice, defaultSize, btnEl) {
         const card = btnEl.closest('.product-card');
-        let price = basePrice;
+        let price = parseInt(basePrice, 10) || 0;
         let size = defaultSize;
-        const activeSize = card.querySelector('.size-btn.active');
+        const activeSize = card ? card.querySelector('.size-btn.active') : null;
         if (activeSize) {
-            price = parseInt(activeSize.dataset.price);
-            size = activeSize.dataset.size;
+            price = parseInt(activeSize.dataset.price, 10) || price;
+            size = activeSize.dataset.size || size;
         }
 
-        const fullName = `[${prodId}] ${nameKey} (${size})`;
+        const fullName = typeof window.medovaFormatItemName === 'function'
+            ? window.medovaFormatItemName(prodId, nameKey, size)
+            : `[${prodId}] ${nameKey} (${size})`;
+
         const nextCart = [...cart];
         const existing = nextCart.find(i => i.name === fullName);
-        if (existing) { existing.qty += 1; } 
-        else { nextCart.push({ prodId: prodId, name: fullName, price: price, qty: 1 }); }
+        if (existing) {
+            existing.qty += 1;
+        } else {
+            nextCart.push({ prodId: prodId, name: fullName, price: price, qty: 1 });
+        }
 
         saveCartState(nextCart);
         openCartModal(1);
     }
 
     function updateCartUI() {
-        const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
-        const totalSum = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+        const totalQty = cart.reduce((sum, i) => sum + (parseInt(i.qty, 10) || 0), 0);
+        const totalSum = cart.reduce((sum, i) => sum + ((Number(i.price) || 0) * (parseInt(i.qty, 10) || 0)), 0);
         const headerCount = document.getElementById('cartCountHeader');
         const headerSum = document.getElementById('cartSumHeader');
 
@@ -2415,7 +2423,7 @@
         if (statusDiv) statusDiv.innerText = '';
 
         if (step === 2) {
-            const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const total = cart.reduce((sum, i) => sum + ((Number(i.price) || 0) * (parseInt(i.qty, 10) || 0)), 0);
             document.getElementById('step2TotalSum').textContent = total;
             step1El.style.display = 'none';
             step2El.style.display = 'block';
@@ -2452,17 +2460,19 @@
             let html = '';
             let total = 0;
             cart.forEach((item, idx) => {
-                let sub = item.price * item.qty;
+                const qty = parseInt(item.qty, 10) || 1;
+                const price = Number(item.price) || 0;
+                const sub = price * qty;
                 total += sub;
                 html += `
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid var(--border); font-size:14px;">
                         <div style="min-width:0;">
                             <strong>${escapeHtml(item.name)}</strong><br>
-                            <span style="color:var(--text-muted); font-size:12px;">${item.price} ₴ / шт.</span>
+                            <span style="color:var(--text-muted); font-size:12px;">${price} ₴ / шт.</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                             <button type="button" class="qty-btn" onclick="changeCartQty(${idx}, -1)">−</button>
-                            <span style="min-width:20px; text-align:center; font-weight:700;">${item.qty}</span>
+                            <span style="min-width:20px; text-align:center; font-weight:700;">${qty}</span>
                             <button type="button" class="qty-btn" onclick="changeCartQty(${idx}, 1)">+</button>
                             <strong style="min-width:56px; text-align:right; margin-left:4px;">${sub} ₴</strong>
                             <button type="button" onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold; font-size:16px; margin-left:2px;">✕</button>
@@ -2498,7 +2508,7 @@
     function changeCartQty(idx, delta) {
         if (!cart[idx]) return;
         const nextCart = [...cart];
-        const nextQty = nextCart[idx].qty + delta;
+        const nextQty = (parseInt(nextCart[idx].qty, 10) || 1) + delta;
         if (nextQty <= 0) {
             nextCart.splice(idx, 1);
         } else {
@@ -2532,6 +2542,9 @@
     }
 
     function escapeHtml(str) {
+        if (typeof window.medovaEscapeHtml === 'function') {
+            return window.medovaEscapeHtml(str);
+        }
         return String(str || '')
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -2803,7 +2816,7 @@
         }
     });
 
-    /* ===== ОТПРАВКА ЗАКАЗА В SUPABASE И TELEGRAM ===== */
+    /* ===== ОТПРАВКА ЗАКАЗА ЧЕРЕЗ ЕДИНЫЙ МОДУЛЬ ordersCore.js (ЧВД-001...) ===== */
     async function sendOrderToTelegram(e) {
         e.preventDefault();
         const name = document.getElementById('orderName').value.trim();
@@ -2820,8 +2833,6 @@
 
         if (cart.length === 0) return;
 
-        const orderNumber = generateOrderNumber();
-
         let addressSummary = '';
         if (deliveryCode === 'nova_poshta') {
             addressSummary = `${cityText}${warehouseText ? ' — ' + warehouseText : ''}`;
@@ -2833,61 +2844,29 @@
 
         const combinedComment = [addressSummary ? `Адреса: ${addressSummary}` : '', comm].filter(Boolean).join(' | ');
 
-        let total = 0;
-        let itemsList = cart.map(i => {
-            let sub = i.price * i.qty;
-            total += sub;
-            return `• ${escapeHtml(i.name)} — ${i.qty} шт. (${sub} ₴)`;
-        }).join('\n');
-
-        const fullItemsStr = cart.map(item => `${item.name} (${item.qty} шт.)`).join(', ');
-        const freeShippingNote = total >= 1000 ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 ₴)' : '';
-
         statusDiv.style.color = 'var(--primary)';
         statusDiv.innerText = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
 
         try {
-            const orderPayload = {
-                id: orderNumber,
-                customer_name: name,
-                phone: contact,
-                email: email || '',
-                delivery_method: deliveryText,
-                items: fullItemsStr,
-                total_price: total,
-                comment: combinedComment
-            };
-
-            const { error: dbError } = await supabaseClient
-                .from('orders')
-                .insert([orderPayload]);
-
-            if (dbError) {
-                console.error("Ошибка сохранения в базу Supabase:", dbError);
-                throw new Error("Supabase error");
+            if (typeof window.medovaSubmitOrder !== 'function') {
+                throw new Error('ordersCore.js is not loaded');
             }
 
-            const text = `<b>🛒 Нове замовлення № ${escapeHtml(orderNumber)}!</b>\n\n` +
-                         `<b>👤 ПІБ:</b> ${escapeHtml(name)}\n` +
-                         `<b>📞 Телефон:</b> ${escapeHtml(contact)}\n` +
-                         (email ? `<b>📧 Email:</b> ${escapeHtml(email)}\n` : '') +
-                         `<b>🚚 Доставка:</b> ${escapeHtml(deliveryText)}\n` +
-                         (cityText ? `<b>📍 Місто / село:</b> ${escapeHtml(cityText)}\n` : '') +
-                         (deliveryCode === 'nova_poshta' && warehouseText ? `<b>🏢 Відділення НП:</b> ${escapeHtml(warehouseText)}\n` : '') +
-                         (deliveryCode === 'ukr_poshta' && altAddressText ? `<b>✉️ Адреса Укрпошти:</b> ${escapeHtml(altAddressText)}\n` : '') +
-                         `<b>💬 Коментар:</b> ${escapeHtml(comm || 'Відсутній')}\n\n` +
-                         `<b>📦 Товари:</b>\n${itemsList}\n\n` +
-                         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>${freeShippingNote}`;
-
-            const resUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            const response = await fetch(resUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'HTML' })
+            const result = await window.medovaSubmitOrder({
+                cart: cart,
+                name: name,
+                phone: contact,
+                email: email || '',
+                deliveryText: deliveryText,
+                cityText: cityText,
+                warehouseText: deliveryCode === 'nova_poshta' ? warehouseText : '',
+                altAddressText: deliveryCode === 'ukr_poshta' ? altAddressText : '',
+                comment: comm,
+                combinedComment: combinedComment
             });
-            const data = await response.json();
-            
-            if (data.ok) {
+
+            if (result && result.ok) {
+                const orderNumber = result.orderNumber;
                 statusDiv.style.color = '#059669';
                 statusDiv.innerText = currentLang === 'uk'
                     ? `✅ Замовлення № ${orderNumber} успішно оформлено!`
@@ -2901,9 +2880,10 @@
                     goToCartStep(1);
                 }, 3500);
             } else {
-                throw new Error("Telegram error");
+                throw new Error('Order submit failed');
             }
         } catch (err) {
+            console.error('Order error:', err);
             statusDiv.style.color = '#EF4444';
             statusDiv.innerText = currentLang === 'uk' ? '❌ Помилка відправки або збереження!' : '❌ Ошибка отправки или сохранения!';
         }
