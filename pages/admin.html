@@ -47,7 +47,7 @@
         }
         .staff-info { font-size: 0.84rem; font-weight: 600; color: var(--muted); }
 
-        .wrap { max-width: 1120px; margin: 0 auto; padding: 22px 16px 40px; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 22px 16px 40px; }
         .card {
             background: #fff; border-radius: 20px; padding: 22px; margin-bottom: 18px;
             box-shadow: 0 8px 22px rgba(230,81,0,0.08); border: 1px solid #ffecb3;
@@ -104,6 +104,12 @@
         .table { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: #fff; }
         .table th, .table td { border: 1px solid #ffe0b2; padding: 8px 10px; text-align: left; vertical-align: middle; }
         .table th { background: var(--light); color: var(--dark); white-space: nowrap; }
+
+        .ord-num {
+            display: inline-block; background: #fff8e1; color: var(--dark);
+            border: 1px solid #ffd54f; border-radius: 7px; padding: 3px 7px;
+            font-weight: 700; font-size: 0.78rem; white-space: nowrap;
+        }
 
         .act-btn {
             padding: 5px 9px; border-radius: 7px; border: none; cursor: pointer;
@@ -210,7 +216,7 @@
                 <h2>📦 Замовлення клієнтів</h2>
                 <div id="statsBox" class="stats"></div>
                 <div class="toolbar">
-                    <input type="text" id="ordSearch" class="input" placeholder="Пошук за ім'ям, телефоном або товаром..." oninput="drawOrders()">
+                    <input type="text" id="ordSearch" class="input" placeholder="Пошук за №, ім'ям, телефоном або товаром..." oninput="drawOrders()">
                     <button type="button" class="chip active" data-f="all" onclick="setOrdFilter('all', this)">Усі</button>
                     <button type="button" class="chip" data-f="new" onclick="setOrdFilter('new', this)">Нові</button>
                     <button type="button" class="chip" data-f="done" onclick="setOrdFilter('done', this)">Виконані</button>
@@ -277,6 +283,18 @@ function esc(s) {
     return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
+function formatOrderDelivery(o) {
+    if (o.city_post && String(o.city_post).trim()) {
+        return String(o.city_post).trim();
+    }
+    const method = String(o.delivery_method || '').trim();
+    const comment = String(o.comment || '').trim();
+    const parts = [];
+    if (method) parts.push(method);
+    if (comment) parts.push(comment);
+    return parts.length ? parts.join(' — ') : '—';
+}
+
 function setTab(i) {
     document.querySelectorAll('.tab-btn').forEach((b, idx) => b.classList.toggle('active', idx === i));
     document.querySelectorAll('.pane').forEach((p, idx) => p.classList.toggle('active', idx === i));
@@ -305,7 +323,7 @@ function staffLogin(e) {
 function staffLogout() {
     currentStaff = null;
     localStorage.removeItem('medova_current_staff');
-    toast('Ви вийшли з адмінки');
+    toast('Ви вийшли з акаунта');
     initAdmin();
 }
 
@@ -507,7 +525,9 @@ function drawOrders() {
         if (ordFilter === 'new' && done) return false;
         if (ordFilter === 'done' && !done) return false;
         const itemsStr = typeof o.items === 'string' ? o.items : JSON.stringify(o.items || '');
-        return [o.customer_name, o.phone, o.city_post, itemsStr].some(v => String(v || '').toLowerCase().includes(q));
+        const delStr = formatOrderDelivery(o);
+        return [o.id, o.customer_name, o.phone, delStr, o.city_post, o.delivery_method, o.comment, itemsStr]
+            .some(v => String(v || '').toLowerCase().includes(q));
     });
 
     if (!list.length) {
@@ -519,11 +539,13 @@ function drawOrders() {
         const dt = o.created_at ? new Date(o.created_at).toLocaleString('uk-UA', { dateStyle: 'short', timeStyle: 'short' }) : '—';
         const done = o.status === 'completed';
         const itemsTxt = typeof o.items === 'string' ? o.items : JSON.stringify(o.items || '');
+        const delTxt = formatOrderDelivery(o);
         return `<tr style="${done ? 'background:#f1f8e9;' : ''}">
+            <td><span class="ord-num">${esc(o.id || '—')}</span></td>
             <td>${esc(dt)}</td>
             <td><b>${esc(o.customer_name || '—')}</b></td>
             <td>${esc(o.phone || '—')}</td>
-            <td>${esc(o.city_post || '—')}</td>
+            <td>${esc(delTxt)}</td>
             <td>${esc(itemsTxt)}</td>
             <td><b>${esc(o.total_price || 0)} грн</b></td>
             <td>${done ? '<span class="badge-done">✅ Виконано</span>' : '<span class="badge-new">🆕 Нове</span>'}</td>
@@ -535,7 +557,7 @@ function drawOrders() {
     }).join('');
 
     document.getElementById('ordersBox').innerHTML = `<div class="table-wrap"><table class="table">
-        <tr><th>Дата</th><th>Клієнт</th><th>Телефон</th><th>Доставка</th><th>Товари</th><th>Сума</th><th>Статус</th><th>Дії</th></tr>${rows}
+        <tr><th>№</th><th>Дата</th><th>Клієнт</th><th>Телефон</th><th>Доставка</th><th>Товари</th><th>Сума</th><th>Статус</th><th>Дії</th></tr>${rows}
     </table></div>`;
 }
 
