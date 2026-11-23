@@ -61,6 +61,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/ordersCore.js"></script>
     <style>
         :root {
             --bg: #FDFBF7;
@@ -348,10 +349,8 @@
 <div class="toasts" id="toasts"></div>
 
 <script>
-    const SUPABASE_URL = "https://qqfnbzfmjemknxivfktb.supabase.co";
-    const SUPABASE_KEY = "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
-    const BOT_TOKEN = '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
-    const CHAT_ID = '1763769244';
+    const SUPABASE_URL = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseUrl : "https://qqfnbzfmjemknxivfktb.supabase.co";
+    const SUPABASE_KEY = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseKey : "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
     const NP_API_KEY = 'eb79541df8160123e2632d92e46171f1';
     const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
 
@@ -375,12 +374,11 @@
     let baseSelectedPrice = product.volumes[0].price;
     let selectedPrice = baseSelectedPrice;
     let selectedVariantName = product.volumes[0].name;
-    let cart = [];
+    let cart = typeof window.medovaGetCart === 'function' ? window.medovaGetCart() : [];
     let npSearchTimer = null;
 
-    try { cart = JSON.parse(localStorage.getItem('medova_cart')) || []; } catch(e){ cart = []; }
-
     function escapeHtml(str){
+        if (typeof window.medovaEscapeHtml === 'function') return window.medovaEscapeHtml(str);
         return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
@@ -397,8 +395,8 @@
         if (!supabaseClient) return;
         try {
             const sessionId = getCartSessionId();
-            const totalQty = cartItems.reduce((s,i)=>s+i.qty,0);
-            const totalSum = cartItems.reduce((s,i)=>s+i.price*i.qty,0);
+            const totalQty = cartItems.reduce((s,i)=>s+(parseInt(i.qty,10)||1),0);
+            const totalSum = cartItems.reduce((s,i)=>s+(Number(i.price)||0)*(parseInt(i.qty,10)||1),0);
             const { error } = await supabaseClient
                 .from('cart_items')
                 .upsert([{
@@ -426,7 +424,8 @@
                 .maybeSingle();
             if (!error && data && Array.isArray(data.items) && data.items.length > 0){
                 cart = data.items;
-                try { localStorage.setItem('medova_cart', JSON.stringify(cart)); } catch(e){}
+                if (typeof window.medovaSaveCart === 'function') window.medovaSaveCart(cart);
+                else { try{ localStorage.setItem('medova_cart', JSON.stringify(cart)); }catch(e){} }
                 updateCartUI();
             }
         } catch(err){
@@ -671,10 +670,10 @@
         const qty = Math.max(1, Math.min(99, parseInt(qtyInput.value) || 1));
         qtyInput.value = qty;
         selectedPrice = baseSelectedPrice;
-        const lineTotal = baseSelectedPrice * qty;
+        const lineTotal = selectedPrice * qty;
         document.getElementById('displayPrice').innerHTML = lineTotal + ' <small>грн</small>';
         document.getElementById('priceUnit').textContent = qty > 1
-            ? `${qty} × ${baseSelectedPrice} грн (${selectedVariantName})`
+            ? `${qty} × ${selectedPrice} грн (${selectedVariantName})`
             : `за ${selectedVariantName || '1 шт'}`;
         document.getElementById('stickyPrice').textContent = lineTotal + ' грн';
         document.getElementById('stickySize').textContent = qty > 1
@@ -689,21 +688,29 @@
     }
 
     function saveCart(){
-        try{ localStorage.setItem('medova_cart', JSON.stringify(cart)); }catch(e){}
+        if (typeof window.medovaSaveCart === 'function') {
+            window.medovaSaveCart(cart);
+        } else {
+            try{ localStorage.setItem('medova_cart', JSON.stringify(cart)); }catch(e){}
+        }
         updateCartUI();
         syncCartToSupabase(cart);
     }
 
     function updateCartUI(){
-        document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+        document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+(parseInt(i.qty,10)||1),0);
     }
 
     function addToCartFromPage(goCheckout = false){
         const qty = parseInt(document.getElementById('prodQty').value) || 1;
-        const fullName = `[${product.code}] ${product.title} (${selectedVariantName})`;
+        const fullName = typeof window.medovaFormatItemName === 'function'
+            ? window.medovaFormatItemName(product.code, product.title, selectedVariantName)
+            : `[${product.code}] ${product.title} (${selectedVariantName})`;
+
         const nextCart = [...cart];
         const ex = nextCart.find(i=>i.name===fullName);
-        if (ex) ex.qty += qty; else nextCart.push({code:product.code, name:fullName, price:selectedPrice, qty:qty});
+        if (ex) ex.qty = (parseInt(ex.qty,10)||1) + qty;
+        else nextCart.push({code:product.code, name:fullName, price:selectedPrice, qty:qty});
         cart = nextCart;
         saveCart();
         showToast('Додано в кошик: ' + fullName, 'ok');
@@ -717,7 +724,7 @@
     function changeCartItemQty(index, delta){
         if (!cart[index]) return;
         const nextCart = [...cart];
-        const nextQty = nextCart[index].qty + delta;
+        const nextQty = (parseInt(nextCart[index].qty,10)||1) + delta;
         if (nextQty <= 0) nextCart.splice(index,1);
         else nextCart[index] = { ...nextCart[index], qty:nextQty };
         cart = nextCart;
@@ -740,7 +747,7 @@
         const form = document.getElementById('orderForm');
         const pill1 = document.getElementById('stepPill1');
         const pill2 = document.getElementById('stepPill2');
-        const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+        const total = cart.reduce((s,i)=>s+(Number(i.price)||0)*(parseInt(i.qty,10)||1),0);
 
         if (step === 2){
             document.getElementById('step2TotalSum').textContent = total;
@@ -790,13 +797,15 @@
 
         let html='', total=0;
         cart.forEach((item,i)=>{
-            const sum = item.price*item.qty;
+            const qty = parseInt(item.qty,10)||1;
+            const price = Number(item.price)||0;
+            const sum = price*qty;
             total += sum;
             html += `<div class="citem">
-                <div class="cn"><b>${escapeHtml(item.name)}</b><span>${item.price} грн / шт.</span></div>
+                <div class="cn"><b>${escapeHtml(item.name)}</b><span>${price} грн / шт.</span></div>
                 <div class="qty-mini">
                     <button type="button" class="qty-btn" onclick="changeCartItemQty(${i},-1)">−</button>
-                    <span style="min-width:18px;text-align:center;font-weight:700;font-size:13px;">${item.qty}</span>
+                    <span style="min-width:18px;text-align:center;font-weight:700;font-size:13px;">${qty}</span>
                     <button type="button" class="qty-btn" onclick="changeCartItemQty(${i},1)">+</button>
                 </div>
                 <div class="csub">${sum} грн</div>
@@ -871,63 +880,35 @@
         btn.disabled = true;
         btn.textContent = 'Відправка...';
 
-        let total = 0;
-        const itemsList = cart.map(i=>{
-            const s=i.price*i.qty;
-            total+=s;
-            return `• ${escapeHtml(i.name)} — ${i.qty} шт. (${s} грн)`;
-        }).join('\n');
-        const itemsStr = cart.map(i=>i.name+' ('+i.qty+' шт.)').join(', ');
-        const freeShipLine = total >= 1000 ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 грн)' : '';
-
-        const text = `🛒 <b>НОВЕ ЗАМОВЛЕННЯ (з товару)!</b>\n\n` +
-                     `👤 <b>ПІБ:</b> ${escapeHtml(pib)}\n` +
-                     `📞 <b>Телефон:</b> ${escapeHtml(phone)}\n` +
-                     `🚚 <b>Доставка:</b> ${escapeHtml(deliveryText)}\n` +
-                     (cityText ? `📍 <b>Місто / село:</b> ${escapeHtml(cityText)}\n` : '') +
-                     (deliveryCode === 'nova_poshta' && warehouseText ? `🏢 <b>Відділення НП:</b> ${escapeHtml(warehouseText)}\n` : '') +
-                     (deliveryCode === 'ukr_poshta' && altAddressText ? `✉️ <b>Адреса Укрпошти:</b> ${escapeHtml(altAddressText)}\n` : '') +
-                     `💬 <b>Коментар:</b> ${escapeHtml(comment||'немає')}\n\n` +
-                     `📦 <b>Товари:</b>\n${itemsList}\n\n` +
-                     `💰 <b>Загальна сума:</b> ${total} грн${freeShipLine}`;
-
         try {
-            const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'apikey':SUPABASE_KEY,
-                    'Authorization':`Bearer ${SUPABASE_KEY}`,
-                    'Prefer':'return=representation'
-                },
-                body:JSON.stringify({
-                    id:'ord_'+Date.now(),
-                    customer_name:pib,
-                    phone,
-                    delivery_method:deliveryText,
-                    items:itemsStr,
-                    total_price:total,
-                    comment:combinedComment
-                })
-            });
-            if (!dbRes.ok) throw new Error('supabase');
+            if (typeof window.medovaSubmitOrder !== 'function') {
+                throw new Error('ordersCore.js is not loaded');
+            }
 
-            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({ chat_id:CHAT_ID, text, parse_mode:'HTML' })
+            const result = await window.medovaSubmitOrder({
+                cart: cart,
+                name: pib,
+                phone: phone,
+                deliveryText: deliveryText,
+                cityText: cityText,
+                warehouseText: deliveryCode === 'nova_poshta' ? warehouseText : '',
+                altAddressText: deliveryCode === 'ukr_poshta' ? altAddressText : '',
+                comment: comment,
+                combinedComment: combinedComment
             });
-            if (res.ok){
-                showToast('✅ Замовлення успішно надіслано та збережено!','ok');
+
+            if (result && result.ok) {
+                showToast(`✅ Замовлення № ${result.orderNumber} успішно надіслано та збережено!`,'ok');
                 cart = [];
                 saveCart();
                 form.reset();
                 resetNpFields();
                 closeCartModal();
             } else {
-                throw new Error('tg');
+                throw new Error('Order submit failed');
             }
         } catch(err){
+            console.error('Order error:', err);
             showToast('❌ Помилка відправки або збереження. Зателефонуйте нам!','warn');
         } finally {
             btn.disabled = false;
