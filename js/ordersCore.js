@@ -9,6 +9,16 @@ const MEDOVA_CONFIG = {
 };
 
 const MEDOVA_SKU_MAP = {
+    'MP01': 'MP01',
+    'MP02': 'MP02',
+    'MP03': 'MP03',
+    'MP04': 'MP04',
+    'MP05': 'MP05',
+    'MP06': 'MP06',
+    'MP07': 'MP07',
+    'MP08': 'MP08',
+    'MP09': 'MP09',
+    'MP10': 'MP10',
     'MR01': 'MR01',
     'MR02': 'MR02',
     'MR03': 'MR03',
@@ -19,45 +29,77 @@ const MEDOVA_SKU_MAP = {
     'MR08': 'MR08',
     'MR09': 'MR09',
     'MR10': 'MR10',
-    'мед соняшниковий': 'MR01',
-    'мед подсолнечный': 'MR01',
-    'мед травневий': 'MR02',
-    'мед майский': 'MR02',
-    'мед з волоським горіхом': 'MR03',
-    'мед с грецким орехом': 'MR03',
-    'стільниковий мед': 'MR04',
-    'сотовый мед': 'MR04',
-    'свічка з вощини': 'MR05',
-    'свічки з вощини': 'MR05',
-    'свеча из вощины': 'MR05',
-    'свечи из вощины': 'MR05',
-    'прополіс': 'MR06',
-    'прополис': 'MR06',
-    'бджолиний пилок': 'MR07',
-    'пчелиная пыльца': 'MR07',
-    'патріотичний набір свічок': 'MR08',
-    'патриотический набор свечей': 'MR08',
-    'набір «медовий затишок»': 'MR09',
-    'набор «медовый уют»': 'MR09',
-    'набір з натуральної вощини': 'MR10',
-    'набор из натуральной вощины': 'MR10'
+    'мед соняшниковий': 'MP01',
+    'мед соняшника': 'MP01',
+    'мед подсолнечный': 'MP01',
+    'мед травневий': 'MP02',
+    'мед майский': 'MP02',
+    'мед з волоським горіхом': 'MP03',
+    'мед с грецким орехом': 'MP03',
+    'стільниковий мед': 'MP04',
+    'сотовый мед': 'MP04',
+    'свічка з вощини': 'MP05',
+    'свічки з вощини': 'MP05',
+    'свеча из вощины': 'MP05',
+    'свечи из вощины': 'MP05',
+    'прополіс': 'MP06',
+    'натуральний бджолиний прополіс': 'MP06',
+    'прополис': 'MP06',
+    'бджолиний пилок': 'MP07',
+    'пчелиная пыльца': 'MP07',
+    'патріотичний набір свічок': 'MP08',
+    'патриотический набор свечей': 'MP08',
+    'набір «медовий затишок»': 'MP09',
+    'набор «медовый уют»': 'MP09',
+    'набір з натуральної вощини': 'MP10',
+    'набор из натуральной вощины': 'MP10'
 };
+
+function medovaExtractBracketCode(text) {
+    const m = String(text || '').trim().match(/^\[([A-Za-zА-Яа-яІіЇїЄє0-9_-]+)\]/);
+    return m ? m[1].toUpperCase() : '';
+}
 
 function medovaResolveSku(prodId, title) {
     const rawId = String(prodId || '').trim().toUpperCase();
-    if (rawId && MEDOVA_SKU_MAP[rawId]) return MEDOVA_SKU_MAP[rawId];
-    if (/^M[PR]\d+$/i.test(rawId)) return rawId;
+    if (rawId && rawId !== 'MR00' && MEDOVA_SKU_MAP[rawId]) return MEDOVA_SKU_MAP[rawId];
+    if (rawId && rawId !== 'MR00' && /^M[PR]\d+$/i.test(rawId)) return rawId;
 
-    const cleanTitle = String(title || '').trim().toLowerCase();
+    const bracketCode = medovaExtractBracketCode(title);
+    if (bracketCode && bracketCode !== 'MR00') {
+        return MEDOVA_SKU_MAP[bracketCode] || bracketCode;
+    }
+
+    const cleanTitle = String(title || '')
+        .replace(/^\[[^\]]+\]\s*/, '')
+        .replace(/\s*\([^)]*\)\s*$/, '')
+        .trim()
+        .toLowerCase();
+
     if (cleanTitle && MEDOVA_SKU_MAP[cleanTitle]) return MEDOVA_SKU_MAP[cleanTitle];
 
-    return rawId || 'MR00';
+    return rawId || bracketCode || 'MP00';
 }
 
 function medovaFormatItemName(prodId, title, size) {
-    const code = medovaResolveSku(prodId, title);
-    const cleanTitle = String(title || '').replace(/^\[[^\]]+\]\s*/, '').trim();
-    const sizePart = size ? ` (${String(size).trim()})` : '';
+    const rawTitle = String(title || '').trim();
+    const code = medovaResolveSku(prodId, rawTitle);
+    let cleanTitle = rawTitle.replace(/^\[[^\]]+\]\s*/, '').trim();
+
+    // Если в title уже есть фасовка в круглых скобках в конце и size не передан — оставляем как есть
+    const hasTrailingParens = /\([^)]+\)\s*$/.test(cleanTitle);
+    let sizePart = '';
+    if (size && !hasTrailingParens) {
+        const cleanSize = String(size).trim();
+        if (cleanSize && !cleanTitle.toLowerCase().includes(cleanSize.toLowerCase())) {
+            sizePart = ` (${cleanSize})`;
+        }
+    }
+
+    if (!cleanTitle) {
+        cleanTitle = 'Товар пасіки';
+    }
+
     return `[${code}] ${cleanTitle}${sizePart}`;
 }
 
@@ -136,11 +178,13 @@ async function medovaSubmitOrder(orderData) {
     const orderNumber = await medovaGenerateNextOrderNumber();
 
     const normalizedItems = cartItems.map(item => {
-        const formattedName = medovaFormatItemName(item.prodId, item.name, item.size);
+        const rawCode = item.prodId || item.code || '';
+        const rawName = item.name || item.title || '';
+        const formattedName = medovaFormatItemName(rawCode, rawName, item.size);
         const qty = Math.max(1, parseInt(item.qty, 10) || 1);
         const price = Number(item.price) || 0;
         return {
-            prodId: medovaResolveSku(item.prodId, item.name),
+            prodId: medovaResolveSku(rawCode, rawName),
             name: formattedName,
             price,
             qty,
@@ -224,6 +268,7 @@ async function medovaSubmitOrder(orderData) {
 
 window.MEDOVA_CONFIG = MEDOVA_CONFIG;
 window.MEDOVA_SKU_MAP = MEDOVA_SKU_MAP;
+window.medovaExtractBracketCode = medovaExtractBracketCode;
 window.medovaResolveSku = medovaResolveSku;
 window.medovaFormatItemName = medovaFormatItemName;
 window.medovaGetCart = medovaGetCart;
