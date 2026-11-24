@@ -1,6 +1,6 @@
-const MEDOVA_CONFIG = {
+Const MEDOVA_CONFIG = {
     botToken: '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA',
-    chatId: '-1003239420013',
+    chatId: '1763769244',
     supabaseUrl: 'https://qqfnbzfmjemknxivfktb.supabase.co',
     supabaseKey: 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1',
     prefix: 'ЧВД',
@@ -178,7 +178,7 @@ async function medovaSubmitOrder(orderData) {
 
     if (!dbRes.ok) {
         const errText = await dbRes.text().catch(() => '');
-        throw new Error(`Supabase (${dbRes.status}): ${errText || 'insert failed'}`);
+        throw new Error(`Supabase insert failed: ${dbRes.status} ${errText}`);
     }
 
     const freeShippingNote = total >= 1000
@@ -198,21 +198,19 @@ async function medovaSubmitOrder(orderData) {
         `<b>📦 Товари:</b>\n${itemsListHtml}\n\n` +
         `💰 <b>Загальна сума:</b> <b>${total} ₴</b>${freeShippingNote}`;
 
-    const targetChatId = orderData.chatId || window.MEDOVA_GROUP_CHAT_ID || MEDOVA_CONFIG.chatId;
-
     const tgRes = await fetch(`https://api.telegram.org/bot${MEDOVA_CONFIG.botToken}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            chat_id: targetChatId,
+            chat_id: MEDOVA_CONFIG.chatId,
             text: tgText,
             parse_mode: 'HTML'
         })
     });
 
-    const tgData = await tgRes.json().catch(() => ({}));
-    if (!tgRes.ok || !tgData.ok) {
-        throw new Error(`Telegram: ${tgData.description || tgRes.status || 'sendMessage failed'}`);
+    const tgData = await tgRes.json();
+    if (!tgData.ok) {
+        throw new Error('Telegram sendMessage failed');
     }
 
     medovaSaveCart([]);
