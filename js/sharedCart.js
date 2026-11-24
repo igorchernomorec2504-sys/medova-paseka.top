@@ -2,7 +2,6 @@
     if (window.__MEDOVA_SHARED_CART_UNIFIED__) return;
     window.__MEDOVA_SHARED_CART_UNIFIED__ = true;
 
-    // Коды товаров зашиты прямо в логику корзины — отдельный файл не нужен
     const CART_CODE_DEFAULTS = {
         MP01: { code: 'MP01', title: 'Мед соняшниковий', price: 180, size: '1 л' },
         MP02: { code: 'MP02', title: 'Мед травневий', price: 250, size: '0.5 л' },
@@ -15,6 +14,10 @@
         MP09: { code: 'MP09', title: 'Набір «Медовий затишок»', price: 350, size: '1 набір' },
         MP10: { code: 'MP10', title: 'Набір з натуральної вощини', price: 250, size: '1 набір' }
     };
+
+    function hasNativeCartModal() {
+        return Boolean(document.getElementById('cartModal') || document.getElementById('cartCount'));
+    }
 
     function getCart() {
         return typeof window.medovaGetCart === 'function'
@@ -65,37 +68,21 @@
         return { prodId: code, name: formattedName, price, qty };
     }
 
+    function removeFloatingFabIfPresent() {
+        const fab = document.getElementById('medovaSharedFab');
+        if (fab) fab.remove();
+        const drawer = document.getElementById('medovaSharedDrawer');
+        if (drawer) drawer.remove();
+    }
+
     function ensureUi() {
+        removeFloatingFabIfPresent();
+        if (hasNativeCartModal()) return;
+
         if (!document.getElementById('medovaSharedCartStyle')) {
             const style = document.createElement('style');
             style.id = 'medovaSharedCartStyle';
             style.textContent = `
-                #medovaSharedFab {
-                    position: fixed;
-                    right: 18px;
-                    bottom: 18px;
-                    z-index: 1500;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    background: linear-gradient(135deg, #F59E0B, #D97706);
-                    color: #FFFFFF;
-                    border: none;
-                    border-radius: 999px;
-                    padding: 12px 18px;
-                    font-size: 14px;
-                    font-weight: 800;
-                    cursor: pointer;
-                    box-shadow: 0 10px 24px rgba(180, 83, 9, 0.35);
-                }
-                #medovaSharedFabBadge {
-                    background: #FFFFFF;
-                    color: #92400E;
-                    border-radius: 999px;
-                    padding: 2px 8px;
-                    font-size: 12px;
-                    font-weight: 800;
-                }
                 #medovaSharedDrawer {
                     display: none;
                     position: fixed;
@@ -194,15 +181,6 @@
             document.head.appendChild(style);
         }
 
-        if (!document.getElementById('medovaSharedFab')) {
-            const fab = document.createElement('button');
-            fab.type = 'button';
-            fab.id = 'medovaSharedFab';
-            fab.innerHTML = `🛒 Кошик <span id="medovaSharedFabBadge">0</span> · <span id="medovaSharedFabSum">0 ₴</span>`;
-            fab.addEventListener('click', openCart);
-            document.body.appendChild(fab);
-        }
-
         if (!document.getElementById('medovaSharedDrawer')) {
             const drawer = document.createElement('div');
             drawer.id = 'medovaSharedDrawer';
@@ -244,9 +222,15 @@
     }
 
     function openCart() {
+        if (hasNativeCartModal() && typeof window.openCartModal === 'function') {
+            window.openCartModal(1);
+            return;
+        }
         ensureUi();
+        const drawer = document.getElementById('medovaSharedDrawer');
+        if (!drawer) return;
         renderCart();
-        document.getElementById('medovaSharedDrawer').classList.add('open');
+        drawer.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 
@@ -257,23 +241,25 @@
     }
 
     function syncBadge() {
-        ensureUi();
+        removeFloatingFabIfPresent();
         const cart = getCart();
         const qty = cart.reduce((s, i) => s + (parseInt(i.qty, 10) || 0), 0);
-        const sum = cart.reduce((s, i) => s + ((Number(i.price) || 0) * (parseInt(i.qty, 10) || 0)), 0);
 
-        const badge = document.getElementById('medovaSharedFabBadge');
-        const fabSum = document.getElementById('medovaSharedFabSum');
-        if (badge) badge.textContent = String(qty);
-        if (fabSum) fabSum.textContent = `${sum} ₴`;
+        const hdrCount = document.getElementById('cartCount');
+        if (hdrCount) hdrCount.textContent = String(qty);
     }
 
     function renderCart() {
+        if (hasNativeCartModal()) {
+            syncBadge();
+            return;
+        }
         ensureUi();
         const cart = getCart();
         const listEl = document.getElementById('medovaScItems');
         const totalEl = document.getElementById('medovaScTotal');
         const submitBtn = document.getElementById('medovaScSubmitBtn');
+        if (!listEl || !totalEl) return;
 
         if (!cart.length) {
             listEl.innerHTML = '<div style="color:#7A6A52;padding:12px 0;">Кошик порожній.</div>';
@@ -355,8 +341,10 @@
             comment
         ].filter(Boolean).join(' | ');
 
-        btn.disabled = true;
-        btn.textContent = 'Надсилаємо...';
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Надсилаємо...';
+        }
 
         try {
             const res = await window.medovaSubmitOrder({
@@ -386,13 +374,13 @@
             console.error(err);
             alert('Помилка під час відправки замовлення.');
         } finally {
-            btn.disabled = false;
-            btn.textContent = 'Оформити замовлення';
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = 'Оформити замовлення';
+            }
         }
     }
 
-    // Главная функция добавления в корзину по коду:
-    // window.medovaCartAdd({ code: 'MP05', price: 40, size: '1 шт.', qty: 1 })
     window.medovaCartAdd = function (itemInput) {
         const norm = resolveByCode(typeof itemInput === 'string' ? { code: itemInput } : itemInput);
         const items = getCart();
