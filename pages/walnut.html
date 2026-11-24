@@ -78,6 +78,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/js/ordersCore.js"></script>
+    <script src="/js/sharedCart.js"></script>
     <style>
         :root {
             --bg: #FDFBF7;
@@ -1084,7 +1085,17 @@
             saveCartState();
             document.getElementById('orderForm').reset();
             document.getElementById('npAddressFields').style.display = 'none';
-            setTimeout(() => { closeModal('orderModal'); statusDiv.textContent = ''; }, 2000);
+            setTimeout(() => {
+                closeModal('orderModal');
+                statusDiv.textContent = '';
+                if (typeof window.medovaShowOrderReceipt === 'function') {
+                    window.medovaShowOrderReceipt(result, {
+                        customerName: name,
+                        deliveryText: deliveryText,
+                        addressSummary: addressSummary
+                    });
+                }
+            }, 1200);
         } catch (err) {
             console.error('Order error:', err);
             statusDiv.style.color = '#EF4444';
