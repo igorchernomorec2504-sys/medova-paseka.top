@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перга бджолина | Медова Пасіка</title>
+    <meta name="description" content="Натуральна бджолина перга з власної пасіки в с. Захарівка. Ферментований пилок у сотах для щоденної підтримки та енергії.">
+    <link rel="canonical" href="https://medova-paseka.top/pages/perga.html">
+
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="Медова Пасіка">
+    <meta property="og:url" content="https://medova-paseka.top/pages/perga.html">
+    <meta property="og:title" content="Перга бджолина | Медова Пасіка">
+    <meta property="og:description" content="Натуральна бджолина перга з власної пасіки в с. Захарівка.">
+    <meta property="og:image" content="https://medova-paseka.top/images/perga.jpg">
+
+    <script type="application/ld+json" id="productSchema">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "sku": "MP11",
+      "name": "Перга бджолина",
+      "image": [
+        "https://medova-paseka.top/images/perga.jpg",
+        "https://medova-paseka.top/images/perga1.jpg",
+        "https://medova-paseka.top/images/perga2.jpg"
+      ],
+      "description": "Натуральна бджолина перга з власної пасіки в с. Захарівка.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Медова Пасіка"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://medova-paseka.top/pages/perga.html",
+        "priceCurrency": "UAH",
+        "price": "150",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/OutOfStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "UA",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": 100,
+            "currency": "UAH"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "UA"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 1,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitCode": "DAY"
+            }
+          }
+        }
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/ordersCore.js"></script>
+    <script src="/js/sharedCart.js"></script>
+    <style>
+        :root {
+            --bg: #FDFBF7;
+            --card-bg: #FFFFFF;
+            --primary: #D97706;
+            --primary-dark: #92400E;
+            --accent: #F59E0B;
+            --promo-red: #DC2626;
+            --promo-red-bg: #FEF2F2;
+            --promo-red-border: #FECACA;
+            --text: #2B1D0E;
+            --text-muted: #7A6A52;
+            --border: #E8DCC8;
+            --radius: 16px;
+            --shadow-soft: 0 4px 20px rgba(43, 29, 14, 0.04);
+            --shadow-hover: 0 12px 32px rgba(217, 119, 6, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; padding-top: 80px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        h1, h2, h3, h4, .logo, .brand { font-family: 'Cormorant Garamond', serif; }
+
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            background: rgba(253, 251, 247, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(232, 220, 200, 0.5); padding: 14px 0;
+        }
+        .nav-container { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .back-arrow-btn {
+            background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%;
+            font-size: 18px; cursor: pointer; display: none; align-items: center; justify-content: center;
+            transition: all 0.25s ease; color: var(--text); text-decoration: none; flex-shrink: 0;
+        }
+        .back-arrow-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
+        .menu-burger-btn {
+            background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%;
+            font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s ease; color: var(--text); flex-shrink: 0;
+        }
+        .menu-burger-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
+        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 15px; font-weight: 600; transition: color 0.25s; white-space: nowrap; }
+        .nav-links a:hover { color: var(--primary); }
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .lang-switch { display: flex; gap: 4px; }
+        .btn-auth, .lang-btn {
+            background: var(--card-bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px;
+            font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.25s ease;
+            text-decoration: none; display: inline-flex; align-items: center; white-space: nowrap;
+        }
+        .btn-auth:hover, .lang-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
+        .lang-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
+
+        .btn-cart-header {
+            position: relative; background: var(--card-bg); border: 1px solid var(--border);
+            width: 40px; height: 40px; border-radius: 50%; font-size: 17px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; color: var(--text);
+            transition: all 0.25s ease; flex-shrink: 0;
+        }
+        .btn-cart-header:hover { border-color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
+        .btn-cart-header .count {
+            position: absolute; top: -5px; right: -5px; background: #EF4444; color: #fff;
+            min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; font-size: 11px; font-weight: 700;
+            display: none; align-items: center; justify-content: center; border: 2px solid var(--bg);
+        }
+
+        .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.4); backdrop-filter: blur(4px); z-index: 998; opacity: 0; transition: opacity 0.3s ease; }
+        .drawer-overlay.open { display: block; opacity: 1; }
+        .side-drawer {
+            position: fixed; top: 0; left: -360px; width: 340px; max-width: 88vw; height: 100%;
+            background: var(--card-bg); z-index: 999; box-shadow: 10px 0 40px rgba(0,0,0,0.12);
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .side-drawer.open { left: 0; }
+        .drawer-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+        .drawer-header .brand { font-weight: 700; font-size: 22px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .drawer-close { background: var(--card-bg); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; }
+        .drawer-section { border-bottom: 1px solid var(--border); padding: 8px 0; }
+        .drawer-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; text-decoration: none; color: var(--text); font-size: 15px; font-weight: 600; transition: all 0.2s; }
+        .drawer-item:hover { background: #FFFBEB; color: var(--primary-dark); padding-left: 28px; }
+        .drawer-item .arrow { color: var(--text-muted); font-size: 18px; }
+
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+        .breadcrumbs { padding: 20px 0; font-size: 14px; color: var(--text-muted); display: flex; gap: 8px; flex-wrap: wrap; }
+        .breadcrumbs a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumbs a:hover { color: var(--primary); }
+
+        .product-hero {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px;
+            padding: 40px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 44px;
+            box-shadow: var(--shadow-soft); margin-bottom: 50px;
+        }
+        .gallery-col { display: flex; flex-direction: column; gap: 12px; }
+        .product-gallery {
+            border-radius: 20px; aspect-ratio: 1 / 1; min-height: 320px; width: 100%;
+            background-size: cover; background-position: center;
+            background-color: #FEF3C7; position: relative; border: 1px solid var(--border);
+        }
+        .product-badge {
+            position: absolute; top: 16px; left: 16px; background: var(--primary); color: #fff;
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+        .thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
+        .thumb-btn {
+            width: 72px; height: 72px; border-radius: 12px; padding: 0; overflow: hidden;
+            border: 2px solid var(--border); background: #FEF3C7; cursor: pointer; transition: all 0.2s;
+        }
+        .thumb-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .thumb-btn:hover, .thumb-btn.active { border-color: var(--primary); transform: translateY(-2px); }
+
+        .stock-status-row { margin-bottom: 12px; }
+        .out-of-stock-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 99px; font-size: 13px; font-weight: 700;
+            background: var(--promo-red-bg); color: var(--promo-red); border: 1px solid var(--promo-red-border);
+        }
+
+        .product-info h1 { font-size: 42px; font-weight: 700; line-height: 1.15; margin-bottom: 14px; }
+        .product-lead { font-size: 16px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.65; }
+
+        .size-label { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: block; color: var(--text); }
+        .sizes { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+        .size-btn {
+            background: var(--bg); border: 1px solid var(--border); padding: 10px 18px; border-radius: 12px;
+            font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: all 0.2s;
+        }
+        .size-btn:hover { border-color: var(--accent); }
+        .size-btn.active { border-color: var(--primary); background: #FFFBEB; color: var(--primary-dark); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.12); }
+
+        .price-box { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+        .price-current { font-size: 36px; font-weight: 800; color: var(--text); font-family: 'Cormorant Garamond', serif; }
+        .btn-buy-main {
+            background: var(--primary); color: #fff; border: none; padding: 15px 32px; border-radius: 14px;
+            font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+            box-shadow: 0 8px 24px rgba(217, 119, 6, 0.28);
+        }
+        .btn-buy-main:hover { background: #B45309; transform: translateY(-2px); }
+
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 50px; }
+        .benefit-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+        .benefit-card h3 { font-size: 22px; margin-bottom: 8px; }
+        .benefit-card p { font-size: 14px; color: var(--text-muted); }
+
+        .article-box {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #FDE68A; border-radius: 24px; padding: 40px;
+            box-shadow: var(--shadow-soft); margin-bottom: 50px;
+        }
+        .article-box h2 { font-size: 34px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+        .article-box p { color: var(--text-muted); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
+        .article-box p:last-child { margin-bottom: 0; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43, 29, 14, 0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 16px; }
+        .modal.active { display: flex; }
+        .modal-box { background: var(--card-bg); border-radius: 20px; padding: 28px; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .close-modal { position: absolute; top: 18px; right: 18px; background: var(--bg); border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); }
+        .close-modal:hover { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
+
+        .cart-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .cart-step-pill { padding: 10px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-muted); transition: .2s; }
+        .cart-step-pill.active { background: #FFFBEB; border-color: var(--primary); color: var(--primary-dark); }
+        .cart-step-pill.done { background: #ECFDF5; border-color: #10B981; color: #047857; }
+
+        .cart-item-card {
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            padding: 14px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border);
+            margin-bottom: 10px; font-size: 14px;
+        }
+        .promo-red-txt { color: var(--promo-red); font-weight: 800; }
+        .mprog { padding: 12px 14px; border-radius: 12px; background: var(--promo-red-bg); border: 1px solid var(--promo-red-border); margin-bottom: 14px; font-size: 13px; font-weight: 700; color: var(--promo-red); text-align: center; }
+        .mprog.done { background: #ECFDF5; border-color: #A7F3D0; color: #047857; }
+
+        .cart-total-banner {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #FDE68A; padding: 16px; border-radius: 14px; margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: 700;
+        }
+
+        .qty-mini { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: .15s; }
+        .qty-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
+
+        .form-group { margin-bottom: 14px; position: relative; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 12px;
+            font-size: 14px; background: var(--bg); outline: none; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: #fff; }
+        .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A6A52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+        .np-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; margin-top: 4px; max-height: 210px; overflow-y: auto; z-index: 1200; box-shadow: 0 10px 25px rgba(43, 29, 14, 0.14); display: none; }
+        .np-dropdown.open { display: block; }
+        .np-option { padding: 10px 14px; font-size: 14px; cursor: pointer; border-bottom: 1px solid rgba(232, 220, 200, 0.45); color: var(--text); transition: background 0.15s; }
+        .np-option:last-child { border-bottom: none; }
+        .np-option:hover { background: #FFFBEB; color: var(--primary-dark); }
+
+        .btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: .2s; }
+        .btn-submit:hover { background: #B45309; }
+        .btn-continue { width: 100%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 13px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: .2s; }
+        .btn-continue:hover { border-color: var(--primary); background: #FFFBEB; }
+
+        footer { background: var(--text); color: #A8A29E; padding: 36px 0; text-align: center; font-size: 14px; margin-top: 20px; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .footer-rights { color: #E7E5E4; font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+        .footer-bottom-mark { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #A8A29E; font-size: 14px; }
+        .footer-circle-s {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 22px; height: 22px; border-radius: 50%; border: 1px solid currentColor;
+            font-size: 12px; font-weight: 700; line-height: 1;
+        }
+
+        @media (max-width: 900px) {
+            .product-hero { grid-template-columns: 1fr; padding: 24px; gap: 24px; }
+            .article-box { padding: 26px 20px; }
+            .product-gallery { min-height: 260px; }
+            .product-info h1 { font-size: 32px; }
+            .benefits-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            body { padding-top: 64px; }
+            .nav-links { display: none; }
+            .menu-burger-btn { display: none; }
+            .back-arrow-btn { display: inline-flex; }
+            .lang-switch { display: none; }
+            .logo { font-size: 18px; }
+            .btn-auth .auth-text { display: none; }
+            .btn-auth { padding: 8px 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <div class="logo-area">
+            <a href="/#catalog" class="back-arrow-btn" aria-label="Назад до каталогу">←</a>
+            <button class="menu-burger-btn" onclick="openDrawer()" aria-label="Меню">☰</button>
+            <a href="/" class="logo"><span id="l-logo">Медова Пасіка</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="/#catalog" id="m-cat">Каталог</a>
+            <a href="/#about" id="m-about">Про нас</a>
+            <a href="/#delivery" id="m-del">Доставка</a>
+            <a href="/#contacts" id="m-cont">Контакти</a>
+        </div>
+        <div class="header-actions">
+            <a href="/pages/account.html" class="btn-auth" id="authBtn">👤 <span class="auth-text">Вхід</span></a>
+            <div class="lang-switch">
+                <button class="lang-btn active" id="b-uk" onclick="setLang('uk')">UA</button>
+                <button class="lang-btn" id="b-ru" onclick="setLang('ru')">RU</button>
+            </div>
+            <button class="btn-cart-header" onclick="openCartModal(1)" aria-label="Кошик">🛒<span class="count" id="cartCountHeader">0</span></button>
+        </div>
+    </div>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+        <div class="brand">🍯 <span>Медова Пасіка</span></div>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-section">
+        <a href="/" class="drawer-item" id="dr-home">🏠 Головна <span class="arrow">›</span></a>
+        <a href="/pages/sunflower.html" class="drawer-item" id="dr-sun">🌻 Мед соняшниковий <span class="arrow">›</span></a>
+        <a href="/pages/may.html" class="drawer-item" id="dr-may">🌿 Мед травневий <span class="arrow">›</span></a>
+        <a href="/pages/walnut.html" class="drawer-item" id="dr-wal">🥜 Мед з волоським горіхом <span class="arrow">›</span></a>
+        <a href="/pages/candles.html" class="drawer-item" id="dr-cand">🕯️ Свічки з вощини <span class="arrow">›</span></a>
+        <a href="/pages/propolis.html" class="drawer-item" id="dr-prop">🛡️ Прополіс <span class="arrow">›</span></a>
+        <a href="/pages/pollen.html" class="drawer-item" id="dr-poll">⚡ Бджолиний пилок <span class="arrow">›</span></a>
+        <a href="/pages/perga.html" class="drawer-item" id="dr-perg">🍯 Перга бджолина <span class="arrow">›</span></a>
+    </div>
+</aside>
+
+<div class="container">
+    <div class="breadcrumbs">
+        <a href="/" id="bc-home">Головна</a>
+        <span>/</span>
+        <a href="/#catalog" id="bc-cat">Каталог</a>
+        <span>/</span>
+        <span id="bc-cur">Перга бджолина</span>
+    </div>
+
+    <div class="product-hero">
+        <div class="gallery-col">
+            <div class="product-gallery" id="mainGallery" style="background-image: url('/images/perga.jpg');" onerror="this.style.background='linear-gradient(135deg,#FDE68A,#F59E0B)'">
+                <div class="product-badge" id="p-badge">Бджолопродукти</div>
+            </div>
+            <div class="thumbs" id="thumbsGroup">
+                <button type="button" class="thumb-btn active" data-img="/images/perga.jpg" onclick="selectGalleryImg('/images/perga.jpg', this)" aria-label="Фото 1">
+                    <img src="/images/perga.jpg" alt="Перга фото 1" onerror="this.parentElement.style.display='none'">
+                </button>
+                <button type="button" class="thumb-btn" data-img="/images/perga1.jpg" onclick="selectGalleryImg('/images/perga1.jpg', this)" aria-label="Фото 2">
+                    <img src="/images/perga1.jpg" alt="Перга фото 2" onerror="this.parentElement.style.display='none'">
+                </button>
+                <button type="button" class="thumb-btn" data-img="/images/perga2.jpg" onclick="selectGalleryImg('/images/perga2.jpg', this)" aria-label="Фото 3">
+                    <img src="/images/perga2.jpg" alt="Перга фото 3" onerror="this.parentElement.style.display='none'">
+                </button>
+            </div>
+        </div>
+
+        <div class="product-info">
+            <div class="stock-status-row">
+                <span class="out-of-stock-badge" id="stockBadge">✕ Немає в наявності</span>
+            </div>
+            <h1 id="p-title">Перга бджолина</h1>
+            <p class="product-lead" id="p-lead">
+                Натуральна перга з власної пасіки в с. Захарівка. Ферментований бджолами квітковий пилок у стільниках із приємним кисло-солодким смаком для щоденної підтримки організму.
+            </p>
+
+            <span class="size-label" id="size-label">Оберіть фасування:</span>
+            <div class="sizes" id="sizeGroup">
+                <button type="button" class="size-btn active" data-price="150" data-size="50 г">50 г — 150 грн</button>
+                <button type="button" class="size-btn" data-price="290" data-size="100 г">100 г — 290 грн</button>
+                <button type="button" class="size-btn" data-price="560" data-size="200 г">200 г — 560 грн</button>
+            </div>
+
+            <div class="price-box">
+                <div class="price-current"><span id="selectedPrice">150</span> <small style="font-size:20px;">грн</small></div>
+                <button type="button" class="btn-buy-main" id="btnAddMain" onclick="addSelectedToCart()">🛒 Додати в кошик</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="benefits-grid">
+        <div class="benefit-card">
+            <h3 id="b1-t">🍯 Природна ферментація</h3>
+            <p id="b1-d">Пройшла природне дозрівання у бджолиних стільниках без зайвих домішок.</p>
+        </div>
+        <div class="benefit-card">
+            <h3 id="b2-t">🌿 Дбайливий збір</h3>
+            <p id="b2-d">Заготовлена на власній пасіці з дотриманням температурного режиму зберігання.</p>
+        </div>
+        <div class="benefit-card">
+            <h3 id="b3-t">⚡ Зручний прийом</h3>
+            <p id="b3-d">Легко дозувати та вживати у першій половині дня — самостійно або з медом.</p>
+        </div>
+    </div>
+
+    <section id="article" style="padding:0;">
+        <div class="article-box">
+            <h2 id="art-title">🍯 Чим цінна натуральна бджолина перга?</h2>
+            <p id="art-p1">
+                Пергу часто називають «хлібом бджіл»: бджоли утрамбовують квітковий пилок у стільники, заливають медом і запечатують. У результаті природного бродіння утворюється поживний продукт із м'яким, трохи кислуватим смаком і вираженим квітковим ароматом.
+            </p>
+            <p id="art-p2">
+                Завдяки ферментації перга добре засвоюється організмом та містить природний комплекс амінокислот, вітамінів і мікроелементів. Її цінують у міжсезоння та в періоди підвищеного навантаження як частину збалансованого раціону.
+            </p>
+        </div>
+    </section>
+</div>
+
+<div class="modal" id="orderModal">
+    <div class="modal-box">
+        <button class="close-modal" onclick="closeModal('orderModal')">✕</button>
+        <h3 id="m-title" style="margin-bottom: 16px; font-size: 26px; display:flex; align-items:center; gap:8px;">📋 <span>Ваш Кошик</span></h3>
+
+        <div class="cart-steps" id="cartStepsBar">
+            <div class="cart-step-pill active" id="stepPill1">1. Товари</div>
+            <div class="cart-step-pill" id="stepPill2">2. Оформлення</div>
+        </div>
+
+        <div id="cartStep1">
+            <div id="cartItemsList" style="margin-bottom: 14px; max-height: 220px; overflow-y: auto;"></div>
+            <div class="mprog" id="deliveryProgressBox"></div>
+            <div class="cart-total-banner">
+                <span id="m-tot" style="font-size: 14px; color: var(--text-muted);">Загальна сума:</span>
+                <span style="font-size: 22px; color: var(--primary-dark); font-family: 'Cormorant Garamond', serif; font-weight: 700;"><span id="cartTotalSum">0</span> грн</span>
+            </div>
+            <div id="cartStep1Actions" style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="btn-submit" id="m-btn-next" onclick="goToCheckoutStep(2)">Далі до оформлення →</button>
+                <button type="button" class="btn-continue" onclick="closeModal('orderModal')" id="m-btn-close">Продовжити покупки</button>
+            </div>
+        </div>
+
+        <form id="orderForm" style="display:none;" onsubmit="sendOrderToTelegram(event)">
+            <div class="cart-total-banner" style="padding: 12px 16px; margin-bottom: 14px;">
+                <span id="m-tot-step2" style="font-size:13px; color:var(--text-muted);">До сплати за товари:</span>
+                <span style="font-size: 20px; color: var(--primary-dark); font-family: 'Cormorant Garamond', serif; font-weight: 700;"><span id="step2TotalSum">0</span> грн</span>
+            </div>
+            <div class="form-group">
+                <label id="m-l-name">ПІБ *</label>
+                <input type="text" id="orderName" required placeholder="Іванов Іван">
+            </div>
+            <div class="form-group">
+                <label id="m-l-phone">Номер телефону *</label>
+                <input type="tel" id="orderContact" required placeholder="+380XXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label id="m-l-delivery">Спосіб доставки *</label>
+                <select id="orderDelivery" required onchange="onDeliveryMethodChange()">
+                    <option value="" disabled selected id="del-opt-default">Оберіть спосіб доставки</option>
+                    <option value="nova_poshta" id="del-opt-np">Нова Пошта</option>
+                    <option value="ukr_poshta" id="del-opt-up">Укрпошта</option>
+                    <option value="pickup" id="del-opt-pickup">Самовивіз</option>
+                </select>
+            </div>
+
+            <div id="npAddressFields" style="display: none;">
+                <div class="form-group" style="position: relative;">
+                    <label for="orderCityInput" id="m-l-city">Місто / село *</label>
+                    <input type="text" id="orderCityInput" autocomplete="off" placeholder="Почніть вводити назву (напр. Захарівка)...">
+                    <input type="hidden" id="orderCityRef">
+                    <div class="np-dropdown" id="npCityDropdown"></div>
+                </div>
+
+                <div class="form-group" id="npWarehouseGroup">
+                    <label for="orderWarehouseSelect" id="m-l-wh">Відділення / поштомат Нової пошти *</label>
+                    <select id="orderWarehouseSelect" disabled>
+                        <option value="" id="wh-opt-default">Спочатку оберіть місто або село</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="altAddressGroup" style="display: none;">
+                    <label for="orderAltAddress" id="m-l-addr">Індекс та адреса отримувача *</label>
+                    <input type="text" id="orderAltAddress" placeholder="Напр.: 66700, смт Захарівка, вул. Центральна, 10">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="m-l-comm">Коментар</label>
+                <textarea id="orderComment" rows="2" placeholder="Побажання або зручний час для дзвінка..."></textarea>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-continue" style="width:auto; flex:1;" onclick="goToCheckoutStep(1)" id="m-btn-back">← Назад</button>
+                <button type="submit" class="btn-submit" style="width:auto; flex:2; background:#059669;" id="m-btn-send">📤 Надіслати замовлення</button>
+            </div>
+            <div id="orderStatus" style="margin-top:12px; text-align:center; font-weight:700; font-size:13px;"></div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p class="footer-rights" id="ft-rights">Медова пасіка / всі права захищені</p>
+        <div class="footer-bottom-mark">
+            <span class="footer-circle-s" aria-hidden="true">©</span>
+            <span>2026</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const PRODUCT_CODE = 'MP11';
+    const SUPABASE_URL = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseUrl : "https://qqfnbzfmjemknxivfktb.supabase.co";
+    const SUPABASE_KEY = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseKey : "sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1";
+    const NP_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/nova-poshta`;
+
+    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+        : null;
+
+    let currentLang = 'uk';
+    let cart = typeof window.medovaGetCart === 'function' ? window.medovaGetCart() : [];
+    let npSearchTimer = null;
+
+    const dict = {
+        uk: {
+            lLogo: "Медова Пасіка", mCat: "Каталог", mAbout: "Про нас", mDel: "Доставка", mCont: "Контакти",
+            drHome: "🏠 Головна", drSun: "🌻 Мед соняшниковий", drMay: "🌿 Мед травневий", drWal: "🥜 Мед з волоським горіхом",
+            drCand: "🕯️ Свічки з вощини", drProp: "🛡️ Прополіс", drPoll: "⚡ Бджолиний пилок", drPerg: "🍯 Перга бджолина",
+            bcHome: "Головна", bcCat: "Каталог", bcCur: "Перга бджолина",
+            pBadge: "Бджолопродукти",
+            stockBadge: "✕ Немає в наявності",
+            pTitle: "Перга бджолина",
+            pLead: "Натуральна перга з власної пасіки в с. Захарівка. Ферментований бджолами квітковий пилок у стільниках із приємним кисло-солодким смаком для щоденної підтримки організму.",
+            sizeLabel: "Оберіть фасування:",
+            btnAdd: "🛒 Додати в кошик",
+            b1t: "🍯 Природна ферментація", b1d: "Пройшла природне дозрівання у бджолиних стільниках без зайвих домішок.",
+            b2t: "🌿 Дбайливий збір", b2d: "Заготовлена на власній пасіці з дотриманням температурного режиму зберігання.",
+            b3t: "⚡ Зручний прийом", b3d: "Легко дозувати та вживати у першій половині дня — самостійно або з медом.",
+            artTitle: "🍯 Чим цінна натуральна бджолина перга?",
+            artP1: "Пергу часто називають «хлібом бджіл»: бджоли утрамбовують квітковий пилок у стільники, заливають медом і запечатують. У результаті природного бродіння утворюється поживний продукт із м'яким, трохи кислуватим смаком і вираженим квітковим ароматом.",
+            artP2: "Завдяки ферментації перга добре засвоюється організмом та містить природний комплекс амінокислот, вітамінів і мікроелементів. Її цінують у міжсезоння та в періоди підвищеного навантаження як частину збалансованого раціону.",
+            ftRights: "Медова пасіка / всі права захищені",
+            mTitle: "Ваш Кошик", mTot: "Загальна сума:", mTotStep2: "До сплати за товари:",
+            mLName: "ПІБ *", mLPhone: "Номер телефону *",
+            mLDelivery: "Спосіб доставки *", mDelOptDefault: "Оберіть спосіб доставки",
+            mDelOptNP: "Нова Пошта", mDelOptUP: "Укрпошта", mDelOptPickup: "Самовивіз",
+            mLCity: "Місто / село *", mLWh: "Відділення / поштомат Нової пошти *",
+            mLAddr: "Індекс та адреса отримувача *", mWhOptDefault: "Спочатку оберіть місто або село",
+            mLComm: "Коментар", mBtnClose: "Продовжити покупки", mBtnNext: "Далі до оформлення →",
+            mBtnBack: "← Назад", mBtnSend: "📤 Надіслати замовлення",
+            cartName: "Перга бджолина",
+            step1Label: "1. Товари", step2Label: "2. Оформлення"
+        },
+        ru: {
+            lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mCont: "Контакты",
+            drHome: "🏠 Главная", drSun: "🌻 Мед подсолнечный", drMay: "🌿 Мед майский", drWal: "🥜 Мед с грецким орехом",
+            drCand: "🕯️ Свечи из вощины", drProp: "🛡️ Прополис", drPoll: "⚡ Пчелиная пыльца", drPerg: "🍯 Перга пчелиная",
+            bcHome: "Главная", bcCat: "Каталог", bcCur: "Перга пчелиная",
+            pBadge: "Продукты пчеловодства",
+            stockBadge: "✕ Нет в наличии",
+            pTitle: "Перга пчелиная",
+            pLead: "Натуральная перга с собственной пасеки в с. Захаровка. Ферментированная пчелами цветочная пыльца в сотах с приятным кисло-сладким вкусом для ежедневной поддержки организма.",
+            sizeLabel: "Выберите фасовку:",
+            btnAdd: "🛒 Добавить в корзину",
+            b1t: "🍯 Естественная ферментация", b1d: "Прошла естественное созревание в пчелиных сотах без лишних добавок.",
+            b2t: "🌿 Бережный сбор", b2d: "Заготовлена на собственной пасеке с соблюдением условий хранения.",
+            b3t: "⚡ Удобный прием", b3d: "Легко дозировать и принимать в первой половине дня — отдельно или с медом.",
+            artTitle: "🍯 Чем ценна натуральная пчелиная перга?",
+            artP1: "Пергу часто называют «хлебом пчел»: пчелы утрамбовывают цветочную пыльцу в соты, заливают медом и запечатывают. В результате естественного брожения получается питательный продукт с мягким, слегка кисловатым вкусом и выраженным цветочным ароматом.",
+            artP2: "Благодаря ферментации перга хорошо усваивается и содержит природный комплекс аминокислот, витаминов и микроэлементов. Ее ценят в межсезонье и в периоды повышенной нагрузки как часть сбалансированного рациона.",
+            ftRights: "Медовая пасека / все права защищены",
+            mTitle: "Ваш Кошик", mTot: "Общая сумма:", mTotStep2: "К оплате за товары:",
+            mLName: "ФИО *", mLPhone: "Номер телефона *",
+            mLDelivery: "Способ доставки *", mDelOptDefault: "Выберите способ доставки",
+            mDelOptNP: "Новая Почта", mDelOptUP: "Укрпочта", mDelOptPickup: "Самовывоз",
+            mLCity: "Город / село *", mLWh: "Отделение / почтомат Новой почты *",
+            mLAddr: "Индекс и адрес получателя *", mWhOptDefault: "Сначала выберите город или село",
+            mLComm: "Комментарий", mBtnClose: "Продолжить покупки", mBtnNext: "Далее к оформлению →",
+            mBtnBack: "← Назад", mBtnSend: "📤 Отправить заказ",
+            cartName: "Перга пчелиная",
+            step1Label: "1. Товары", step2Label: "2. Оформление"
+        }
+    };
+
+    function selectGalleryImg(imgUrl, btnEl) {
+        const gallery = document.getElementById('mainGallery');
+        if (gallery) {
+            gallery.style.backgroundImage = `url('${imgUrl}')`;
+        }
+        document.querySelectorAll('#thumbsGroup .thumb-btn').forEach(b => b.classList.remove('active'));
+        if (btnEl) btnEl.classList.add('active');
+    }
+
+    function escapeHtml(str){
+        if (typeof window.medovaEscapeHtml === 'function') return window.medovaEscapeHtml(str);
+        return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function getCartSessionId(){
+        let sid = localStorage.getItem('medova_cart_session_id');
+        if (!sid){
+            sid = 'cart_' + Date.now() + '_' + Math.random().toString(36).slice(2,9);
+            localStorage.setItem('medova_cart_session_id', sid);
+        }
+        return sid;
+    }
+
+    async function syncCartToSupabase(cartItems){
+        if (!supabaseClient) return;
+        try {
+            const sessionId = getCartSessionId();
+            const totalQty = cartItems.reduce((s,i)=>s+(parseInt(i.qty,10)||1),0);
+            const totalSum = cartItems.reduce((s,i)=>s+(Number(i.price)||0)*(parseInt(i.qty,10)||1),0);
+            const { error } = await supabaseClient
+                .from('cart_items')
+                .upsert([{
+                    session_id: sessionId,
+                    items: cartItems,
+                    total_qty: totalQty,
+                    total_price: totalSum,
+                    updated_at: new Date().toISOString()
+                }], { onConflict: 'session_id' });
+            if (error) console.warn('Supabase cart_items sync notice:', error.message || error);
+        } catch(err){
+            console.warn('Supabase cart_items sync error:', err);
+        }
+    }
+
+    async function loadCartFromSupabaseIfLocalEmpty(){
+        if (!supabaseClient || cart.length > 0) return;
+        const sessionId = localStorage.getItem('medova_cart_session_id');
+        if (!sessionId) return;
+        try {
+            const { data, error } = await supabaseClient
+                .from('cart_items')
+                .select('items')
+                .eq('session_id', sessionId)
+                .maybeSingle();
+            if (!error && data && Array.isArray(data.items) && data.items.length > 0){
+                cart = data.items;
+                if (typeof window.medovaSaveCart === 'function') window.medovaSaveCart(cart);
+                else { try { localStorage.setItem('medova_cart', JSON.stringify(cart)); } catch(e){} }
+                updateCartUI();
+            }
+        } catch(err){
+            console.warn('Supabase cart load notice:', err);
+        }
+    }
+
+    function saveCartState(){
+        if (typeof window.medovaSaveCart === 'function') {
+            window.medovaSaveCart(cart);
+        } else {
+            try { localStorage.setItem('medova_cart', JSON.stringify(cart)); } catch(e){}
+        }
+        updateCartUI();
+        syncCartToSupabase(cart);
+    }
+
+    function setLang(lang) {
+        currentLang = lang;
+        const t = dict[lang];
+        document.getElementById('l-logo').textContent = t.lLogo;
+        document.getElementById('m-cat').textContent = t.mCat;
+        document.getElementById('m-about').textContent = t.mAbout;
+        document.getElementById('m-del').textContent = t.mDel;
+        document.getElementById('m-cont').textContent = t.mCont;
+        document.getElementById('dr-home').firstChild.textContent = t.drHome + " ";
+        document.getElementById('dr-sun').firstChild.textContent = t.drSun + " ";
+        document.getElementById('dr-may').firstChild.textContent = t.drMay + " ";
+        document.getElementById('dr-wal').firstChild.textContent = t.drWal + " ";
+        document.getElementById('dr-cand').firstChild.textContent = t.drCand + " ";
+        document.getElementById('dr-prop').firstChild.textContent = t.drProp + " ";
+        document.getElementById('dr-poll').firstChild.textContent = t.drPoll + " ";
+        document.getElementById('dr-perg').firstChild.textContent = t.drPerg + " ";
+        document.getElementById('bc-home').textContent = t.bcHome;
+        document.getElementById('bc-cat').textContent = t.bcCat;
+        document.getElementById('bc-cur').textContent = t.bcCur;
+        document.getElementById('p-badge').textContent = t.pBadge;
+        document.getElementById('stockBadge').textContent = t.stockBadge;
+        document.getElementById('p-title').textContent = t.pTitle;
+        document.getElementById('p-lead').textContent = t.pLead;
+        document.getElementById('size-label').textContent = t.sizeLabel;
+        document.getElementById('btnAddMain').textContent = t.btnAdd;
+        document.getElementById('b1-t').textContent = t.b1t;
+        document.getElementById('b1-d').textContent = t.b1d;
+        document.getElementById('b2-t').textContent = t.b2t;
+        document.getElementById('b2-d').textContent = t.b2d;
+        document.getElementById('b3-t').textContent = t.b3t;
+        document.getElementById('b3-d').textContent = t.b3d;
+        document.getElementById('art-title').textContent = t.artTitle;
+        document.getElementById('art-p1').textContent = t.artP1;
+        document.getElementById('art-p2').textContent = t.artP2;
+        document.getElementById('ft-rights').textContent = t.ftRights;
+        document.getElementById('m-title').lastElementChild.textContent = t.mTitle;
+        document.getElementById('stepPill1').textContent = t.step1Label;
+        document.getElementById('stepPill2').textContent = t.step2Label;
+        document.getElementById('m-tot').textContent = t.mTot;
+        document.getElementById('m-tot-step2').textContent = t.mTotStep2;
+        document.getElementById('m-l-name').textContent = t.mLName;
+        document.getElementById('m-l-phone').textContent = t.mLPhone;
+        document.getElementById('m-l-delivery').textContent = t.mLDelivery;
+        document.getElementById('del-opt-default').textContent = t.mDelOptDefault;
+        document.getElementById('del-opt-np').textContent = t.mDelOptNP;
+        document.getElementById('del-opt-up').textContent = t.mDelOptUP;
+        document.getElementById('del-opt-pickup').textContent = t.mDelOptPickup;
+        document.getElementById('m-l-city').textContent = t.mLCity;
+        document.getElementById('m-l-wh').textContent = t.mLWh;
+        document.getElementById('m-l-addr').textContent = t.mLAddr;
+        if (document.getElementById('wh-opt-default')) {
+            document.getElementById('wh-opt-default').textContent = t.mWhOptDefault;
+        }
+        document.getElementById('m-l-comm').textContent = t.mLComm;
+        document.getElementById('m-btn-close').textContent = t.mBtnClose;
+        document.getElementById('m-btn-next').textContent = t.mBtnNext;
+        document.getElementById('m-btn-back').textContent = t.mBtnBack;
+        document.getElementById('m-btn-send').textContent = t.mBtnSend;
+        document.getElementById('b-uk').classList.toggle('active', lang === 'uk');
+        document.getElementById('b-ru').classList.toggle('active', lang === 'ru');
+    }
+
+    function openDrawer() {
+        document.getElementById('sideDrawer').classList.add('open');
+        document.getElementById('drawerOverlay').classList.add('open');
+    }
+    function closeDrawer() {
+        document.getElementById('sideDrawer').classList.remove('open');
+        document.getElementById('drawerOverlay').classList.remove('open');
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    function onDeliveryMethodChange() {
+        const method = document.getElementById('orderDelivery').value;
+        const npBox = document.getElementById('npAddressFields');
+        const whGroup = document.getElementById('npWarehouseGroup');
+        const altGroup = document.getElementById('altAddressGroup');
+        const cityInput = document.getElementById('orderCityInput');
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        const altInput = document.getElementById('orderAltAddress');
+
+        if (!method) {
+            npBox.style.display = 'none';
+            cityInput.required = false;
+            whSelect.required = false;
+            altInput.required = false;
+            return;
+        }
+
+        npBox.style.display = 'block';
+
+        if (method === 'nova_poshta') {
+            whGroup.style.display = 'block';
+            altGroup.style.display = 'none';
+            cityInput.required = true;
+            whSelect.required = true;
+            altInput.required = false;
+            if (cityInput.value === 'с. Захарівка, Одеська обл.') {
+                cityInput.value = '';
+            }
+        } else if (method === 'ukr_poshta') {
+            whGroup.style.display = 'none';
+            altGroup.style.display = 'block';
+            cityInput.required = true;
+            whSelect.required = false;
+            altInput.required = true;
+            if (cityInput.value === 'с. Захарівка, Одеська обл.') {
+                cityInput.value = '';
+            }
+        } else if (method === 'pickup') {
+            whGroup.style.display = 'none';
+            altGroup.style.display = 'none';
+            cityInput.required = false;
+            whSelect.required = false;
+            altInput.required = false;
+            if (!cityInput.value.trim()) {
+                cityInput.value = 'с. Захарівка, Одеська обл.';
+            }
+        }
+    }
+
+    async function callNpProxy(modelName, calledMethod, methodProperties) {
+        const res = await fetch(NP_FUNCTION_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                apikey: SUPABASE_KEY,
+                Authorization: `Bearer ${SUPABASE_KEY}`
+            },
+            body: JSON.stringify({
+                modelName,
+                calledMethod,
+                methodProperties
+            })
+        });
+        return await res.json();
+    }
+
+    async function searchNpSettlements(query) {
+        const dropdown = document.getElementById('npCityDropdown');
+        if (query.trim().length < 2) {
+            dropdown.classList.remove('open');
+            dropdown.innerHTML = '';
+            return;
+        }
+
+        try {
+            const data = await callNpProxy('Address', 'searchSettlements', {
+                CityName: query.trim(),
+                Limit: 15,
+                Page: 1
+            });
+            const addresses = (data.success && data.data && data.data[0] && data.data[0].Addresses) ? data.data[0].Addresses : [];
+
+            if (!addresses.length) {
+                dropdown.innerHTML = '<div class="np-option" style="color:var(--text-muted);cursor:default;">Нічого не знайдено</div>';
+                dropdown.classList.add('open');
+                return;
+            }
+
+            dropdown.innerHTML = addresses.map(addr => {
+                const safePresent = (addr.Present || '').replace(/"/g, '&quot;');
+                const ref = addr.Ref || '';
+                return `<div class="np-option" data-ref="${escapeHtml(ref)}" data-present="${safePresent}">${escapeHtml(addr.Present)}</div>`;
+            }).join('');
+
+            dropdown.querySelectorAll('.np-option[data-ref]').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const chosenName = opt.dataset.present;
+                    const chosenRef = opt.dataset.ref;
+                    document.getElementById('orderCityInput').value = chosenName;
+                    document.getElementById('orderCityRef').value = chosenRef;
+                    dropdown.classList.remove('open');
+                    if (document.getElementById('orderDelivery').value === 'nova_poshta') {
+                        loadNpWarehouses(chosenRef);
+                    }
+                });
+            });
+
+            dropdown.classList.add('open');
+        } catch (err) {
+            console.error('NP settlement search error:', err);
+        }
+    }
+
+    async function loadNpWarehouses(settlementRef) {
+        const whSelect = document.getElementById('orderWarehouseSelect');
+        whSelect.disabled = true;
+        whSelect.innerHTML = '<option value="">Завантаження відділень...</option>';
+
+        try {
+            const data = await callNpProxy('Address', 'getWarehouses', {
+                SettlementRef: settlementRef,
+                Limit: 200,
+                Page: 1
+            });
+            const warehouses = (data.success && Array.isArray(data.data)) ? data.data : [];
+
+            if (!warehouses.length) {
+                whSelect.innerHTML = '<option value="">Відділень не знайдено</option>';
+                whSelect.disabled = false;
+                return;
+            }
+
+            whSelect.innerHTML = '<option value="">Оберіть відділення або поштомат</option>' +
+                warehouses.map(w => {
+                    const desc = (w.Description || '').replace(/"/g, '&quot;');
+                    return `<option value="${desc}">${escapeHtml(w.Description)}</option>`;
+                }).join('');
+            whSelect.disabled = false;
+        } catch (err) {
+            console.error('NP warehouses error:', err);
+            whSelect.innerHTML = '<option value="">Помилка завантаження відділень</option>';
+            whSelect.disabled = false;
+        }
+    }
+
+    document.getElementById('orderCityInput').addEventListener('input', function() {
+        document.getElementById('orderCityRef').value = '';
+        clearTimeout(npSearchTimer);
+        const val = this.value;
+        npSearchTimer = setTimeout(() => searchNpSettlements(val), 250);
+    });
+
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('npCityDropdown');
+        const input = document.getElementById('orderCityInput');
+        if (dropdown && input && !dropdown.contains(e.target) && e.target !== input) {
+            dropdown.classList.remove('open');
+        }
+    });
+
+    document.querySelectorAll('#sizeGroup .size-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#sizeGroup .size-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('selectedPrice').textContent = this.dataset.price;
+        });
+    });
+
+    function addSelectedToCart() {
+        const active = document.querySelector('#sizeGroup .size-btn.active');
+        const price = parseInt(active.dataset.price);
+        const size = active.dataset.size;
+        const fullName = typeof window.medovaFormatItemName === 'function'
+            ? window.medovaFormatItemName(PRODUCT_CODE, dict[currentLang].cartName, size)
+            : `[${PRODUCT_CODE}] ${dict[currentLang].cartName} (${size})`;
+
+        const nextCart = [...cart];
+        const existing = nextCart.find(i => i.name === fullName);
+        if (existing) existing.qty = (parseInt(existing.qty,10)||1) + 1;
+        else nextCart.push({ code: PRODUCT_CODE, name: fullName, price: price, qty: 1 });
+
+        cart = nextCart;
+        saveCartState();
+        openCartModal(1);
+    }
+
+    function changeCartItemQty(idx, delta) {
+        if (!cart[idx]) return;
+        const nextCart = [...cart];
+        const nextQty = (parseInt(nextCart[idx].qty,10)||1) + delta;
+        if (nextQty <= 0) nextCart.splice(idx, 1);
+        else nextCart[idx] = { ...nextCart[idx], qty: nextQty };
+        cart = nextCart;
+        saveCartState();
+        renderCartStep1();
+    }
+
+    function removeFromCart(idx) {
+        const nextCart = [...cart];
+        nextCart.splice(idx, 1);
+        cart = nextCart;
+        saveCartState();
+        renderCartStep1();
+    }
+
+    function updateCartUI() {
+        const totalQty = cart.reduce((sum, i) => sum + (parseInt(i.qty,10)||1), 0);
+        const badge = document.getElementById('cartCountHeader');
+        if (badge) {
+            badge.textContent = totalQty;
+            badge.style.display = totalQty > 0 ? 'flex' : 'none';
+        }
+    }
+
+    function renderCartStep1() {
+        const list = document.getElementById('cartItemsList');
+        const sumEl = document.getElementById('cartTotalSum');
+        const prog = document.getElementById('deliveryProgressBox');
+        const nextBtn = document.getElementById('m-btn-next');
+
+        if (cart.length === 0) {
+            list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding:14px 0;">${currentLang === 'uk' ? 'Кошик порожній' : 'Корзина пуста'}</p>`;
+            sumEl.textContent = '0';
+            prog.className = 'mprog';
+            prog.innerHTML = currentLang === 'uk'
+                ? `🚚 <span class="promo-red-txt">Акція (від 1000 грн):</span> до безкоштовної доставки ще <b>1000 грн</b>`
+                : `🚚 <span class="promo-red-txt">Акция (от 1000 грн):</span> до бесплатной доставки еще <b>1000 грн</b>`;
+            if (nextBtn) nextBtn.style.display = 'none';
+            return;
+        }
+
+        if (nextBtn) nextBtn.style.display = 'block';
+        let html = '';
+        let total = 0;
+        cart.forEach((item, idx) => {
+            const qty = parseInt(item.qty,10)||1;
+            const price = Number(item.price)||0;
+            const sub = price * qty;
+            total += sub;
+            html += `<div class="cart-item-card">
+                <div style="flex:1; min-width:0;"><strong>${escapeHtml(item.name)}</strong><br><span style="color:var(--text-muted); font-size:12px;">${price} грн / шт.</span></div>
+                <div class="qty-mini">
+                    <button type="button" class="qty-btn" onclick="changeCartItemQty(${idx}, -1)">−</button>
+                    <span style="min-width:18px;text-align:center;font-weight:700;font-size:13px;">${qty}</span>
+                    <button type="button" class="qty-btn" onclick="changeCartItemQty(${idx}, 1)">+</button>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                    <strong style="min-width:58px;text-align:right;">${sub} грн</strong>
+                    <button type="button" onclick="removeFromCart(${idx})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold; font-size:15px;">✕</button>
+                </div>
+            </div>`;
+        });
+        list.innerHTML = html;
+        sumEl.textContent = total;
+
+        const threshold = 1000;
+        if (total >= threshold) {
+            prog.className = 'mprog done';
+            prog.innerHTML = currentLang === 'uk'
+                ? '🎉 <span class="promo-red-txt" style="color:#047857;">Акція:</span> у вас безкоштовна доставка (від 1000 грн)!'
+                : '🎉 <span class="promo-red-txt" style="color:#047857;">Акция:</span> у вас бесплатная доставка (от 1000 грн)!';
+        } else {
+            prog.className = 'mprog';
+            prog.innerHTML = currentLang === 'uk'
+                ? `🚚 <span class="promo-red-txt">Акція (від 1000 грн):</span> до безкоштовної доставки ще <b>${threshold - total} грн</b>`
+                : `🚚 <span class="promo-red-txt">Акция (от 1000 грн):</span> до бесплатной доставки еще <b>${threshold - total} грн</b>`;
+        }
+    }
+
+    function goToCheckoutStep(step) {
+        if (step === 2 && cart.length === 0) return;
+        const step1 = document.getElementById('cartStep1');
+        const form = document.getElementById('orderForm');
+        const pill1 = document.getElementById('stepPill1');
+        const pill2 = document.getElementById('stepPill2');
+        const total = cart.reduce((s, i) => s + (Number(i.price)||0) * (parseInt(i.qty,10)||1), 0);
+
+        if (step === 2) {
+            document.getElementById('step2TotalSum').textContent = total;
+            step1.style.display = 'none';
+            form.style.display = 'block';
+            pill1.classList.remove('active');
+            pill1.classList.add('done');
+            pill2.classList.add('active');
+        } else {
+            step1.style.display = 'block';
+            form.style.display = 'none';
+            pill1.classList.add('active');
+            pill1.classList.remove('done');
+            pill2.classList.remove('active');
+            renderCartStep1();
+        }
+    }
+
+    function openCartModal(startStep = 1) {
+        renderCartStep1();
+        goToCheckoutStep(startStep);
+        document.getElementById('orderModal').classList.add('active');
+    }
+
+    async function sendOrderToTelegram(e) {
+        e.preventDefault();
+        if (cart.length === 0) return;
+        const name = document.getElementById('orderName').value.trim();
+        const contact = document.getElementById('orderContact').value.trim();
+        const delSelect = document.getElementById('orderDelivery');
+        const deliveryCode = delSelect.value;
+        const deliveryText = delSelect.options[delSelect.selectedIndex].text;
+        const cityText = document.getElementById('orderCityInput').value.trim();
+        const warehouseText = document.getElementById('orderWarehouseSelect').value.trim();
+        const altAddressText = document.getElementById('orderAltAddress').value.trim();
+        const comm = document.getElementById('orderComment').value.trim();
+        const statusDiv = document.getElementById('orderStatus');
+
+        if (!name || !contact || !deliveryCode) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? 'Заповніть обов’язкові поля!' : 'Заполните обязательные поля!';
+            return;
+        }
+        if (deliveryCode === 'nova_poshta' && (!cityText || !warehouseText)) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? 'Оберіть місто/село та відділення Нової пошти!' : 'Выберите город/село и отделение Новой почты!';
+            return;
+        }
+        if (deliveryCode === 'ukr_poshta' && (!cityText || !altAddressText)) {
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? 'Вкажіть місто/село та індекс/адресу для Укрпошти!' : 'Укажите город/село и индекс/адрес для Укрпочты!';
+            return;
+        }
+
+        let addressSummary = '';
+        if (deliveryCode === 'nova_poshta') {
+            addressSummary = `${cityText}${warehouseText ? ' — ' + warehouseText : ''}`;
+        } else if (deliveryCode === 'ukr_poshta') {
+            addressSummary = `${cityText}${altAddressText ? ', ' + altAddressText : ''}`;
+        } else if (deliveryCode === 'pickup') {
+            addressSummary = cityText || 'Самовивіз (с. Захарівка)';
+        }
+        const combinedComment = [addressSummary ? `Адреса: ${addressSummary}` : '', comm].filter(Boolean).join(' | ');
+
+        statusDiv.style.color = 'var(--primary)';
+        statusDiv.textContent = currentLang === 'uk' ? 'Відправка...' : 'Отправка...';
+
+        try {
+            if (typeof window.medovaSubmitOrder !== 'function') {
+                throw new Error('ordersCore.js is not loaded');
+            }
+
+            const result = await window.medovaSubmitOrder({
+                cart: cart,
+                name: name,
+                phone: contact,
+                deliveryText: deliveryText,
+                cityText: cityText,
+                warehouseText: deliveryCode === 'nova_poshta' ? warehouseText : '',
+                altAddressText: deliveryCode === 'ukr_poshta' ? altAddressText : '',
+                comment: comm,
+                combinedComment: combinedComment
+            });
+
+            if (!result || !result.ok) throw new Error('Order submit failed');
+
+            statusDiv.style.color = '#059669';
+            statusDiv.textContent = currentLang === 'uk'
+                ? `✅ Замовлення № ${result.orderNumber} відправлено!`
+                : `✅ Заказ № ${result.orderNumber} отправлен!`;
+            cart = [];
+            saveCartState();
+            document.getElementById('orderForm').reset();
+            document.getElementById('npAddressFields').style.display = 'none';
+            setTimeout(() => {
+                closeModal('orderModal');
+                statusDiv.textContent = '';
+                if (typeof window.medovaShowOrderReceipt === 'function') {
+                    window.medovaShowOrderReceipt(result, {
+                        customerName: name,
+                        deliveryText: deliveryText,
+                        addressSummary: addressSummary
+                    });
+                }
+            }, 1200);
+        } catch (err) {
+            console.error('Order error:', err);
+            statusDiv.style.color = '#EF4444';
+            statusDiv.textContent = currentLang === 'uk' ? '❌ Помилка відправки!' : '❌ Ошибка отправки!';
+        }
+    }
+
+    document.getElementById('orderModal').addEventListener('click', e => {
+        if (e.target.id === 'orderModal') closeModal('orderModal');
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal('orderModal');
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartUI();
+        loadCartFromSupabaseIfLocalEmpty();
+    });
+</script>
+</body>
+</html>
