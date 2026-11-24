@@ -2866,19 +2866,20 @@
             });
 
             if (result && result.ok) {
-                const orderNumber = result.orderNumber;
-                statusDiv.style.color = '#059669';
-                statusDiv.innerText = currentLang === 'uk'
-                    ? `✅ Замовлення № ${orderNumber} успішно оформлено!`
-                    : `✅ Заказ № ${orderNumber} успешно оформлен!`;
                 saveCartState([]);
                 e.target.reset();
                 document.getElementById('npAddressFields').style.display = 'none';
-                setTimeout(() => {
-                    closeModal('orderModal');
-                    statusDiv.innerText = '';
-                    goToCartStep(1);
-                }, 3500);
+                statusDiv.innerText = '';
+                goToCartStep(1);
+                closeModal('orderModal');
+
+                if (typeof window.medovaShowOrderReceipt === 'function') {
+                    window.medovaShowOrderReceipt(result, {
+                        customerName: name,
+                        deliveryText: deliveryText,
+                        addressSummary: addressSummary
+                    });
+                }
             } else {
                 throw new Error('Order submit failed');
             }
