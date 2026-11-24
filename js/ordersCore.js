@@ -1,6 +1,6 @@
 const MEDOVA_CONFIG = {
     botToken: '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA',
-    chatId: '1763769244',
+    chatId: '-1003617244668',
     supabaseUrl: 'https://qqfnbzfmjemknxivfktb.supabase.co',
     supabaseKey: 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1',
     prefix: 'МП',
