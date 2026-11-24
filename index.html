@@ -480,9 +480,9 @@
             background: rgba(253, 251, 247, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(232, 220, 200, 0.6); padding: 14px 0; transition: all 0.3s ease;
         }
-        .nav-container { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 12px; }
-        .logo-area { display: flex; align-items: center; gap: 12px; min-width: 0; }
-        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; letter-spacing: -0.02em; white-space: nowrap; }
+        .nav-container { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; letter-spacing: -0.02em; white-space: nowrap; flex-shrink: 0; }
         .logo span { color: var(--primary); }
         .menu-burger-btn {
             background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%;
@@ -490,7 +490,7 @@
             transition: all 0.25s ease; color: var(--text); flex-shrink: 0;
         }
         .menu-burger-btn:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; transform: scale(1.05); }
-        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; margin-left: auto; margin-right: 8px; }
         .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 15px; font-weight: 600; transition: color 0.25s; position: relative; white-space: nowrap; }
         .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s ease; }
         .nav-links a:hover { color: var(--primary); }
@@ -705,17 +705,27 @@
             -webkit-mask-image: radial-gradient(circle, black 30%, transparent 70%);
             mask-image: radial-gradient(circle, black 30%, transparent 70%);
         }
-        .consult-info { position: relative; z-index: 1; }
+        .consult-info {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            max-width: 440px; margin: 0 auto; width: 100%;
+        }
         .consult-avatar {
             width: 76px; height: 76px; border-radius: 50%; font-size: 38px;
             background: linear-gradient(135deg, #FDE68A, #F59E0B);
             display: flex; align-items: center; justify-content: center;
             border: 3px solid #fff; box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25); margin-bottom: 20px;
         }
-        .consult-info h3 { font-size: 32px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
-        .consult-info > p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
-        .consult-points { list-style: none; margin-top: 22px; }
-        .consult-points li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--primary-dark); }
+        .consult-info h3 { font-size: 32px; font-weight: 700; margin-bottom: 12px; color: var(--text); width: 100%; text-align: center; }
+        .consult-info > p { font-size: 15px; color: var(--text-muted); line-height: 1.6; width: 100%; text-align: center; }
+        .consult-points {
+            list-style: none; margin-top: 22px; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .consult-points li {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--primary-dark); text-align: center;
+        }
         .consult-form { position: relative; z-index: 1; background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 28px; box-shadow: var(--shadow-soft); }
         .btn-consult { width: 100%; background: #059669; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.25s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .btn-consult:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(5, 150, 105, 0.3); }
@@ -745,8 +755,15 @@
 
         /* ===== ОТЗЫВЫ ПОКУПАТЕЛЕЙ (SUPABASE) ===== */
         .reviews-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 50px 40px; box-shadow: var(--shadow-soft); margin-top: 20px; }
-        .reviews-layout { display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 36px; align-items: start; }
-        .reviews-list { display: flex; flex-direction: column; gap: 16px; max-height: 540px; overflow-y: auto; padding-right: 6px; }
+        /* Слева — лента комментариев (от 1 до тысяч записей), справа — форма добавления */
+        .reviews-layout { display: grid; grid-template-columns: 1.3fr 0.95fr; gap: 36px; align-items: start; }
+        .reviews-feed-wrap { display: flex; flex-direction: column; gap: 14px; }
+        .reviews-counter-bar {
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            padding: 8px 14px; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--text-muted);
+        }
+        .reviews-list { display: flex; flex-direction: column; gap: 16px; max-height: 620px; overflow-y: auto; padding-right: 8px; }
         .review-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; transition: all 0.25s; }
         .review-card:hover { border-color: #FDE68A; }
         .review-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
@@ -755,6 +772,13 @@
         .review-stars { color: #F59E0B; font-size: 15px; letter-spacing: 2px; white-space: nowrap; }
         .review-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-top: 8px; }
         .review-date { font-size: 12px; color: #9CA3AF; margin-top: 10px; }
+        .btn-load-more-reviews {
+            background: var(--bg); border: 1px solid var(--border); color: var(--text);
+            padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif;
+            align-self: center;
+        }
+        .btn-load-more-reviews:hover { border-color: var(--primary); color: var(--primary); background: #FFFBEB; }
         .review-form-card { background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
         .review-form-card h4 { font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
         .star-picker { display: flex; gap: 8px; margin-bottom: 4px; }
@@ -985,7 +1009,6 @@
         </div>
 
         <div class="nav-links">
-            <a href="#catalog" id="m-cat">Каталог</a>
             <a href="#about" id="m-about">Про нас</a>
             <a href="#delivery" id="m-del">Доставка</a>
             <a href="#reviews" id="m-rev">Відгуки</a>
@@ -1028,6 +1051,7 @@
         <a href="/pages/candles.html" class="drawer-item"><span id="dr-p5">🕯️ Свічки з вощини</span> <span class="arrow">›</span></a>
         <a href="/pages/propolis.html" class="drawer-item"><span id="dr-p6">🛡️ Прополіс</span> <span class="arrow">›</span></a>
         <a href="/pages/pollen.html" class="drawer-item"><span id="dr-p7">⚡ Бджолиний пилок</span> <span class="arrow">›</span></a>
+        <a href="/pages/perga.html" class="drawer-item" data-menu-perga><span id="dr-p8">🍯 Перга</span> <span class="arrow">›</span></a>
     </div>
 
     <div class="drawer-section">
@@ -1402,10 +1426,15 @@
             <p class="section-subtitle" id="rev-sub">Діліться враженнями про наш мед, свічки та продукти бджільництва</p>
 
             <div class="reviews-layout">
-                <div>
+                <div class="reviews-feed-wrap">
+                    <div class="reviews-counter-bar" id="reviewsCounterBar" style="display: none;">
+                        <span id="revShownLabel">Показано: 0</span>
+                        <span id="revTotalLabel">Усього відгуків: 0</span>
+                    </div>
                     <div id="reviewsList" class="reviews-list">
                         <p style="text-align:center; color:var(--text-muted); font-size:14px;" id="rev-loading">Завантаження відгуків...</p>
                     </div>
+                    <button type="button" id="loadMoreReviewsBtn" class="btn-load-more-reviews" style="display: none;" onclick="loadMoreReviewsFromSupabase()">Показати ще відгуки</button>
                 </div>
 
                 <div class="review-form-card">
@@ -1938,8 +1967,8 @@
 
     const dict = {
         uk: {
-            lLogo: "Медова Пасіка", mCat: "Каталог", mAbout: "Про нас", mDel: "Доставка", mRev: "Відгуки", mCont: "Контакти", mFAQ: "FAQ",
-            drTitle: "Медова Пасіка", drP1: "🌻 Мед соняшниковий", drP2: "🌿 Мед травневий", drP3: "🥜 Мед з волоським горіхом", drP4: "🍯 Стільниковий мед", drP5: "🕯️ Свічки з вощини", drP6: "🛡️ Прополіс", drP7: "⚡ Бджолиний пилок",
+            lLogo: "Медова Пасіка", mAbout: "Про нас", mDel: "Доставка", mRev: "Відгуки", mCont: "Контакти", mFAQ: "FAQ",
+            drTitle: "Медова Пасіка", drP1: "🌻 Мед соняшниковий", drP2: "🌿 Мед травневий", drP3: "🥜 Мед з волоським горіхом", drP4: "🍯 Стільниковий мед", drP5: "🕯️ Свічки з вощини", drP6: "🛡️ Прополіс", drP7: "⚡ Бджолиний пилок", drP8: "🍯 Перга",
             drAbout: "Про нас", drDelivery: "Оплата і доставка", drReviews: "⭐ Відгуки покупців", drContacts: "Контакти", drConsult: "💬 Консультація бджоляра",
             drHoursTitle: "Графік роботи", drHoursText: "Будні: 08:00–20:00<br>Сб-Нд: вихідний (прийом замовлень онлайн)",
             drCallback: "📞 Замовити дзвінок", drProfile: "👤 Особистий кабінет",
@@ -2003,6 +2032,9 @@
             revPhText: "Напишіть, чи сподобався мед, аромат, пакування та доставка...",
             revBtn: "⭐ Опублікувати відгук",
             revEmpty: "Поки що немає опублікованих відгуків. Будьте першим!",
+            revShownPrefix: "Показано: ",
+            revTotalPrefix: "Усього відгуків: ",
+            revLoadMore: "Показати ще відгуки",
             contTitle: "Контакти та зв'язок", contSub: "Зв'яжіться з нами будь-яким зручним способом",
             contPhoneLbl: "📞 Тел.", contPhoneTxt: "Тел.: +380 96 898 0543",
             contTg: "Написати в Telegram", contIg: "Переглянути Instagram",
@@ -2043,8 +2075,8 @@
             mPhComm: "Побажання до замовлення, оплати тощо..."
         },
         ru: {
-            lLogo: "Медовая Пасека", mCat: "Каталог", mAbout: "О нас", mDel: "Доставка", mRev: "Отзывы", mCont: "Контакты", mFAQ: "FAQ",
-            drTitle: "Медовая Пасека", drP1: "🌻 Мед подсолнечный", drP2: "🌿 Мед майский", drP3: "🥜 Мед с грецким орехом", drP4: "🍯 Сотовый мед", drP5: "🕯️ Свечи из вощины", drP6: "🛡️ Прополис", drP7: "⚡ Пчелиная пыльца",
+            lLogo: "Медовая Пасека", mAbout: "О нас", mDel: "Доставка", mRev: "Отзывы", mCont: "Контакты", mFAQ: "FAQ",
+            drTitle: "Медовая Пасека", drP1: "🌻 Мед подсолнечный", drP2: "🌿 Мед майский", drP3: "🥜 Мед с грецким орехом", drP4: "🍯 Сотовый мед", drP5: "🕯️ Свечи из вощины", drP6: "🛡️ Прополис", drP7: "⚡ Пчелиная пыльца", drP8: "🍯 Перга",
             drAbout: "О нас", drDelivery: "Оплата и доставка", drReviews: "⭐ Отзывы покупателей", drContacts: "Контакты", drConsult: "💬 Консультация пчеловода",
             drHoursTitle: "График работы", drHoursText: "Будни: 08:00–20:00<br>Сб-Вс: выходной (прием заказов онлайн)",
             drCallback: "📞 Заказать звонок", drProfile: "👤 Личный кабинет",
@@ -2108,6 +2140,9 @@
             revPhText: "Напишите, понравился ли мед, аромат, упаковка и доставка...",
             revBtn: "⭐ Опубликовать отзыв",
             revEmpty: "Пока нет опубликованных отзывов. Будьте первым!",
+            revShownPrefix: "Показано: ",
+            revTotalPrefix: "Всего отзывов: ",
+            revLoadMore: "Показать ещё отзывы",
             contTitle: "Контакты и связь", contSub: "Свяжитесь с нами любым удобным способом",
             contPhoneLbl: "📞 Тел.", contPhoneTxt: "Тел.: +380 96 898 0543",
             contTg: "Написать в Telegram", contIg: "Посмотреть Instagram",
@@ -2154,7 +2189,6 @@
         currentLang = lang;
         const t = dict[lang];
         document.getElementById('l-logo').textContent = t.lLogo;
-        document.getElementById('m-cat').textContent = t.mCat;
         document.getElementById('m-about').textContent = t.mAbout;
         document.getElementById('m-del').textContent = t.mDel;
         document.getElementById('m-rev').textContent = t.mRev;
@@ -2169,6 +2203,7 @@
         document.getElementById('dr-p5').textContent = t.drP5;
         document.getElementById('dr-p6').textContent = t.drP6;
         document.getElementById('dr-p7').textContent = t.drP7;
+        document.getElementById('dr-p8').textContent = t.drP8;
         document.getElementById('dr-about').textContent = t.drAbout;
         document.getElementById('dr-consult').textContent = t.drConsult;
         document.getElementById('dr-delivery').textContent = t.drDelivery;
@@ -2263,6 +2298,8 @@
         document.getElementById('rev-l-text').textContent = t.revLText;
         document.getElementById('revText').placeholder = t.revPhText;
         document.getElementById('rev-btn').textContent = t.revBtn;
+        const moreBtn = document.getElementById('loadMoreReviewsBtn');
+        if (moreBtn) moreBtn.textContent = t.revLoadMore;
 
         document.getElementById('cont-title').textContent = t.contTitle;
         document.getElementById('cont-sub').textContent = t.contSub;
@@ -2548,7 +2585,11 @@
         }
     }
 
-    /* ===== ОТЗЫВЫ В SUPABASE ===== */
+    /* ===== ОТЗЫВЫ В SUPABASE (ПОДДЕРЖКА ОТ 1 ДО НЕСКОЛЬКИХ ТЫСЯЧ ЗАПИСЕЙ) ===== */
+    const REVIEWS_BATCH_SIZE = 25;
+    let loadedReviews = [];
+    let totalApprovedReviewsCount = 0;
+
     function setReviewRating(val) {
         document.getElementById('revRating').value = val;
         document.querySelectorAll('#starPicker .star-pick-btn').forEach(btn => {
@@ -2567,48 +2608,92 @@
             .replace(/"/g, '&quot;');
     }
 
-    async function loadReviewsFromSupabase() {
+    function renderReviewsFeed() {
+        const listEl = document.getElementById('reviewsList');
+        const barEl = document.getElementById('reviewsCounterBar');
+        const shownEl = document.getElementById('revShownLabel');
+        const totalEl = document.getElementById('revTotalLabel');
+        const moreBtn = document.getElementById('loadMoreReviewsBtn');
+        if (!listEl) return;
+
+        if (!loadedReviews || loadedReviews.length === 0) {
+            if (barEl) barEl.style.display = 'none';
+            if (moreBtn) moreBtn.style.display = 'none';
+            listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 24px 0;">${dict[currentLang].revEmpty}</p>`;
+            return;
+        }
+
+        if (barEl && shownEl && totalEl) {
+            barEl.style.display = 'flex';
+            shownEl.textContent = `${dict[currentLang].revShownPrefix}${loadedReviews.length}`;
+            totalEl.textContent = `${dict[currentLang].revTotalPrefix}${totalApprovedReviewsCount}`;
+        }
+
+        listEl.innerHTML = loadedReviews.map(rev => {
+            const stars = '★'.repeat(rev.rating || 5) + '☆'.repeat(5 - (rev.rating || 5));
+            const dateStr = rev.created_at
+                ? new Date(rev.created_at).toLocaleDateString(currentLang === 'uk' ? 'uk-UA' : 'ru-RU')
+                : '';
+            return `
+                <div class="review-card">
+                    <div class="review-top">
+                        <div>
+                            <div class="review-author">${escapeHtml(rev.author_name)}</div>
+                            <span class="review-product-tag">${escapeHtml(rev.product_name)}</span>
+                        </div>
+                        <div class="review-stars">${stars}</div>
+                    </div>
+                    <div class="review-text">${escapeHtml(rev.comment)}</div>
+                    ${dateStr ? `<div class="review-date">${dateStr}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        if (moreBtn) {
+            moreBtn.textContent = dict[currentLang].revLoadMore;
+            moreBtn.style.display = loadedReviews.length < totalApprovedReviewsCount ? 'inline-flex' : 'none';
+        }
+    }
+
+    async function loadReviewsFromSupabase(append = false) {
         const listEl = document.getElementById('reviewsList');
         if (!listEl) return;
 
+        if (!append) {
+            loadedReviews = [];
+        }
+        const offset = loadedReviews.length;
+
         try {
-            const { data, error } = await supabaseClient
+            const { data, count, error } = await supabaseClient
                 .from('reviews')
-                .select('*')
+                .select('*', { count: 'exact' })
                 .eq('is_approved', true)
                 .order('created_at', { ascending: false })
-                .limit(30);
+                .range(offset, offset + REVIEWS_BATCH_SIZE - 1);
 
             if (error) throw error;
 
-            if (!data || data.length === 0) {
-                listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 24px 0;">${dict[currentLang].revEmpty}</p>`;
-                return;
+            if (typeof count === 'number') {
+                totalApprovedReviewsCount = count;
             }
-
-            listEl.innerHTML = data.map(rev => {
-                const stars = '★'.repeat(rev.rating || 5) + '☆'.repeat(5 - (rev.rating || 5));
-                const dateStr = rev.created_at
-                    ? new Date(rev.created_at).toLocaleDateString(currentLang === 'uk' ? 'uk-UA' : 'ru-RU')
-                    : '';
-                return `
-                    <div class="review-card">
-                        <div class="review-top">
-                            <div>
-                                <div class="review-author">${escapeHtml(rev.author_name)}</div>
-                                <span class="review-product-tag">${escapeHtml(rev.product_name)}</span>
-                            </div>
-                            <div class="review-stars">${stars}</div>
-                        </div>
-                        <div class="review-text">${escapeHtml(rev.comment)}</div>
-                        ${dateStr ? `<div class="review-date">${dateStr}</div>` : ''}
-                    </div>
-                `;
-            }).join('');
+            if (Array.isArray(data) && data.length > 0) {
+                loadedReviews = append ? loadedReviews.concat(data) : data;
+                if (typeof count !== 'number') {
+                    totalApprovedReviewsCount = Math.max(totalApprovedReviewsCount, loadedReviews.length);
+                }
+            }
+            renderReviewsFeed();
         } catch (err) {
             console.error('Supabase load reviews error:', err);
-            listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 24px 0;">${dict[currentLang].revEmpty}</p>`;
+            if (!append) {
+                renderReviewsFeed();
+            }
         }
+    }
+
+    async function loadMoreReviewsFromSupabase() {
+        await loadReviewsFromSupabase(true);
     }
 
     async function submitReviewToSupabase(e) {
