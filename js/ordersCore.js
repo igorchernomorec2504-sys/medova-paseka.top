@@ -3,9 +3,11 @@ const MEDOVA_CONFIG = {
     chatId: '1763769244',
     supabaseUrl: 'https://qqfnbzfmjemknxivfktb.supabase.co',
     supabaseKey: 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1',
-    prefix: 'ЧВД',
+    prefix: 'МП',
+    numberPadLength: 8,
+    minStartSeq: 26, // если нужно начинать с 00000026, когда в базе меньше — ставим 25 (следующий будет 26)
     cartStorageKey: 'medova_cart',
-    seqStorageKey: 'medova_chvd_last_seq'
+    seqStorageKey: 'medova_mp_last_seq'
 };
 
 const MEDOVA_SKU_MAP = {
@@ -86,7 +88,6 @@ function medovaFormatItemName(prodId, title, size) {
     const code = medovaResolveSku(prodId, rawTitle);
     let cleanTitle = rawTitle.replace(/^\[[^\]]+\]\s*/, '').trim();
 
-    // Если в title уже есть фасовка в круглых скобках в конце и size не передан — оставляем как есть
     const hasTrailingParens = /\([^)]+\)\s*$/.test(cleanTitle);
     let sizePart = '';
     if (size && !hasTrailingParens) {
@@ -121,12 +122,17 @@ function medovaSaveCart(items) {
 
 function medovaFormatNumber(num) {
     const n = Math.max(1, parseInt(num, 10) || 1);
-    return `${MEDOVA_CONFIG.prefix}-${String(n).padStart(3, '0')}`;
+    const padLen = MEDOVA_CONFIG.numberPadLength || 8;
+    return `${MEDOVA_CONFIG.prefix}-${String(n).padStart(padLen, '0')}`;
 }
 
 async function medovaGenerateNextOrderNumber() {
     const prefixEscaped = encodeURIComponent(`${MEDOVA_CONFIG.prefix}-*`);
-    let maxNum = parseInt(localStorage.getItem(MEDOVA_CONFIG.seqStorageKey) || '0', 10) || 0;
+    const floorSeq = Math.max(0, (parseInt(MEDOVA_CONFIG.minStartSeq, 10) || 1) - 1);
+    let maxNum = Math.max(
+        floorSeq,
+        parseInt(localStorage.getItem(MEDOVA_CONFIG.seqStorageKey) || '0', 10) || 0
+    );
 
     try {
         const url = `${MEDOVA_CONFIG.supabaseUrl}/rest/v1/orders?select=id&id=like.${prefixEscaped}`;
@@ -212,12 +218,21 @@ function medovaEnsureReceiptModal() {
                 font-weight: 800;
                 margin-bottom: 8px;
             }
+            .medova-receipt-brand {
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: #92400E;
+                margin-bottom: 4px;
+            }
             .medova-receipt-num {
                 font-family: 'Cormorant Garamond', serif;
-                font-size: 30px;
+                font-size: 28px;
                 font-weight: 700;
                 line-height: 1.15;
                 color: #2B1D0E;
+                word-break: break-word;
             }
             .medova-receipt-hint {
                 font-size: 12px;
@@ -284,7 +299,7 @@ function medovaEnsureReceiptModal() {
             .medova-receipt-total {
                 display: flex;
                 justify-content: space-between;
-                align-items: baseline;
+                align-items: center;
                 gap: 12px;
                 background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
                 border: 1px solid #FDE68A;
@@ -303,6 +318,7 @@ function medovaEnsureReceiptModal() {
                 font-weight: 700;
                 color: #92400E;
                 line-height: 1;
+                white-space: nowrap;
             }
             .medova-receipt-close {
                 width: 100%;
@@ -331,7 +347,8 @@ function medovaEnsureReceiptModal() {
             <div class="medova-receipt-card" role="dialog" aria-modal="true">
                 <div class="medova-receipt-top">
                     <div class="medova-receipt-badge">✓ Замовлення прийнято</div>
-                    <div class="medova-receipt-num" id="medovaReceiptNumber">ЧВД-001</div>
+                    <div class="medova-receipt-brand">Медова Пасіка</div>
+                    <div class="medova-receipt-num" id="medovaReceiptNumber">Чек МП-00000026</div>
                     <div class="medova-receipt-hint">Зробіть скріншот чека для себе</div>
                 </div>
                 <div class="medova-receipt-meta" id="medovaReceiptMeta" style="display:none;"></div>
@@ -364,8 +381,6 @@ function medovaShowOrderReceipt(orderResult, meta) {
     const totalEl = document.getElementById('medovaReceiptTotal');
     const modalEl = document.getElementById('medovaReceiptModal');
 
-    // Якщо потрібно суворо через підкреслення, розкоментуй рядок нижче:
-    // const displayOrderNum = String(orderResult.orderNumber || '').replace(/-/g, '_');
     const displayOrderNum = String(orderResult.orderNumber || '—');
     if (numEl) numEl.textContent = `Чек ${displayOrderNum}`;
 
