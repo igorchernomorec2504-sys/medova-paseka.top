@@ -440,6 +440,45 @@
                   }
                 }
               }
+            },
+            {
+              "@type": "ListItem",
+              "position": 11,
+              "item": {
+                "@type": "Product",
+                "sku": "MR11",
+                "name": "Перга",
+                "image": "https://medova-paseka.top/images/perga.jpg",
+                "description": "Натуральний бджолиний хліб для підтримки імунітету та тонусу.",
+                "brand": { "@type": "Brand", "name": "Медова Пасіка" },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://medova-paseka.top/pages/perga.html",
+                  "priceCurrency": "UAH",
+                  "price": "150",
+                  "priceValidUntil": "2027-12-31",
+                  "availability": "https://schema.org/InStock",
+                  "itemCondition": "https://schema.org/NewCondition",
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UA",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 14,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": { "@type": "MonetaryAmount", "value": 100, "currency": "UAH" },
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "UA" },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+                    }
+                  }
+                }
+              }
             }
           ]
         }
@@ -1317,6 +1356,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- 11. Перга (MR11) -->
+        <div class="product-card" data-cat="other" data-prod-id="MR11" data-fav-id="prod-perga" data-fav-title="Перга" data-share-img="https://medova-paseka.top/images/perga.jpg">
+            <button type="button" class="fav-card-btn" onclick="toggleFavorite('prod-perga', 'Перга', this)" title="Додати в бажане" aria-label="Додати в бажане">♥</button>
+            <div class="product-img" style="background-image: url('/images/perga.jpg');"><div class="badge">Суперфуд</div></div>
+            <div class="product-body">
+                <div>
+                    <span class="product-sku">ID: MR11</span>
+                    <h3 id="p11-t">Перга</h3>
+                    <p class="product-desc" id="p11-d">Натуральний бджолиний хліб для підтримки імунітету та тонусу.</p>
+                    <div class="sizes">
+                        <span class="size-btn active" data-price="150" data-size="50 г">50 г — 150 ₴</span>
+                        <span class="size-btn" data-price="300" data-size="100 г">100 г — 300 ₴</span>
+                        <span class="size-btn" data-price="600" data-size="200 г">200 г — 600 ₴</span>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <div class="price">150 <small>₴</small></div>
+                    <button class="btn-buy" onclick="addToCart('MR11', 'Перга', 150, '50 г', this)">В кошик</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1426,6 +1487,7 @@
             <p class="section-subtitle" id="rev-sub">Діліться враженнями про наш мед, свічки та продукти бджільництва</p>
 
             <div class="reviews-layout">
+                <!-- Ліворуч (✕✕): стрічка збережених відгуків -->
                 <div class="reviews-feed-wrap">
                     <div class="reviews-counter-bar" id="reviewsCounterBar" style="display: none;">
                         <span id="revShownLabel">Показано: 0</span>
@@ -1437,6 +1499,7 @@
                     <button type="button" id="loadMoreReviewsBtn" class="btn-load-more-reviews" style="display: none;" onclick="loadMoreReviewsFromSupabase()">Показати ще відгуки</button>
                 </div>
 
+                <!-- Праворуч (✕): форма додавання нового відгуку -->
                 <div class="review-form-card">
                     <h4 id="rev-form-title">✍️ Залишити відгук</h4>
                     <form onsubmit="submitReviewToSupabase(event)">
@@ -1450,6 +1513,7 @@
                                 <option value="Свічки з вощини (MR05)">🕯️ Свічки з вощини (MR05)</option>
                                 <option value="Прополіс (MR06)">🛡️ Прополіс (MR06)</option>
                                 <option value="Бджолиний пилок (MR07)">⚡ Бджолиний пилок (MR07)</option>
+                                <option value="Перга (MR11)">🍯 Перга (MR11)</option>
                             </select>
                         </div>
 
@@ -1992,6 +2056,7 @@
             p8t: "Патріотичний набір свічок", p8d: "Синьо-жовті свічки з вощини з ніжним ароматом.",
             p9t: "Набір «Медовий затишок»", p9d: "Чудовий комплект свічок ручної роботи. Розміри свічок: 20×3 см.",
             p10t: "Набір з натуральної вощини", p10d: "З медовим запахом та ніжним природним ароматом.",
+            p11t: "Перга", p11d: "Натуральний бджолиний хліб для підтримки імунітету та тонусу.",
             promoBadge8: "Акція -15%", promoBadge9: "Акція", promoBadge10: "Акція -15%",
             f1t: "100% натурально", f1d: "Жодних домішок, цукру та консервантів.",
             f2t: "Екологічний регіон", f2d: "Пасіка в с. Захарівка, далеко від трас.",
@@ -2097,9 +2162,10 @@
             p5t: "Свеча из вощины", p5d: "100% чистый воск, дарят уют и аромат.",
             p6t: "Прополис", p6d: "Природный антисептик и защитник здоровья.",
             p7t: "Пчелиная пыльца", p7d: "Микс витаминов и аминокислот для энергии.",
-            p8t: "Патриотический набор свечей", p8d: "Сине-желтые свечи из вощины с нежным ароматом.",
+            p8t: "Патриотический набор свечей", p8d: "Сине-желтые свечи из вощини с нежным ароматом.",
             p9t: "Набор «Медовый уют»", p9d: "Прекрасный комплект свечей ручной работы. Размеры свечей: 20×3 см.",
             p10t: "Набор из натуральной вощины", p10d: "С медовым запахом и нежным природным ароматом.",
+            p11t: "Перга", p11d: "Натуральный пчелиный хлеб для поддержки иммунитета и тонуса.",
             promoBadge8: "Акция -15%", promoBadge9: "Акция", promoBadge10: "Акция -15%",
             f1t: "100% натурально", f1d: "Никаких примесей, сахара и консервантов.",
             f2t: "Экологичный регион", f2d: "Пасека в с. Захаровка, вдали от трасс.",
@@ -2247,6 +2313,7 @@
         document.getElementById('p8-t').textContent = t.p8t; document.getElementById('p8-desc').textContent = t.p8d;
         document.getElementById('p9-t').textContent = t.p9t; document.getElementById('p9-d').textContent = t.p9d;
         document.getElementById('p10-t').textContent = t.p10t; document.getElementById('p10-d').textContent = t.p10d;
+        document.getElementById('p11-t').textContent = t.p11t; document.getElementById('p11-d').textContent = t.p11d;
 
         const badges = document.querySelectorAll('[data-promo-badge]');
         if (badges[0]) badges[0].textContent = t.promoBadge8;
