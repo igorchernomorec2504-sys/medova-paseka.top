@@ -166,6 +166,257 @@ function medovaEscapeHtml(str) {
         .replace(/"/g, '&quot;');
 }
 
+function medovaEnsureReceiptModal() {
+    if (!document.getElementById('medovaReceiptStyle')) {
+        const style = document.createElement('style');
+        style.id = 'medovaReceiptStyle';
+        style.textContent = `
+            #medovaReceiptModal {
+                display: none;
+                position: fixed;
+                inset: 0;
+                z-index: 2000;
+                background: rgba(43, 29, 14, 0.65);
+                backdrop-filter: blur(6px);
+                align-items: center;
+                justify-content: center;
+                padding: 16px;
+            }
+            #medovaReceiptModal.open {
+                display: flex;
+            }
+            .medova-receipt-card {
+                background: #FFFFFF;
+                color: #2B1D0E;
+                border: 1px solid #E8DCC8;
+                border-radius: 22px;
+                width: min(440px, 100%);
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 26px 22px;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.28);
+                font-family: 'Plus Jakarta Sans', sans-serif;
+            }
+            .medova-receipt-top {
+                text-align: center;
+                margin-bottom: 14px;
+            }
+            .medova-receipt-badge {
+                display: inline-block;
+                background: #ECFDF5;
+                color: #047857;
+                border: 1px solid #A7F3D0;
+                padding: 4px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 800;
+                margin-bottom: 8px;
+            }
+            .medova-receipt-num {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 30px;
+                font-weight: 700;
+                line-height: 1.15;
+                color: #2B1D0E;
+            }
+            .medova-receipt-hint {
+                font-size: 12px;
+                color: #7A6A52;
+                margin-top: 4px;
+            }
+            .medova-receipt-meta {
+                background: #FDFBF7;
+                border: 1px solid #E8DCC8;
+                border-radius: 12px;
+                padding: 10px 12px;
+                font-size: 13px;
+                line-height: 1.5;
+                margin-bottom: 14px;
+            }
+            .medova-receipt-dash {
+                border-top: 1.5px dashed #E8DCC8;
+                margin: 12px 0;
+            }
+            .medova-receipt-list {
+                list-style: none;
+                counter-reset: medova-rc;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .medova-receipt-row {
+                counter-increment: medova-rc;
+                background: #FDFBF7;
+                border: 1px solid #E8DCC8;
+                border-radius: 12px;
+                padding: 10px 12px;
+            }
+            .medova-receipt-row-head {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 10px;
+                font-size: 14px;
+                font-weight: 700;
+            }
+            .medova-receipt-row-head::before {
+                content: counter(medova-rc) ". ";
+                color: #92400E;
+                font-weight: 800;
+                flex-shrink: 0;
+            }
+            .medova-receipt-row-name {
+                flex: 1;
+            }
+            .medova-receipt-row-sum {
+                white-space: nowrap;
+                font-weight: 800;
+                color: #92400E;
+            }
+            .medova-receipt-row-sub {
+                margin-top: 4px;
+                padding-left: 18px;
+                font-size: 12px;
+                color: #7A6A52;
+            }
+            .medova-receipt-total {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 12px;
+                background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+                border: 1px solid #FDE68A;
+                border-radius: 14px;
+                padding: 14px 16px;
+                margin-top: 14px;
+            }
+            .medova-receipt-total span {
+                font-size: 14px;
+                font-weight: 700;
+                color: #7A6A52;
+            }
+            .medova-receipt-total strong {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 30px;
+                font-weight: 700;
+                color: #92400E;
+                line-height: 1;
+            }
+            .medova-receipt-close {
+                width: 100%;
+                margin-top: 16px;
+                background: linear-gradient(135deg, #F59E0B, #D97706);
+                color: #FFFFFF;
+                border: none;
+                border-radius: 12px;
+                padding: 14px 18px;
+                font-size: 15px;
+                font-weight: 800;
+                cursor: pointer;
+                box-shadow: 0 8px 20px rgba(217, 119, 6, 0.28);
+            }
+            .medova-receipt-close:hover {
+                background: linear-gradient(135deg, #D97706, #B45309);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    if (!document.getElementById('medovaReceiptModal')) {
+        const modal = document.createElement('div');
+        modal.id = 'medovaReceiptModal';
+        modal.innerHTML = `
+            <div class="medova-receipt-card" role="dialog" aria-modal="true">
+                <div class="medova-receipt-top">
+                    <div class="medova-receipt-badge">✓ Замовлення прийнято</div>
+                    <div class="medova-receipt-num" id="medovaReceiptNumber">ЧВД-001</div>
+                    <div class="medova-receipt-hint">Зробіть скріншот чека для себе</div>
+                </div>
+                <div class="medova-receipt-meta" id="medovaReceiptMeta" style="display:none;"></div>
+                <div class="medova-receipt-dash"></div>
+                <ol class="medova-receipt-list" id="medovaReceiptItems"></ol>
+                <div class="medova-receipt-total">
+                    <span>Загальна сума замовлення:</span>
+                    <strong id="medovaReceiptTotal">0 ₴</strong>
+                </div>
+                <button type="button" class="medova-receipt-close" id="medovaReceiptCloseBtn">Закрити</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById('medovaReceiptCloseBtn').addEventListener('click', medovaCloseOrderReceipt);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) medovaCloseOrderReceipt();
+        });
+    }
+}
+
+function medovaShowOrderReceipt(orderResult, meta) {
+    if (!orderResult) return;
+    medovaEnsureReceiptModal();
+
+    const info = meta || {};
+    const numEl = document.getElementById('medovaReceiptNumber');
+    const metaEl = document.getElementById('medovaReceiptMeta');
+    const listEl = document.getElementById('medovaReceiptItems');
+    const totalEl = document.getElementById('medovaReceiptTotal');
+    const modalEl = document.getElementById('medovaReceiptModal');
+
+    // Якщо потрібно суворо через підкреслення, розкоментуй рядок нижче:
+    // const displayOrderNum = String(orderResult.orderNumber || '').replace(/-/g, '_');
+    const displayOrderNum = String(orderResult.orderNumber || '—');
+    if (numEl) numEl.textContent = `Чек ${displayOrderNum}`;
+
+    if (metaEl) {
+        const lines = [];
+        if (info.customerName) lines.push(`<div><b>Клієнт:</b> ${medovaEscapeHtml(info.customerName)}</div>`);
+        if (info.deliveryText) {
+            const addr = info.addressSummary ? ` (${medovaEscapeHtml(info.addressSummary)})` : '';
+            lines.push(`<div><b>Доставка:</b> ${medovaEscapeHtml(info.deliveryText)}${addr}</div>`);
+        }
+        metaEl.innerHTML = lines.join('');
+        metaEl.style.display = lines.length ? 'block' : 'none';
+    }
+
+    const items = Array.isArray(orderResult.items) ? orderResult.items : [];
+    let sumFallback = 0;
+
+    if (listEl) {
+        listEl.innerHTML = items.map(item => {
+            const qty = Math.max(1, parseInt(item.qty, 10) || 1);
+            const price = Number(item.price) || 0;
+            const subtotal = item.subtotal !== undefined ? Number(item.subtotal) : price * qty;
+            sumFallback += subtotal;
+
+            return `
+                <li class="medova-receipt-row">
+                    <div class="medova-receipt-row-head">
+                        <span class="medova-receipt-row-name">${medovaEscapeHtml(item.name || 'Товар')}</span>
+                        <span class="medova-receipt-row-sum">${subtotal} ₴</span>
+                    </div>
+                    <div class="medova-receipt-row-sub">${price} ₴ × ${qty} шт. = ${subtotal} ₴</div>
+                </li>
+            `;
+        }).join('');
+    }
+
+    const finalSum = orderResult.total !== undefined ? Number(orderResult.total) : sumFallback;
+    if (totalEl) totalEl.textContent = `${finalSum} ₴`;
+
+    if (modalEl) {
+        modalEl.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function medovaCloseOrderReceipt() {
+    const modalEl = document.getElementById('medovaReceiptModal');
+    if (modalEl) modalEl.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
 async function medovaSubmitOrder(orderData) {
     const cartItems = Array.isArray(orderData.cart) && orderData.cart.length
         ? orderData.cart
@@ -276,4 +527,7 @@ window.medovaSaveCart = medovaSaveCart;
 window.medovaFormatNumber = medovaFormatNumber;
 window.medovaGenerateNextOrderNumber = medovaGenerateNextOrderNumber;
 window.medovaEscapeHtml = medovaEscapeHtml;
+window.medovaEnsureReceiptModal = medovaEnsureReceiptModal;
+window.medovaShowOrderReceipt = medovaShowOrderReceipt;
+window.medovaCloseOrderReceipt = medovaCloseOrderReceipt;
 window.medovaSubmitOrder = medovaSubmitOrder;
