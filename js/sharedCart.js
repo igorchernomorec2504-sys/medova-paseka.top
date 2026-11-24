@@ -1,6 +1,20 @@
 (function () {
-    if (window.__MEDOVA_SHARED_CART_LOADED__) return;
-    window.__MEDOVA_SHARED_CART_LOADED__ = true;
+    if (window.__MEDOVA_SHARED_CART_UNIFIED__) return;
+    window.__MEDOVA_SHARED_CART_UNIFIED__ = true;
+
+    // Коды товаров зашиты прямо в логику корзины — отдельный файл не нужен
+    const CART_CODE_DEFAULTS = {
+        MP01: { code: 'MP01', title: 'Мед соняшниковий', price: 180, size: '1 л' },
+        MP02: { code: 'MP02', title: 'Мед травневий', price: 250, size: '0.5 л' },
+        MP03: { code: 'MP03', title: 'Мед з волоським горіхом', price: 220, size: '0.5 л' },
+        MP04: { code: 'MP04', title: 'Стільниковий мед', price: 300, size: '1 рамка' },
+        MP05: { code: 'MP05', title: 'Свічка з вощини', price: 40, size: '1 шт.' },
+        MP06: { code: 'MP06', title: 'Натуральний бджолиний прополіс', price: 120, size: '50 г' },
+        MP07: { code: 'MP07', title: 'Бджолиний пилок', price: 150, size: '100 г' },
+        MP08: { code: 'MP08', title: 'Патріотичний набір свічок', price: 200, size: '1 набір' },
+        MP09: { code: 'MP09', title: 'Набір «Медовий затишок»', price: 350, size: '1 набір' },
+        MP10: { code: 'MP10', title: 'Набір з натуральної вощини', price: 250, size: '1 набір' }
+    };
 
     function getCart() {
         return typeof window.medovaGetCart === 'function'
@@ -16,7 +30,7 @@
         return items || [];
     }
 
-    function escapeHtml(str) {
+    function esc(str) {
         if (typeof window.medovaEscapeHtml === 'function') {
             return window.medovaEscapeHtml(str);
         }
@@ -25,6 +39,30 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function resolveByCode(input) {
+        const rawCode = String(input?.code || input?.prodId || '').trim().toUpperCase();
+        const mappedCode = typeof window.medovaResolveSku === 'function'
+            ? window.medovaResolveSku(rawCode, input?.title || '')
+            : rawCode;
+        const base = CART_CODE_DEFAULTS[mappedCode] || CART_CODE_DEFAULTS[rawCode] || null;
+
+        const code = mappedCode || rawCode || (base ? base.code : 'MP00');
+        const title = (input?.title && String(input.title).trim()) || (base ? base.title : 'Товар пасіки');
+        const price = (input?.price !== undefined && Number(input.price) >= 0 && String(input.price) !== '')
+            ? Number(input.price)
+            : (base ? base.price : 0);
+        const size = (input?.size !== undefined && input.size !== null && String(input.size).trim() !== '')
+            ? String(input.size).trim()
+            : (base ? base.size : '');
+        const qty = Math.max(1, parseInt(input?.qty, 10) || 1);
+
+        const formattedName = typeof window.medovaFormatItemName === 'function'
+            ? window.medovaFormatItemName(code, title, size)
+            : (size ? `[${code}] ${title} (${size})` : `[${code}] ${title}`);
+
+        return { prodId: code, name: formattedName, price, qty };
     }
 
     function ensureUi() {
@@ -106,10 +144,6 @@
                     background: #FDFBF7;
                     border-radius: 12px;
                     padding: 10px 12px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 10px;
                 }
                 .medova-sc-qty {
                     display: inline-flex;
@@ -156,10 +190,6 @@
                     font-weight: 800;
                     cursor: pointer;
                 }
-                .medova-sc-submit:disabled {
-                    opacity: 0.6;
-                    cursor: not-allowed;
-                }
             `;
             document.head.appendChild(style);
         }
@@ -169,7 +199,7 @@
             fab.type = 'button';
             fab.id = 'medovaSharedFab';
             fab.innerHTML = `🛒 Кошик <span id="medovaSharedFabBadge">0</span> · <span id="medovaSharedFabSum">0 ₴</span>`;
-            fab.addEventListener('click', openDrawer);
+            fab.addEventListener('click', openCart);
             document.body.appendChild(fab);
         }
 
@@ -205,22 +235,22 @@
             `;
             document.body.appendChild(drawer);
 
-            document.getElementById('medovaScClose').addEventListener('click', closeDrawer);
+            document.getElementById('medovaScClose').addEventListener('click', closeCart);
             drawer.addEventListener('click', function (e) {
-                if (e.target === drawer) closeDrawer();
+                if (e.target === drawer) closeCart();
             });
-            document.getElementById('medovaScForm').addEventListener('submit', handleSubmit);
+            document.getElementById('medovaScForm').addEventListener('submit', submitCart);
         }
     }
 
-    function openDrawer() {
+    function openCart() {
         ensureUi();
         renderCart();
         document.getElementById('medovaSharedDrawer').classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 
-    function closeDrawer() {
+    function closeCart() {
         const drawer = document.getElementById('medovaSharedDrawer');
         if (drawer) drawer.classList.remove('open');
         document.body.style.overflow = '';
@@ -236,11 +266,6 @@
         const fabSum = document.getElementById('medovaSharedFabSum');
         if (badge) badge.textContent = String(qty);
         if (fabSum) fabSum.textContent = `${sum} ₴`;
-
-        const hdrCount = document.getElementById('cartCountHeader') || document.getElementById('cartCount');
-        const hdrSum = document.getElementById('cartSumHeader') || document.getElementById('cartSum');
-        if (hdrCount) hdrCount.textContent = String(qty);
-        if (hdrSum) hdrSum.textContent = `${sum} ₴`;
     }
 
     function renderCart() {
@@ -251,7 +276,7 @@
         const submitBtn = document.getElementById('medovaScSubmitBtn');
 
         if (!cart.length) {
-            listEl.innerHTML = '<div style="color:#7A6A52;padding:12px 0;">Кошик порожній. Додайте товар на сторінці.</div>';
+            listEl.innerHTML = '<div style="color:#7A6A52;padding:12px 0;">Кошик порожній.</div>';
             totalEl.textContent = '0 ₴';
             if (submitBtn) submitBtn.disabled = true;
             syncBadge();
@@ -269,15 +294,13 @@
 
             return `
                 <div class="medova-sc-item">
-                    <div>
-                        <div style="font-weight:700;font-size:14px;">${escapeHtml(item.name)}</div>
-                        <div style="font-size:12px;color:#7A6A52;">${price} ₴ × ${qty} шт. = <b>${sub} ₴</b></div>
-                        <div class="medova-sc-qty">
-                            <button type="button" data-sc-act="dec" data-sc-idx="${idx}">−</button>
-                            <span>${qty}</span>
-                            <button type="button" data-sc-act="inc" data-sc-idx="${idx}">+</button>
-                            <button type="button" data-sc-act="del" data-sc-idx="${idx}" style="width:auto;padding:0 8px;">✕</button>
-                        </div>
+                    <div style="font-weight:700;font-size:14px;">${esc(item.name)}</div>
+                    <div style="font-size:12px;color:#7A6A52;">${price} ₴ × ${qty} шт. = <b>${sub} ₴</b></div>
+                    <div class="medova-sc-qty">
+                        <button type="button" data-sc-act="dec" data-sc-idx="${idx}">−</button>
+                        <span>${qty}</span>
+                        <button type="button" data-sc-act="inc" data-sc-idx="${idx}">+</button>
+                        <button type="button" data-sc-act="del" data-sc-idx="${idx}" style="width:auto;padding:0 8px;">✕</button>
                     </div>
                 </div>
             `;
@@ -307,7 +330,7 @@
         syncBadge();
     }
 
-    async function handleSubmit(e) {
+    async function submitCart(e) {
         e.preventDefault();
         if (typeof window.medovaSubmitOrder !== 'function') {
             alert('Не завантажено /js/ordersCore.js');
@@ -349,7 +372,7 @@
             });
 
             if (res && res.ok) {
-                closeDrawer();
+                closeCart();
                 renderCart();
                 if (typeof window.medovaShowOrderReceipt === 'function') {
                     window.medovaShowOrderReceipt(res, {
@@ -357,45 +380,40 @@
                         deliveryText,
                         addressSummary
                     });
-                } else {
-                    alert(`Замовлення ${res.orderNumber} прийнято! Сума: ${res.total} ₴`);
                 }
             }
         } catch (err) {
             console.error(err);
-            alert('Помилка під час відправки замовлення. Спробуйте ще раз.');
+            alert('Помилка під час відправки замовлення.');
         } finally {
             btn.disabled = false;
             btn.textContent = 'Оформити замовлення';
         }
     }
 
-    window.medovaSharedAddItem = function (prodId, title, price, size, qty = 1) {
+    // Главная функция добавления в корзину по коду:
+    // window.medovaCartAdd({ code: 'MP05', price: 40, size: '1 шт.', qty: 1 })
+    window.medovaCartAdd = function (itemInput) {
+        const norm = resolveByCode(typeof itemInput === 'string' ? { code: itemInput } : itemInput);
         const items = getCart();
-        const unitPrice = Number(price) || 0;
-        const addQty = Math.max(1, parseInt(qty, 10) || 1);
-        const fullName = typeof window.medovaFormatItemName === 'function'
-            ? window.medovaFormatItemName(prodId, title, size)
-            : (size ? `[${prodId}] ${title} (${size})` : `[${prodId}] ${title}`);
-
-        const existing = items.find(i => i.name === fullName);
+        const existing = items.find(i => i.name === norm.name);
         if (existing) {
-            existing.qty = (parseInt(existing.qty, 10) || 1) + addQty;
+            existing.qty = (parseInt(existing.qty, 10) || 1) + norm.qty;
         } else {
-            items.push({
-                prodId: prodId || '',
-                name: fullName,
-                price: unitPrice,
-                qty: addQty
-            });
+            items.push(norm);
         }
-
         saveCart(items);
         syncBadge();
         renderCart();
+        return norm;
     };
 
-    window.medovaSharedOpenCart = openDrawer;
+    window.medovaSharedAddItem = function (prodId, title, price, size, qty = 1) {
+        return window.medovaCartAdd({ code: prodId, title, price, size, qty });
+    };
+
+    window.medovaSharedOpenCart = openCart;
+    window.medovaSharedCloseCart = closeCart;
     window.medovaSharedSyncCart = syncBadge;
 
     document.addEventListener('DOMContentLoaded', function () {
