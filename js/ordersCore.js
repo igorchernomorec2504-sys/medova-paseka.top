@@ -1,8 +1,7 @@
 const MEDOVA_CONFIG = {
-    botToken: '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA',
-    chatId: '-1003617244668',
     supabaseUrl: 'https://qqfnbzfmjemknxivfktb.supabase.co',
     supabaseKey: 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1',
+    tgFunctionUrl: 'https://qqfnbzfmjemknxivfktb.supabase.co/functions/v1/send-order-tg',
     prefix: 'МП',
     numberPadLength: 8,
     minStartSeq: 26, // если нужно начинать с 00000026, когда в базе меньше — ставим 25 (следующий будет 26)
@@ -460,9 +459,6 @@ async function medovaSubmitOrder(orderData) {
 
     const total = normalizedItems.reduce((sum, i) => sum + i.subtotal, 0);
     const fullItemsStr = normalizedItems.map(i => `${i.name} (${i.qty} шт.)`).join(', ');
-    const itemsListHtml = normalizedItems
-        .map(i => `• ${medovaEscapeHtml(i.name)} — ${i.qty} шт. (${i.subtotal} ₴)`)
-        .join('\n');
 
     const payload = {
         id: orderNumber,
@@ -491,36 +487,41 @@ async function medovaSubmitOrder(orderData) {
         throw new Error(`Supabase insert failed: ${dbRes.status} ${errText}`);
     }
 
-    const freeShippingNote = total >= 1000
-        ? '\n🎁 <b>Акція:</b> Безкоштовна доставка (від 1000 ₴)'
-        : '';
+    const tgPayload = {
+        orderNumber,
+        customer_name: payload.customer_name,
+        phone: payload.phone,
+        email: payload.email,
+        delivery_method: payload.delivery_method,
+        cityText: String(orderData.cityText || '').trim(),
+        warehouseText: String(orderData.warehouseText || '').trim(),
+        altAddressText: String(orderData.altAddressText || '').trim(),
+        comment: String(orderData.comment || '').trim(),
+        combinedComment: payload.comment,
+        total_price: total,
+        items: normalizedItems
+    };
 
-    const tgText =
-        `<b>🛒 Нове замовлення № ${medovaEscapeHtml(orderNumber)}!</b>\n\n` +
-        `<b>👤 ПІБ:</b> ${medovaEscapeHtml(payload.customer_name)}\n` +
-        `<b>📞 Телефон:</b> ${medovaEscapeHtml(payload.phone)}\n` +
-        (payload.email ? `<b>📧 Email:</b> ${medovaEscapeHtml(payload.email)}\n` : '') +
-        `<b>🚚 Доставка:</b> ${medovaEscapeHtml(payload.delivery_method)}\n` +
-        (orderData.cityText ? `<b>📍 Місто / село:</b> ${medovaEscapeHtml(orderData.cityText)}\n` : '') +
-        (orderData.warehouseText ? `<b>🏢 Відділення НП:</b> ${medovaEscapeHtml(orderData.warehouseText)}\n` : '') +
-        (orderData.altAddressText ? `<b>✉️ Адреса Укрпошти:</b> ${medovaEscapeHtml(orderData.altAddressText)}\n` : '') +
-        `<b>💬 Коментар:</b> ${medovaEscapeHtml(orderData.comment || 'Відсутній')}\n\n` +
-        `<b>📦 Товари:</b>\n${itemsListHtml}\n\n` +
-        `💰 <b>Загальна сума:</b> <b>${total} ₴</b>${freeShippingNote}`;
-
-    const tgRes = await fetch(`https://api.telegram.org/bot${MEDOVA_CONFIG.botToken}/sendMessage`, {
+    const tgRes = await fetch(MEDOVA_CONFIG.tgFunctionUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            chat_id: MEDOVA_CONFIG.chatId,
-            text: tgText,
-            parse_mode: 'HTML'
-        })
+        headers: {
+            'Content-Type': 'application/json',
+            apikey: MEDOVA_CONFIG.supabaseKey,
+            Authorization: `Bearer ${MEDOVA_CONFIG.supabaseKey}`
+        },
+        body: JSON.stringify(tgPayload)
     });
 
-    const tgData = await tgRes.json();
-    if (!tgData.ok) {
-        throw new Error('Telegram sendMessage failed');
+    let tgData = null;
+    try {
+        tgData = await tgRes.json();
+    } catch (_) {
+        tgData = null;
+    }
+
+    if (!tgRes.ok || (tgData && tgData.ok === false)) {
+        const errDetail = (tgData && (tgData.error || tgData.message)) || `HTTP ${tgRes.status}`;
+        throw new Error(`Telegram Edge Function failed: ${errDetail}`);
     }
 
     medovaSaveCart([]);
