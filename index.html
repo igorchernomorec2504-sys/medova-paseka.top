@@ -451,9 +451,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        window.MEDOVA_GROUP_CHAT_ID = '-1003239420013';
-    </script>
     <script src="/js/ordersCore.js"></script>
     <style>
         :root {
@@ -1667,7 +1664,7 @@
 
 <script>
     const BOT_TOKEN = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.botToken : '8812886094:AAFdw7NkHOSRB0If8ZMAME4tEbhwq1XCAZA';
-    const CHAT_ID = '-1003239420013';
+    const CHAT_ID = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.chatId : '1763769244';
     const SUPABASE_URL = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseUrl : 'https://qqfnbzfmjemknxivfktb.supabase.co';
     const SUPABASE_KEY = window.MEDOVA_CONFIG ? window.MEDOVA_CONFIG.supabaseKey : 'sb_publishable__wWNK3PiFLCj29ofrP_jbw_jWGIv3-1';
     const NP_API_KEY = 'eb79541df8160123e2632d92e46171f1';
@@ -2857,7 +2854,6 @@
 
             const result = await window.medovaSubmitOrder({
                 cart: cart,
-                chatId: CHAT_ID,
                 name: name,
                 phone: contact,
                 email: email || '',
