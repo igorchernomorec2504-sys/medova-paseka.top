@@ -68,317 +68,56 @@
         return { prodId: code, name: formattedName, price, qty };
     }
 
-    function removeFloatingFabIfPresent() {
-        const fab = document.getElementById('medovaSharedFab');
-        if (fab) fab.remove();
-        const drawer = document.getElementById('medovaSharedDrawer');
-        if (drawer) drawer.remove();
+    function killBottomStickyCart() {
+        if (!document.getElementById('medovaKillStickyStyle')) {
+            const killStyle = document.createElement('style');
+            killStyle.id = 'medovaKillStickyStyle';
+            killStyle.textContent = `
+                .sticky-bar,
+                #medovaSharedFab,
+                #medovaSharedDrawer {
+                    display: none !important;
+                    visibility: hidden !important;
+                    pointer-events: none !important;
+                }
+                body {
+                    padding-bottom: 16px !important;
+                }
+            `;
+            (document.head || document.documentElement).appendChild(killStyle);
+        }
+
+        document.querySelectorAll('.sticky-bar, #medovaSharedFab, #medovaSharedDrawer').forEach(el => {
+            el.remove();
+        });
     }
 
     function ensureUi() {
-        removeFloatingFabIfPresent();
+        killBottomStickyCart();
         if (hasNativeCartModal()) return;
-
-        if (!document.getElementById('medovaSharedCartStyle')) {
-            const style = document.createElement('style');
-            style.id = 'medovaSharedCartStyle';
-            style.textContent = `
-                #medovaSharedDrawer {
-                    display: none;
-                    position: fixed;
-                    inset: 0;
-                    z-index: 1700;
-                    background: rgba(43, 29, 14, 0.55);
-                    backdrop-filter: blur(4px);
-                    justify-content: flex-end;
-                }
-                #medovaSharedDrawer.open {
-                    display: flex;
-                }
-                .medova-sc-panel {
-                    background: #FFFFFF;
-                    color: #2B1D0E;
-                    width: min(420px, 100%);
-                    height: 100%;
-                    overflow-y: auto;
-                    padding: 20px;
-                    box-shadow: -12px 0 36px rgba(0, 0, 0, 0.25);
-                    display: flex;
-                    flex-direction: column;
-                    gap: 14px;
-                }
-                .medova-sc-head {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-bottom: 1px solid #E8DCC8;
-                    padding-bottom: 12px;
-                }
-                .medova-sc-head h3 {
-                    margin: 0;
-                    font-size: 18px;
-                }
-                .medova-sc-x {
-                    background: #FDFBF7;
-                    border: 1px solid #E8DCC8;
-                    border-radius: 8px;
-                    padding: 6px 10px;
-                    cursor: pointer;
-                    font-weight: 700;
-                }
-                .medova-sc-item {
-                    border: 1px solid #E8DCC8;
-                    background: #FDFBF7;
-                    border-radius: 12px;
-                    padding: 10px 12px;
-                }
-                .medova-sc-qty {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                    margin-top: 6px;
-                }
-                .medova-sc-qty button {
-                    width: 26px;
-                    height: 26px;
-                    border-radius: 6px;
-                    border: 1px solid #D97706;
-                    background: #FFFFFF;
-                    color: #92400E;
-                    font-weight: 800;
-                    cursor: pointer;
-                }
-                .medova-sc-form {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    border-top: 1px solid #E8DCC8;
-                    padding-top: 12px;
-                }
-                .medova-sc-form input,
-                .medova-sc-form select,
-                .medova-sc-form textarea {
-                    width: 100%;
-                    box-sizing: border-box;
-                    padding: 10px 12px;
-                    border: 1px solid #D6C7B2;
-                    border-radius: 10px;
-                    font-size: 14px;
-                    background: #FFFFFF;
-                    color: #2B1D0E;
-                }
-                .medova-sc-submit {
-                    background: linear-gradient(135deg, #F59E0B, #D97706);
-                    color: #FFFFFF;
-                    border: none;
-                    border-radius: 12px;
-                    padding: 13px 16px;
-                    font-size: 15px;
-                    font-weight: 800;
-                    cursor: pointer;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        if (!document.getElementById('medovaSharedDrawer')) {
-            const drawer = document.createElement('div');
-            drawer.id = 'medovaSharedDrawer';
-            drawer.innerHTML = `
-                <div class="medova-sc-panel" role="dialog" aria-modal="true">
-                    <div class="medova-sc-head">
-                        <h3>🛒 Єдиний кошик</h3>
-                        <button type="button" class="medova-sc-x" id="medovaScClose">✕</button>
-                    </div>
-                    <div id="medovaScItems"></div>
-                    <div style="font-weight:800;font-size:16px;display:flex;justify-content:space-between;">
-                        <span>Разом:</span>
-                        <span id="medovaScTotal">0 ₴</span>
-                    </div>
-                    <form class="medova-sc-form" id="medovaScForm">
-                        <input type="text" id="medovaScName" placeholder="ПІБ *" required>
-                        <input type="tel" id="medovaScPhone" placeholder="Телефон *" required>
-                        <input type="email" id="medovaScEmail" placeholder="Email (необов'язково)">
-                        <select id="medovaScDelivery">
-                            <option value="Нова Пошта">Нова Пошта</option>
-                            <option value="Укрпошта">Укрпошта</option>
-                            <option value="Самовивіз">Самовивіз</option>
-                        </select>
-                        <input type="text" id="medovaScCity" placeholder="Місто / село">
-                        <input type="text" id="medovaScWarehouse" placeholder="Відділення НП або адреса">
-                        <textarea id="medovaScComment" rows="2" placeholder="Коментар до замовлення"></textarea>
-                        <button type="submit" class="medova-sc-submit" id="medovaScSubmitBtn">Оформити замовлення</button>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(drawer);
-
-            document.getElementById('medovaScClose').addEventListener('click', closeCart);
-            drawer.addEventListener('click', function (e) {
-                if (e.target === drawer) closeCart();
-            });
-            document.getElementById('medovaScForm').addEventListener('submit', submitCart);
-        }
     }
 
     function openCart() {
+        killBottomStickyCart();
         if (hasNativeCartModal() && typeof window.openCartModal === 'function') {
             window.openCartModal(1);
-            return;
         }
-        ensureUi();
-        const drawer = document.getElementById('medovaSharedDrawer');
-        if (!drawer) return;
-        renderCart();
-        drawer.classList.add('open');
-        document.body.style.overflow = 'hidden';
     }
 
     function closeCart() {
-        const drawer = document.getElementById('medovaSharedDrawer');
-        if (drawer) drawer.classList.remove('open');
-        document.body.style.overflow = '';
+        killBottomStickyCart();
+        if (hasNativeCartModal() && typeof window.closeCartModal === 'function') {
+            window.closeCartModal();
+        }
     }
 
     function syncBadge() {
-        removeFloatingFabIfPresent();
+        killBottomStickyCart();
         const cart = getCart();
         const qty = cart.reduce((s, i) => s + (parseInt(i.qty, 10) || 0), 0);
 
         const hdrCount = document.getElementById('cartCount');
         if (hdrCount) hdrCount.textContent = String(qty);
-    }
-
-    function renderCart() {
-        if (hasNativeCartModal()) {
-            syncBadge();
-            return;
-        }
-        ensureUi();
-        const cart = getCart();
-        const listEl = document.getElementById('medovaScItems');
-        const totalEl = document.getElementById('medovaScTotal');
-        const submitBtn = document.getElementById('medovaScSubmitBtn');
-        if (!listEl || !totalEl) return;
-
-        if (!cart.length) {
-            listEl.innerHTML = '<div style="color:#7A6A52;padding:12px 0;">Кошик порожній.</div>';
-            totalEl.textContent = '0 ₴';
-            if (submitBtn) submitBtn.disabled = true;
-            syncBadge();
-            return;
-        }
-
-        if (submitBtn) submitBtn.disabled = false;
-        let total = 0;
-
-        listEl.innerHTML = cart.map((item, idx) => {
-            const qty = Math.max(1, parseInt(item.qty, 10) || 1);
-            const price = Number(item.price) || 0;
-            const sub = price * qty;
-            total += sub;
-
-            return `
-                <div class="medova-sc-item">
-                    <div style="font-weight:700;font-size:14px;">${esc(item.name)}</div>
-                    <div style="font-size:12px;color:#7A6A52;">${price} ₴ × ${qty} шт. = <b>${sub} ₴</b></div>
-                    <div class="medova-sc-qty">
-                        <button type="button" data-sc-act="dec" data-sc-idx="${idx}">−</button>
-                        <span>${qty}</span>
-                        <button type="button" data-sc-act="inc" data-sc-idx="${idx}">+</button>
-                        <button type="button" data-sc-act="del" data-sc-idx="${idx}" style="width:auto;padding:0 8px;">✕</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        listEl.querySelectorAll('button[data-sc-act]').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const idx = parseInt(btn.getAttribute('data-sc-idx'), 10);
-                const act = btn.getAttribute('data-sc-act');
-                const items = getCart();
-                if (!items[idx]) return;
-
-                if (act === 'inc') items[idx].qty = (parseInt(items[idx].qty, 10) || 1) + 1;
-                if (act === 'dec') {
-                    const nextQty = (parseInt(items[idx].qty, 10) || 1) - 1;
-                    if (nextQty <= 0) items.splice(idx, 1);
-                    else items[idx].qty = nextQty;
-                }
-                if (act === 'del') items.splice(idx, 1);
-
-                saveCart(items);
-                renderCart();
-            });
-        });
-
-        totalEl.textContent = `${total} ₴`;
-        syncBadge();
-    }
-
-    async function submitCart(e) {
-        e.preventDefault();
-        if (typeof window.medovaSubmitOrder !== 'function') {
-            alert('Не завантажено /js/ordersCore.js');
-            return;
-        }
-
-        const btn = document.getElementById('medovaScSubmitBtn');
-        const cart = getCart();
-        if (!cart.length) return;
-
-        const name = document.getElementById('medovaScName').value.trim();
-        const phone = document.getElementById('medovaScPhone').value.trim();
-        const email = document.getElementById('medovaScEmail').value.trim();
-        const deliveryText = document.getElementById('medovaScDelivery').value.trim();
-        const cityText = document.getElementById('medovaScCity').value.trim();
-        const warehouseText = document.getElementById('medovaScWarehouse').value.trim();
-        const comment = document.getElementById('medovaScComment').value.trim();
-
-        const addressSummary = [cityText, warehouseText].filter(Boolean).join(' — ');
-        const combinedComment = [
-            addressSummary ? `Адреса: ${addressSummary}` : '',
-            comment
-        ].filter(Boolean).join(' | ');
-
-        if (btn) {
-            btn.disabled = true;
-            btn.textContent = 'Надсилаємо...';
-        }
-
-        try {
-            const res = await window.medovaSubmitOrder({
-                cart,
-                name,
-                phone,
-                email,
-                deliveryText,
-                cityText,
-                warehouseText,
-                comment,
-                combinedComment
-            });
-
-            if (res && res.ok) {
-                closeCart();
-                renderCart();
-                if (typeof window.medovaShowOrderReceipt === 'function') {
-                    window.medovaShowOrderReceipt(res, {
-                        customerName: name,
-                        deliveryText,
-                        addressSummary
-                    });
-                }
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Помилка під час відправки замовлення.');
-        } finally {
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = 'Оформити замовлення';
-            }
-        }
     }
 
     window.medovaCartAdd = function (itemInput) {
@@ -392,7 +131,6 @@
         }
         saveCart(items);
         syncBadge();
-        renderCart();
         return norm;
     };
 
@@ -404,9 +142,17 @@
     window.medovaSharedCloseCart = closeCart;
     window.medovaSharedSyncCart = syncBadge;
 
+    killBottomStickyCart();
     document.addEventListener('DOMContentLoaded', function () {
         ensureUi();
         syncBadge();
     });
     window.addEventListener('storage', syncBadge);
+
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function () {
+            document.querySelectorAll('.sticky-bar, #medovaSharedFab').forEach(el => el.remove());
+        });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
 })();
