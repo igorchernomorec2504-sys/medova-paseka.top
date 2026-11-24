@@ -30,27 +30,45 @@
       },
       "offers": {
         "@type": "Offer",
+        "url": "https://medova-paseka.top/pages/sunflower.html",
         "priceCurrency": "UAH",
         "price": "250",
+        "priceValidUntil": "2027-12-31",
         "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
           "applicableCountry": "UA",
           "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
           "merchantReturnDays": 14,
           "returnMethod": "https://schema.org/ReturnByMail",
-          "returnFees": "https://schema.org/ReturnShippingFees"
+          "returnFees": "https://schema.org/FreeReturn"
         },
         "shippingDetails": {
           "@type": "OfferShippingDetails",
           "shippingRate": {
             "@type": "MonetaryAmount",
-            "value": "0",
+            "value": 100,
             "currency": "UAH"
           },
           "shippingDestination": {
             "@type": "DefinedRegion",
             "addressCountry": "UA"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 1,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitCode": "DAY"
+            }
           }
         }
       }
