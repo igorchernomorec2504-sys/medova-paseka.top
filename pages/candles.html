@@ -22,7 +22,13 @@
       "@type": "Product",
       "sku": "MP05",
       "name": "Свічки з вощини",
-      "image": ["https://medova-paseka.top/images/svecha.jpg"],
+      "image": [
+        "https://medova-paseka.top/images/svecha.jpg",
+        "https://medova-paseka.top/images/svecha1.jpg",
+        "https://medova-paseka.top/images/svecha2.jpg",
+        "https://medova-paseka.top/images/svecha4.jpg",
+        "https://medova-paseka.top/images/swecha.jpg"
+      ],
       "description": "100% натуральний пасічний віск. Ручна робота, дарують затишок та природний аромат.",
       "brand": {
         "@type": "Brand",
@@ -30,16 +36,23 @@
       },
       "offers": {
         "@type": "Offer",
+        "url": "https://medova-paseka.top/pages/candles.html",
         "priceCurrency": "UAH",
         "price": "40",
         "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
           "applicableCountry": "UA",
           "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
           "merchantReturnDays": 14,
           "returnMethod": "https://schema.org/ReturnByMail",
-          "returnFees": "https://schema.org/ReturnShippingFees"
+          "returnFees": "https://schema.org/ReturnShippingFees",
+          "returnShippingFeesAmount": {
+            "@type": "MonetaryAmount",
+            "value": 0,
+            "currency": "UAH"
+          }
         },
         "shippingDetails": {
           "@type": "OfferShippingDetails",
@@ -51,6 +64,21 @@
           "shippingDestination": {
             "@type": "DefinedRegion",
             "addressCountry": "UA"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 2,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 3,
+              "unitCode": "DAY"
+            }
           }
         }
       }
