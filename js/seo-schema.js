@@ -5,6 +5,11 @@
 
   const shippingDetails = {
     "@type": "OfferShippingDetails",
+    "shippingRate": {
+      "@type": "MonetaryAmount",
+      "value": "0",
+      "currency": CURRENCY
+    },
     "shippingDestination": {
       "@type": "DefinedRegion",
       "addressCountry": "UA"
@@ -32,6 +37,7 @@
     "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
     "merchantReturnDays": 14,
     "returnMethod": "https://schema.org/ReturnByMail",
+    "returnFees": "https://schema.org/ReturnShippingFees",
     "returnShippingFeesAmount": {
       "@type": "MonetaryAmount",
       "value": 0,
@@ -39,35 +45,34 @@
     }
   };
 
-  // Настрой под свои файлы и товары (поменяй price, availability и URL при необходимости)
   const PRODUCTS_BY_PAGE = {
-    "svechi.html": {
-      name: "Восковые свечи — Медовая Пасека",
-      description: "Натуральные свечи из пчелиного воска от пасеки в Одесской области.",
-      price: "150",
+    "candles.html": {
+      name: "Свічки з вощини — Медова Пасіка",
+      description: "100% натуральний пасічний віск. Ручна робота, дарують затишок та природний аромат.",
+      price: "40",
       availability: "https://schema.org/InStock"
     },
     "propolis.html": {
-      name: "Прополис — Медовая Пасека",
-      description: "Натуральный прополис с пасеки.",
+      name: "Прополіс — Медова Пасіка",
+      description: "Натуральний прополіс з власної пасіки.",
       price: "200",
       availability: "https://schema.org/InStock"
     },
     "pylca.html": {
-      name: "Цветочная пыльца — Медовая Пасека",
-      description: "Натуральная пчелиная пыльца (обножка).",
+      name: "Квітковий пилок — Медова Пасіка",
+      description: "Натуральний бджолиний пилок з пасіки.",
       price: "200",
       availability: "https://schema.org/OutOfStock"
     },
-    "majskij-med.html": {
-      name: "Майский мёд — Медовая Пасека",
-      description: "Натуральный майский мёд с пасеки.",
+    "may.html": {
+      name: "Мед Травневий — Медова Пасіка",
+      description: "Ароматний, духмяний та ніжний травневий мед зібраний під час першого весняного медозбору.",
       price: "350",
       availability: "https://schema.org/OutOfStock"
     },
     "podsolnechnyj-med.html": {
-      name: "Подсолнечниковый мёд — Медовая Пасека",
-      description: "Натуральный подсолнечниковый мёд с пасеки.",
+      name: "Соняшниковий мед — Медова Пасіка",
+      description: "Натуральний соняшниковий мед з пасіки.",
       price: "250",
       availability: "https://schema.org/InStock"
     }
@@ -102,6 +107,8 @@
         offers.forEach((offer) => {
           if (!offer || typeof offer !== "object") return;
           if (!offer.validFrom) offer.validFrom = VALID_FROM;
+          if (!offer.url) offer.url = window.location.href;
+
           if (!offer.shippingDetails) {
             offer.shippingDetails = shippingDetails;
           } else {
@@ -109,16 +116,25 @@
               ? offer.shippingDetails
               : [offer.shippingDetails];
             sds.forEach((sd) => {
-              if (sd && typeof sd === "object" && !sd.deliveryTime) {
-                sd.deliveryTime = shippingDetails.deliveryTime;
-              }
+              if (!sd || typeof sd !== "object") return;
+              if (!sd.shippingRate) sd.shippingRate = shippingDetails.shippingRate;
+              if (!sd.shippingDestination) sd.shippingDestination = shippingDetails.shippingDestination;
+              if (!sd.deliveryTime) sd.deliveryTime = shippingDetails.deliveryTime;
             });
           }
+
           if (!offer.hasMerchantReturnPolicy) {
             offer.hasMerchantReturnPolicy = hasMerchantReturnPolicy;
-          } else if (!offer.hasMerchantReturnPolicy.returnShippingFeesAmount) {
-            offer.hasMerchantReturnPolicy.returnShippingFeesAmount =
-              hasMerchantReturnPolicy.returnShippingFeesAmount;
+          } else {
+            const policies = Array.isArray(offer.hasMerchantReturnPolicy)
+              ? offer.hasMerchantReturnPolicy
+              : [offer.hasMerchantReturnPolicy];
+            policies.forEach((pol) => {
+              if (!pol || typeof pol !== "object") return;
+              if (!pol.returnShippingFeesAmount) {
+                pol.returnShippingFeesAmount = hasMerchantReturnPolicy.returnShippingFeesAmount;
+              }
+            });
           }
         });
       }
@@ -127,63 +143,70 @@
     Object.values(node).forEach((val) => enrichExistingProduct(val, fallbackProduct));
   }
 
-  const path = window.location.pathname.split("/").pop() || "index.html";
-  const existingScripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
+  function run() {
+    const cleanPath = (window.location.pathname || "/").split("?")[0].split("#")[0];
+    const fileName = cleanPath.split("/").pop() || "index.html";
+    const existingScripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
 
-  let foundProductSchema = false;
+    let foundProductSchema = false;
 
-  existingScripts.forEach((scriptEl) => {
-    try {
-      const data = JSON.parse(scriptEl.textContent);
-      const beforeStr = JSON.stringify(data);
-      enrichExistingProduct(data, PRODUCTS_BY_PAGE[path] || null);
-      const afterStr = JSON.stringify(data);
-      if (beforeStr !== afterStr) {
-        scriptEl.textContent = afterStr;
+    existingScripts.forEach((scriptEl) => {
+      try {
+        const data = JSON.parse(scriptEl.textContent);
+        const beforeStr = JSON.stringify(data);
+        enrichExistingProduct(data, PRODUCTS_BY_PAGE[fileName] || null);
+        const afterStr = JSON.stringify(data);
+        if (beforeStr !== afterStr) {
+          scriptEl.textContent = afterStr;
+        }
+        if (afterStr.includes('"Product"')) {
+          foundProductSchema = true;
+        }
+      } catch (e) {
+        // Пропускаем некорректный JSON
       }
-      if (afterStr.includes('"Product"')) {
-        foundProductSchema = true;
-      }
-    } catch (e) {
-      // Пропускаем некорректный JSON, если такой есть
+    });
+
+    if (!foundProductSchema && PRODUCTS_BY_PAGE[fileName]) {
+      const prod = PRODUCTS_BY_PAGE[fileName];
+      const productSchema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": prod.name,
+        "description": prod.description,
+        "brand": {
+          "@type": "Brand",
+          "name": "Медова Пасіка"
+        },
+        "offers": buildOffer(prod.price, prod.availability)
+      };
+
+      const newScript = document.createElement("script");
+      newScript.type = "application/ld+json";
+      newScript.textContent = JSON.stringify(productSchema);
+      document.head.appendChild(newScript);
+    } else if (!foundProductSchema && fileName === "index.html") {
+      const orgSchema = {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "name": "Медова Пасека",
+        "url": SITE_URL,
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "Одеська область",
+          "addressCountry": "UA"
+        }
+      };
+      const orgScript = document.createElement("script");
+      orgScript.type = "application/ld+json";
+      orgScript.textContent = JSON.stringify(orgSchema);
+      document.head.appendChild(orgScript);
     }
-  });
+  }
 
-  // Если на странице товара ещё не было JSON-LD Product — создаём его из PRODUCTS_BY_PAGE
-  if (!foundProductSchema && PRODUCTS_BY_PAGE[path]) {
-    const prod = PRODUCTS_BY_PAGE[path];
-    const productSchema = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": prod.name,
-      "description": prod.description,
-      "brand": {
-        "@type": "Brand",
-        "name": "Медовая Пасека"
-      },
-      "offers": buildOffer(prod.price, prod.availability)
-    };
-
-    const newScript = document.createElement("script");
-    newScript.type = "application/ld+json";
-    newScript.textContent = JSON.stringify(productSchema);
-    document.head.appendChild(newScript);
-  } else if (!foundProductSchema && path === "index.html") {
-    // На главной (index.html) задаём базовую схему организации / магазина без фейкового товара
-    const orgSchema = {
-      "@context": "https://schema.org",
-      "@type": "Store",
-      "name": "Медовая Пасека",
-      "url": SITE_URL,
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "Одесская область",
-        "addressCountry": "UA"
-      }
-    };
-    const orgScript = document.createElement("script");
-    orgScript.type = "application/ld+json";
-    orgScript.textContent = JSON.stringify(orgSchema);
-    document.head.appendChild(orgScript);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
   }
 })();
