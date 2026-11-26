@@ -22,7 +22,11 @@
       "@type": "Product",
       "sku": "MP02",
       "name": "Мед Травневий",
-      "image": ["https://medova-paseka.top/images/may1.jpg"],
+      "image": [
+        "https://medova-paseka.top/images/may1.jpg",
+        "https://medova-paseka.top/images/may2.jpg",
+        "https://medova-paseka.top/images/may3.jpg"
+      ],
       "description": "Ароматний, духмяний та ніжний травневий мед зібраний під час першого весняного медозбору.",
       "brand": {
         "@type": "Brand",
@@ -30,16 +34,23 @@
       },
       "offers": {
         "@type": "Offer",
+        "url": "https://medova-paseka.top/pages/may.html",
         "priceCurrency": "UAH",
         "price": "350",
         "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
           "applicableCountry": "UA",
           "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
           "merchantReturnDays": 14,
           "returnMethod": "https://schema.org/ReturnByMail",
-          "returnFees": "https://schema.org/ReturnShippingFees"
+          "returnFees": "https://schema.org/ReturnShippingFees",
+          "returnShippingFeesAmount": {
+            "@type": "MonetaryAmount",
+            "value": 0,
+            "currency": "UAH"
+          }
         },
         "shippingDetails": {
           "@type": "OfferShippingDetails",
@@ -51,6 +62,21 @@
           "shippingDestination": {
             "@type": "DefinedRegion",
             "addressCountry": "UA"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 2,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 3,
+              "unitCode": "DAY"
+            }
           }
         }
       }
