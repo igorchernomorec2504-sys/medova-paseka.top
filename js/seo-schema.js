@@ -45,38 +45,48 @@
     }
   };
 
-  const PRODUCTS_BY_PAGE = {
+  const PRODUCTS_BY_FILE = {
     "candles.html": {
-      name: "Свічки з вощини — Медова Пасіка",
-      description: "100% натуральний пасічний віск. Ручна робота, дарують затишок та природний аромат.",
+      name: "Beeswax Candles — Medova Pasika",
+      description: "100% natural beeswax candles from our apiary.",
       price: "40",
       availability: "https://schema.org/InStock"
     },
-    "propolis.html": {
-      name: "Прополіс — Медова Пасіка",
-      description: "Натуральний прополіс з власної пасіки.",
-      price: "200",
-      availability: "https://schema.org/InStock"
-    },
-    "pylca.html": {
-      name: "Квітковий пилок — Медова Пасіка",
-      description: "Натуральний бджолиний пилок з пасіки.",
-      price: "200",
-      availability: "https://schema.org/OutOfStock"
-    },
     "may.html": {
-      name: "Мед Травневий — Медова Пасіка",
-      description: "Ароматний, духмяний та ніжний травневий мед зібраний під час першого весняного медозбору.",
+      name: "May Honey — Medova Pasika",
+      description: "Natural spring May honey from our apiary.",
       price: "350",
       availability: "https://schema.org/OutOfStock"
     },
-    "podsolnechnyj-med.html": {
-      name: "Соняшниковий мед — Медова Пасіка",
-      description: "Натуральний соняшниковий мед з пасіки.",
+    "sunflower.html": {
+      name: "Sunflower Honey — Medova Pasika",
+      description: "Natural sunflower honey from our apiary.",
       price: "250",
+      availability: "https://schema.org/InStock"
+    },
+    "pollen.html": {
+      name: "Bee Pollen — Medova Pasika",
+      description: "Natural flower pollen from our apiary.",
+      price: "200",
+      availability: "https://schema.org/OutOfStock"
+    },
+    "propolis.html": {
+      name: "Propolis — Medova Pasika",
+      description: "Natural propolis from our apiary.",
+      price: "200",
       availability: "https://schema.org/InStock"
     }
   };
+
+  function getFileName(pathname) {
+    const clean = (pathname || "/").split("?")[0].split("#")[0];
+    let decoded = clean;
+    try {
+      decoded = decodeURIComponent(clean);
+    } catch (e) {}
+    const last = decoded.split("/").pop() || "index.html";
+    return last.trim().toLowerCase();
+  }
 
   function buildOffer(price, availability) {
     return {
@@ -144,8 +154,8 @@
   }
 
   function run() {
-    const cleanPath = (window.location.pathname || "/").split("?")[0].split("#")[0];
-    const fileName = cleanPath.split("/").pop() || "index.html";
+    const fileName = getFileName(window.location.pathname);
+    const matchedProduct = PRODUCTS_BY_FILE[fileName] || null;
     const existingScripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
 
     let foundProductSchema = false;
@@ -154,7 +164,7 @@
       try {
         const data = JSON.parse(scriptEl.textContent);
         const beforeStr = JSON.stringify(data);
-        enrichExistingProduct(data, PRODUCTS_BY_PAGE[fileName] || null);
+        enrichExistingProduct(data, matchedProduct);
         const afterStr = JSON.stringify(data);
         if (beforeStr !== afterStr) {
           scriptEl.textContent = afterStr;
@@ -162,38 +172,35 @@
         if (afterStr.includes('"Product"')) {
           foundProductSchema = true;
         }
-      } catch (e) {
-        // Пропускаем некорректный JSON
-      }
+      } catch (e) {}
     });
 
-    if (!foundProductSchema && PRODUCTS_BY_PAGE[fileName]) {
-      const prod = PRODUCTS_BY_PAGE[fileName];
+    if (!foundProductSchema && matchedProduct) {
       const productSchema = {
         "@context": "https://schema.org",
         "@type": "Product",
-        "name": prod.name,
-        "description": prod.description,
+        "name": matchedProduct.name,
+        "description": matchedProduct.description,
         "brand": {
           "@type": "Brand",
-          "name": "Медова Пасіка"
+          "name": "Medova Pasika"
         },
-        "offers": buildOffer(prod.price, prod.availability)
+        "offers": buildOffer(matchedProduct.price, matchedProduct.availability)
       };
 
       const newScript = document.createElement("script");
       newScript.type = "application/ld+json";
       newScript.textContent = JSON.stringify(productSchema);
       document.head.appendChild(newScript);
-    } else if (!foundProductSchema && fileName === "index.html") {
+    } else if (!foundProductSchema && (fileName === "index.html" || fileName === "")) {
       const orgSchema = {
         "@context": "https://schema.org",
         "@type": "Store",
-        "name": "Медова Пасека",
+        "name": "Medova Pasika",
         "url": SITE_URL,
         "address": {
           "@type": "PostalAddress",
-          "addressRegion": "Одеська область",
+          "addressRegion": "Odesa Oblast",
           "addressCountry": "UA"
         }
       };
