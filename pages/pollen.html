@@ -34,7 +34,7 @@
         "priceCurrency": "UAH",
         "price": "70",
         "priceValidUntil": "2027-12-31",
-        "availability": "https://schema.org/InStock",
+        "availability": "https://schema.org/OutOfStock",
         "itemCondition": "https://schema.org/NewCondition",
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
@@ -136,7 +136,7 @@
         .chip { padding:6px 14px; border-radius:99px; font-size:12px; font-weight:700; border:1px solid var(--border); background:var(--card); color:var(--muted); }
         .chip.sku { background:#F5F2EB; border-color:var(--border); color:var(--text); }
         .chip.cat { background:#FFFBEB; border-color:#FDE68A; color:var(--primary-dark); }
-        .chip.stock { background:#ECFDF5; border-color:#A7F3D0; color:#047857; }
+        .chip.stock { background:#FEF2F2; border-color:#FECACA; color:#B91C1C; }
         .p-title { font-size:42px; margin-bottom:12px; }
         .p-short { font-size:16px; color:var(--muted); line-height:1.7; margin-bottom:24px; }
 
@@ -261,7 +261,7 @@
             <div class="thumbs" id="thumbs"></div>
         </div>
         <div class="infocol">
-            <div class="chips"><span class="chip sku" id="chipSku">ID: MP07</span><span class="chip cat" id="chipCat">⚡ Пилок</span><span class="chip stock">✓ В наявності</span></div>
+            <div class="chips"><span class="chip sku" id="chipSku">ID: MP07</span><span class="chip cat" id="chipCat">⚡ Пилок</span><span class="chip stock">✕ Немає в наявності</span></div>
             <h1 class="p-title" id="pTitle">Назва товару</h1>
             <p class="p-short" id="pShort">Опис товару...</p>
             <div class="pricebox"><div class="price-now" id="displayPrice">0 <small>грн</small></div><div class="price-unit" id="priceUnit">за 1 шт</div></div>
